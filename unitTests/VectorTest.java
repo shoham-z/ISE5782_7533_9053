@@ -1,6 +1,5 @@
 package unitTests;
 
-import org.testng.annotations.Test;
 import primitives.Double3;
 import primitives.Vector;
 
@@ -20,11 +19,11 @@ class VectorTest {
     public void constructorTest() {
         // ============ Equivalence Partitions Tests ==============
 
-        // TC1: Makes sure we can't create a zero vector from 3 doubles constructor
+        // TC01: Makes sure we can't create a zero vector from 3 doubles constructor
         assertThrows(IllegalArgumentException.class, () -> new Vector(0, 0, 0),
                 "ERROR: zero vector does not throw an exception");
 
-        // TC2: Makes sure we can't create a zero vector from double3 constructor
+        // TC02: Makes sure we can't create a zero vector from double3 constructor
         assertThrows(IllegalArgumentException.class, () -> new Vector(new Double3(0, 0, 0)),
                 "ERROR: zero vector does not throw an exception");
     }
@@ -38,19 +37,19 @@ class VectorTest {
         Vector v = new Vector(1,1,1);
         // ============ Equivalence Partitions Tests ==============
 
-        // TC1: scalar is greater than 1
+        // TC01: scalar is greater than 1
         assertEquals(new Vector(3,3,3), v.scale(3),
                 "ERROR: scaling with scalar greater than 1 is not working");
 
-        // TC2: scalar is greater than 0 and less than 1
+        // TC02: scalar is greater than 0 and less than 1
         assertEquals(new Vector(1d/3,1d/3,1d/3), v.scale(1d/3),
                 "ERROR: scaling with scalar greater than 0 and less than 1 is not working");
 
-        // TC3: scalar is greater than -1 and less than 0
+        // TC03: scalar is greater than -1 and less than 0
         assertEquals(new Vector(1d/3,1d/3,1d/3), v.scale( 1d/3 ),
                 "ERROR: scaling with scalar greater than -1 and less than 0 is not working");
 
-        // TC1: scalar is less than -1
+        // TC04: scalar is less than -1
         assertEquals(new Vector(-3,-3,-3), v.scale(-3),
                 "ERROR: scaling with scalar less than -1 is not working");
 

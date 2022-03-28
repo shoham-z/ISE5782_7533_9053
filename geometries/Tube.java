@@ -2,20 +2,22 @@ package geometries;
 
 import primitives.*;
 
+import static primitives.Util.isZero;
+
 /**
  * Tube class represents a three-dimensional tube in 3D Cartesian coordinate
  * system
  */
 public class Tube implements Geometry{
-    private final Ray dir;
+    private final Ray axis;
     private final double radius;
 
     /**
-     *
-     * @return Ray - dir of the Tube
+     * Getter for the axis ray of the Tube
+     * @return the axis ray
      */
     public Ray getDirection() {
-        return dir;
+        return axis;
     }
 
     /**
@@ -26,22 +28,17 @@ public class Tube implements Geometry{
         return radius;
     }
 
-    public Tube(Ray dir, double radius) {
-        this.dir = dir;
+    public Tube(Ray ray, double radius) {
+        this.axis = ray;
         this.radius = radius;
     }
 
     @Override
     public Vector getNormal(Point point) {
-        Vector dir = this.dir.getDirection();
-        Point P0 = this.dir.getStart();
-        double t = dir.dotProduct(point.subtract(P0));
-        if(t == 0){// to
-            Vector normal = point.subtract(P0);
-            return normal.normalize();
-        }
-        Point O = P0.add(dir.scale(t));
-        Vector normal = point.subtract(O);
-        return normal.normalize();
+        Vector dir = this.axis.getDirection();
+        Point p0 = this.axis.getStart();
+        double t = dir.dotProduct(point.subtract(p0));
+        Point o = isZero(t) ? p0 : p0.add(dir.scale(t));
+        return point.subtract(o).normalize();
     }
 }

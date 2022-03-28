@@ -19,7 +19,7 @@ public class Point {
      *
      * @param xyz the Double3 object
      */
-    Point(Double3 xyz) {
+    protected Point(Double3 xyz) {
         this.xyz = new Double3(xyz.d1, xyz.d2, xyz.d3);//maybe assign this.xyz = xyz
     }
 
@@ -70,12 +70,9 @@ public class Point {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Point))
-            return false;
+        if (this == obj) return true;
+        if (obj == null) return false;
+        if (!(obj instanceof Point)) return false;
         Point other = (Point) obj;
         return this.xyz.equals(other.xyz);
     }

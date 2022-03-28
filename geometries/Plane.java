@@ -27,17 +27,12 @@ public class Plane implements Geometry{
      * @param p1 Point on the Plane
      * @param p2 Point on the Plane
      * @param p3 Point on the Plane
+     * @throws IllegalArgumentException when the points are on the same line
      */
     public Plane(Point p1, Point p2, Point p3) {
-        if(p1.equals(p2) || p1.equals(p3) || p2.equals(p3)){
-            throw new IllegalArgumentException("2 points of the 3 are unifying");
-        }
         this.point = p1;
         Vector v1 = p1.subtract(p2).normalize();
         Vector v2 = p1.subtract(p3).normalize();
-        if(v1.equals(v2) || v1.equals(v2.scale(-1))){
-            throw new IllegalArgumentException("the 3 points are on the same line");
-        }
         this.normal = v1.crossProduct(v2).normalize();
     }
 
@@ -47,7 +42,7 @@ public class Plane implements Geometry{
      */
     public Point getPoint() {
         return point;
-    }
+    } // add records
 
     /**
      *

@@ -24,7 +24,7 @@ class PointTest {
         Point p1 = new Point(1, 2, 3);
 
         // TC1: makes sure point subtraction works properly
-        Assertions.assertEquals(new Vector(1, 1, 1), new Point(2, 3, 4).subtract(p1),
+        assertEquals(new Vector(1, 1, 1), new Point(2, 3, 4).subtract(p1),
                 "ERROR: Point - Point does not work correctly");
     }
 
@@ -49,15 +49,15 @@ class PointTest {
         Point p = new Point(1,1,1);
         // ============ Equivalence Partitions Tests ==============
 
-        // TC1: makes sure that point distance squared works when distance is greater than 0
+        // EP1: makes sure that point distance squared works when distance is greater than 0
         assertEquals(p.distanceSquared(new Point(0, 0, 0)), 3,
-                "ERROR: Point distance squared for distance greater than 0 doesn't work");
+                "EP1: Point distance squared for distance greater than 0 doesn't work");
 
         // ============ Boundary Value Analysis ================
 
-        // TC1: makes sure that point distance squared works when distance is 0
-        assertTrue(isZero(p.distanceSquared(p)),
-                "ERROR: Point distance squared for distance equals 0 doesn't work");
+        // VB1: makes sure that point distance squared works when distance is 0
+        assertEquals(0d, p.distanceSquared(p), 0.0000001,
+                "VB1: Point distance squared for distance equals 0 doesn't work");
     }
 
     /**

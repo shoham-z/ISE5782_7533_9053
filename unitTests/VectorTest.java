@@ -3,6 +3,7 @@ package unitTests;
 import primitives.Double3;
 import primitives.Vector;
 
+import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import static primitives.Util.isZero;
 
@@ -15,16 +16,12 @@ class VectorTest {
     /**
      * Test method for {@link primitives.Vector#Vector(double, double, double)}
      */
-    @org.junit.jupiter.api.Test
+    @Test
     public void constructorTest() {
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Makes sure we can't create a zero vector from 3 doubles constructor
         assertThrows(IllegalArgumentException.class, () -> new Vector(0, 0, 0),
-                "ERROR: zero vector does not throw an exception");
-
-        // TC02: Makes sure we can't create a zero vector from double3 constructor
-        assertThrows(IllegalArgumentException.class, () -> new Vector(new Double3(0, 0, 0)),
                 "ERROR: zero vector does not throw an exception");
     }
 
@@ -57,7 +54,7 @@ class VectorTest {
         // =============== Boundary Values Tests ==================
 
         // TC1: scalar is 1
-        assertEquals(new Vector(1,1,1), v.scale(1),
+        assertEquals(v, v.scale(1),
                 "ERROR: scaling with scalar equal 1 not working");
 
         // TC2: scalar is -1
@@ -99,16 +96,18 @@ class VectorTest {
         Vector v2 = new Vector(0, 3, -2);
         Vector vr = v1.crossProduct(v2);
 
-        // TC01: Test that length of cross-product is proper (orthogonal vectors taken
-        // for simplicity)
+        // TC01: Basic test (orthogonal vectors taken for simplicity)
+        // Check length of cross-product is proper
         assertEquals(v1.length() * v2.length(), vr.length(), 0.00001,
-                "crossProduct() wrong result length");
-
-        // TC02: Test cross-product result orthogonality to its operands
+                "TC01: crossProduct() wrong result length");
+        // Check cross-product result orthogonality to its operands
         assertTrue(isZero(vr.dotProduct(v1)),
-                "crossProduct() result is not orthogonal to 1st operand");
+                "TC01: crossProduct() result is not orthogonal to 1st operand");
         assertTrue(isZero(vr.dotProduct(v2)),
-                "crossProduct() result is not orthogonal to 2nd operand");
+                "TC01: crossProduct() result is not orthogonal to 2nd operand");
+
+        // TC02: reverse direction
+        Vector vr2 = v2.crossProduct(v1);
 
         // =============== Boundary Values Tests ==================
         // TC11: test zero vector from cross-product of co-lined vectors

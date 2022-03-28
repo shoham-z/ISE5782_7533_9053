@@ -5,7 +5,6 @@ package primitives;
  *
  * @author Shoham Zeharya, David Zaklad.
  */
-
 public class Vector extends Point {
     /**
      * Constructor for initializing a vector from 3 double numbers (x,y,z)
@@ -16,8 +15,6 @@ public class Vector extends Point {
      */
     public Vector(double x, double y, double z) {
         this(new Double3(x, y, z));
-        if (xyz.equals(Double3.ZERO))
-            throw new IllegalArgumentException();
     }
 
     /**
@@ -25,7 +22,7 @@ public class Vector extends Point {
      *
      * @param xyz point (x,y,z) for top of the vector
      */
-    public Vector(Double3 xyz) {
+    Vector(Double3 xyz) {
         super(xyz);
         if (xyz.equals(Double3.ZERO))
             throw new IllegalArgumentException();
@@ -73,7 +70,7 @@ public class Vector extends Point {
      */
     public Vector crossProduct(Vector other) {
         return new Vector(this.xyz.d2 * other.xyz.d3 - this.xyz.d3 * other.xyz.d2,
-                -(this.xyz.d1 * other.xyz.d3 - this.xyz.d3 * other.xyz.d1),
+                this.xyz.d3 * other.xyz.d1 -this.xyz.d1 * other.xyz.d3,
                 this.xyz.d1 * other.xyz.d2 - this.xyz.d2 * other.xyz.d1);
     }
 

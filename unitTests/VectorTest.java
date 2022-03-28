@@ -1,11 +1,10 @@
 package unitTests;
 
-import primitives.Double3;
 import primitives.Vector;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-import static primitives.Util.isZero;
+
 
 /**
  * Unit tests for primitives.Vector class
@@ -69,7 +68,7 @@ class VectorTest {
     /**
      * Test method for {@link primitives.Vector#dotProduct(primitives.Vector)}
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void dotProduct() {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(1, 2, 3);
@@ -81,14 +80,14 @@ class VectorTest {
                 "ERROR: dotProduct() for orthogonal vectors is not zero");
 
         //TC2: Test to make sure that the dot product value of a vector is proper
-        assertTrue(isZero(v1.dotProduct(v2) + 28),
+        assertEquals(v1.dotProduct(v2) + 28, 0, 0.000001,
                 "ERROR: dotProduct() wrong value");
     }
 
     /**
      * Test method for {@link primitives.Vector#crossProduct(primitives.Vector)}
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void crossProduct() {
         Vector v1 = new Vector(1, 2, 3);
 
@@ -99,15 +98,25 @@ class VectorTest {
         // TC01: Basic test (orthogonal vectors taken for simplicity)
         // Check length of cross-product is proper
         assertEquals(v1.length() * v2.length(), vr.length(), 0.00001,
-                "TC01: crossProduct() wrong result length");
+                "EP01: length of cross product");
         // Check cross-product result orthogonality to its operands
-        assertTrue(isZero(vr.dotProduct(v1)),
-                "TC01: crossProduct() result is not orthogonal to 1st operand");
-        assertTrue(isZero(vr.dotProduct(v2)),
-                "TC01: crossProduct() result is not orthogonal to 2nd operand");
+        assertEquals(vr.dotProduct(v1), 0, 0.000001,
+                "EP01: v1 not orthogonal");
+        assertEquals(vr.dotProduct(v2), 0, 0.000001,
+                "EP01: v2 not orthogonal");
 
         // TC02: reverse direction
         Vector vr2 = v2.crossProduct(v1);
+        // Check the length of vr and vr2 equal
+        assertEquals(vr2.length(), vr.length(), 0.000001,
+                "EP02: length of vr2 not equal to length of vr");
+        // Check the direction is good
+        // Check that cross product of vr, vr2 throws exception
+        assertThrows(IllegalArgumentException.class, () -> vr.crossProduct(vr2),
+                "EP02: cross product does not throw exception");
+        // Check that dot product of vr, vr2 is zero
+        assertEquals(vr.dotProduct(vr2), vr.dotProduct(vr.scale(-1)), 0.000001,
+                "EP02: dot product is not zero");
 
         // =============== Boundary Values Tests ==================
         // TC11: test zero vector from cross-product of co-lined vectors
@@ -119,32 +128,32 @@ class VectorTest {
     /**
      * Test method for {@link primitives.Vector#lengthSquared()}
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void lengthSquared() {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(1, 2, 3);
 
         //TC1: Test to make sure that the squared length of a vector is proper
-        assertTrue(isZero(v1.lengthSquared() - 14),
+        assertEquals(v1.lengthSquared() - 14, 0, 0.000001,
                 "ERROR: lengthSquared() wrong value");
     }
 
     /**
      * Test method for {@link primitives.Vector#length()}
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void length() {
         // ============ Equivalence Partitions Tests ==============
 
         //TC1: Test to make sure that the length of a vector is proper
-        assertTrue(isZero(new Vector(0, 3, 4).length() - 5),
+        assertEquals(new Vector(0, 3, 4).length() - 5, 0, 0.000001,
                 "ERROR: length() wrong value");
     }
 
     /**
      * Test method for {@link primitives.Vector#normalize()}
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void normalize() {
         // ============ Equivalence Partitions Tests ==============
         Vector v = new Vector(0, 3, 4);

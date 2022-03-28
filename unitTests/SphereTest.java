@@ -19,7 +19,7 @@ class SphereTest {
     @Test
     void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
-        // TC01: There is a simple single test here - the point is in the sphere
+        // EP01: There is a simple single test here - the point is in the sphere
         Sphere sphere = new Sphere(new Point(0,0,0), 5);
         assertEquals(sphere.getNormal(new Point(5,0,0)), new Vector(1,0,0),
                 "ERROR: normal for sphere is not working");

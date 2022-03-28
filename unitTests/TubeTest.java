@@ -19,12 +19,12 @@ class TubeTest {
     void testGetNormal() {
         Tube t = new Tube(new Ray(new Point(0,0,0), new Vector(1,0,0)),3);
         // ============ Equivalence Partitions Tests ==============
-        // TC01: Point is on the Tube
+        // EP01: Point is on the Tube
         assertEquals(t.getNormal(new Point(1,0,3)), new Vector(0,0,1),
                 "normal for tube is not working properly at random point");
 
         // ============ Boundary Value Tests ====================
-        // TC01: Point is parallel to the starting point of the ray
+        // BV01: Point is parallel to the starting point of the ray
         assertEquals(t.getNormal(new Point(0,0,3)), new Vector(0,0,1),
                 "normal for tube is not working properly when point is parallel to the starting point");
     }

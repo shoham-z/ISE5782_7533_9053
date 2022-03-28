@@ -20,11 +20,11 @@ class RayTest {
         // ============ Equivalence Partitions Tests ==============
 
         Point p = new Point( 1,1,1);
-        // TC1: Makes sure we can't create a ray with zero vector from 3 doubles constructor
+        // EP01: Makes sure we can't create a ray with zero vector from 3 doubles constructor
         assertThrows(IllegalArgumentException.class, () -> new Ray(p, new Vector(0, 0, 0)),
                 "ERROR: zero vector does not throw an exception");
 
-        // TC2: Makes sure we can't create a ray with zero vector from double3 constructor
+        // EP02: Makes sure we can't create a ray with zero vector from double3 constructor
         assertThrows(IllegalArgumentException.class, () -> new Ray(p, new Vector(new Double3(0, 0, 0))),
                 "ERROR: zero vector does not throw an exception");
     }

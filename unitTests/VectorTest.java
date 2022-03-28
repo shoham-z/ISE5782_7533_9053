@@ -19,7 +19,7 @@ class VectorTest {
     public void constructorTest() {
         // ============ Equivalence Partitions Tests ==============
 
-        // TC01: Makes sure we can't create a zero vector from 3 doubles constructor
+        // EP01: Makes sure we can't create a zero vector from 3 doubles constructor
         assertThrows(IllegalArgumentException.class, () -> new Vector(0, 0, 0),
                 "ERROR: zero vector does not throw an exception");
     }
@@ -33,34 +33,34 @@ class VectorTest {
         Vector v = new Vector(1,1,1);
         // ============ Equivalence Partitions Tests ==============
 
-        // TC01: scalar is greater than 1
+        // EP01: scalar is greater than 1
         assertEquals(new Vector(3,3,3), v.scale(3),
                 "ERROR: scaling with scalar greater than 1 is not working");
 
-        // TC02: scalar is greater than 0 and less than 1
+        // EP02: scalar is greater than 0 and less than 1
         assertEquals(new Vector(1d/3,1d/3,1d/3), v.scale(1d/3),
                 "ERROR: scaling with scalar greater than 0 and less than 1 is not working");
 
-        // TC03: scalar is greater than -1 and less than 0
+        // EP03: scalar is greater than -1 and less than 0
         assertEquals(new Vector(1d/3,1d/3,1d/3), v.scale( 1d/3 ),
                 "ERROR: scaling with scalar greater than -1 and less than 0 is not working");
 
-        // TC04: scalar is less than -1
+        // EP04: scalar is less than -1
         assertEquals(new Vector(-3,-3,-3), v.scale(-3),
                 "ERROR: scaling with scalar less than -1 is not working");
 
 
         // =============== Boundary Values Tests ==================
 
-        // TC1: scalar is 1
+        // BV01: scalar is 1
         assertEquals(v, v.scale(1),
                 "ERROR: scaling with scalar equal 1 not working");
 
-        // TC2: scalar is -1
+        // BV02: scalar is -1
         assertEquals(new Vector(-1,-1,-1), v.scale(-1),
                 "ERROR: scaling with scalar equal -1 not working");
 
-        // TC3: scalar is 0
+        // BV03: scalar is 0
         assertThrows(IllegalArgumentException.class, () -> v.scale(0),
                 "ERROR: scaling vector with scalar equals 0 does NOT throw exception");
     }
@@ -75,11 +75,11 @@ class VectorTest {
         Vector v2 = new Vector(-2, -4, -6);
         Vector v3 = new Vector(0, 3, -2);
 
-        //TC1: Test to make sure that the dot product of two orthogonal vector works properly
+        // EP01: Test to make sure that the dot product of two orthogonal vector works properly
         assertEquals(v1.dotProduct(v3), 0,
                 "ERROR: dotProduct() for orthogonal vectors is not zero");
 
-        //TC2: Test to make sure that the dot product value of a vector is proper
+        // EP02: Test to make sure that the dot product value of a vector is proper
         assertEquals(v1.dotProduct(v2) + 28, 0, 0.000001,
                 "ERROR: dotProduct() wrong value");
     }
@@ -95,7 +95,7 @@ class VectorTest {
         Vector v2 = new Vector(0, 3, -2);
         Vector vr = v1.crossProduct(v2);
 
-        // TC01: Basic test (orthogonal vectors taken for simplicity)
+        // EP01: Basic test (orthogonal vectors taken for simplicity)
         // Check length of cross-product is proper
         assertEquals(v1.length() * v2.length(), vr.length(), 0.00001,
                 "EP01: length of cross product");
@@ -105,7 +105,7 @@ class VectorTest {
         assertEquals(vr.dotProduct(v2), 0, 0.000001,
                 "EP01: v2 not orthogonal");
 
-        // TC02: reverse direction
+        // EP02: reverse direction
         Vector vr2 = v2.crossProduct(v1);
         // Check the length of vr and vr2 equal
         assertEquals(vr2.length(), vr.length(), 0.000001,
@@ -119,7 +119,7 @@ class VectorTest {
                 "EP02: dot product is not zero");
 
         // =============== Boundary Values Tests ==================
-        // TC11: test zero vector from cross-product of co-lined vectors
+        // BV01: test zero vector from cross-product of co-lined vectors
         Vector v3 = new Vector(-2, -4, -6);
         assertThrows(IllegalArgumentException.class, () ->v1.crossProduct(v3),
                 "crossProduct() for parallel vectors does not throw an exception");
@@ -133,7 +133,7 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         Vector v1 = new Vector(1, 2, 3);
 
-        //TC1: Test to make sure that the squared length of a vector is proper
+        // EP01: Test to make sure that the squared length of a vector is proper
         assertEquals(v1.lengthSquared() - 14, 0, 0.000001,
                 "ERROR: lengthSquared() wrong value");
     }
@@ -145,7 +145,7 @@ class VectorTest {
     void length() {
         // ============ Equivalence Partitions Tests ==============
 
-        //TC1: Test to make sure that the length of a vector is proper
+        // EP01: Test to make sure that the length of a vector is proper
         assertEquals(new Vector(0, 3, 4).length() - 5, 0, 0.000001,
                 "ERROR: length() wrong value");
     }
@@ -158,7 +158,7 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
         Vector v = new Vector(0, 3, 4);
 
-        // TC1: make sure that vector.normalize works properly
+        // EP01: make sure that vector.normalize works properly
         assertEquals(v.normalize(), new Vector(0,0.6,0.8),
                 "ERROR: normalizing vector is not done correctly");
     }

@@ -19,7 +19,7 @@ class TriangleTest {
     @Test
     void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
-        // TC01: There is a simple single test here
+        // EP01: There is a simple single test here
         Point p = new Point(1,1,1);
         Triangle triangle = new Triangle(p, new Point(1,2,1), new Point(1,1,2));
         assertTrue(triangle.getNormal(p).equals(new Vector(1,0,0)) || triangle.getNormal(p).equals(new Vector(-1,0,0)),

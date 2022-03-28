@@ -8,26 +8,35 @@ import static primitives.Util.isZero;
  * Tube class represents a three-dimensional tube in 3D Cartesian coordinate
  * system
  */
-public class Tube implements Geometry{
+public class Tube implements Geometry {
     private final Ray axis;
     private final double radius;
 
     /**
      * Getter for the axis ray of the Tube
+     *
      * @return the axis ray
      */
     public Ray getDirection() {
-        return axis;
+        return this.axis;
     }
 
     /**
+     * Getter for the radius of the Tube
      *
-     * @return radius - of the Tube
+     * @return the radius
      */
     public double getRadius() {
-        return radius;
+        return this.radius;
     }
 
+
+    /**
+     * Constructor for a Tube for a ray axis and a radius
+     *
+     * @param ray    the ray axis
+     * @param radius the radius
+     */
     public Tube(Ray ray, double radius) {
         this.axis = ray;
         this.radius = radius;

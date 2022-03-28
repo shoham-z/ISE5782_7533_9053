@@ -6,8 +6,9 @@ public class Ray {
 
     /**
      * Constructor to create a Ray from a Point to direction of dir
+     *
      * @param start Point: start of the Ray
-     * @param dir Vector: direction of Ray
+     * @param dir   Vector: direction of Ray
      */
     public Ray(Point start, Vector dir) {
         this.start = start;
@@ -27,19 +28,21 @@ public class Ray {
     }
 
     /**
+     * Getter for the ray's direction Vector
      *
-     * @return the direction of the ray
+     * @return the direction vector
      */
     public Vector getDirection() {
-        return direction;
+        return this.direction;
     }
 
     /**
+     * Getter for the ray's starting Point
      *
-     * @return the start Point of the ray
+     * @return the start Point
      */
     public Point getStart() {
-        return start;
+        return this.start;
     }
 
     @Override

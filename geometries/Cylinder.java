@@ -11,30 +11,36 @@ public class Cylinder implements Geometry{
     private final double radius;
     private final double height;
 
+    /**
+     * Constructor for Cylinder using an axis ray, radius and height
+     * @param direction the axis ray
+     * @param radius the radius
+     * @param height the height
+     */
     public Cylinder(Ray direction, double radius, double height) {
         this.dir = direction;
         this.radius = radius;
         this.height = height;
     }
     /**
-     *
-     * @return Ray - direction of the Cylinder
+     * Getter for the axis ray of the Cylinder
+     * @return the axis ray
      */
     public Ray getDirection() {
         return dir;
     }
 
     /**
-     *
-     * @return radius - of the Cylinder
+     * Getter for the radius of the Cylinder
+     * @return the radius
      */
     public double getRadius() {
         return radius;
     }
 
     /**
-     *
-     * @return height - of the Cylinder
+     * Getter for the height of the Cylinder
+     * @return the height
      */
     public double getHeight() {
         return height;

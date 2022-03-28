@@ -5,11 +5,12 @@ import primitives.*;
 /**
  * Sphere class represents three-dimensional Sphere in 3D cartesian Coordinate system
  */
-public class Sphere implements Geometry{
+public class Sphere implements Geometry {
     private final Point center;
     private final double radius;
 
     /**
+     * Constructor for a sphere
      *
      * @param center center Point of the sphere
      * @param radius radius of the sphere
@@ -20,19 +21,21 @@ public class Sphere implements Geometry{
     }
 
     /**
+     * Getter for the center Point of the sphere
      *
-     * @return center Point of sphere
+     * @return center Point
      */
     public Point getCenter() {
-        return center;
+        return this.center;
     }
 
     /**
+     * Getter for the radius of the sphere
      *
-     * @return radius of sphere
+     * @return radius
      */
     public double getRadius() {
-        return radius;
+        return this.radius;
     }
 
     @Override

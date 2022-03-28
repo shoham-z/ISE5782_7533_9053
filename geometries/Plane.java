@@ -5,16 +5,16 @@ import primitives.*;
 /**
  * Plane class represents A two-dimensional and infinite Plane in 3D Cartesian coordinate
  * system
- *
  */
-public class Plane implements Geometry{
+public class Plane implements Geometry {
 
     private final Point point;
     private final Vector normal;
 
     /**
      * Constructor to build a Plane object from a point and an orthogonal vector
-     * @param point on the Plane
+     *
+     * @param point  on the Plane
      * @param vector normal to the plane
      */
     public Plane(Point point, Vector vector) {
@@ -24,6 +24,7 @@ public class Plane implements Geometry{
 
     /**
      * Constructor to build a Plane from 3 Points
+     *
      * @param p1 Point on the Plane
      * @param p2 Point on the Plane
      * @param p3 Point on the Plane
@@ -37,19 +38,21 @@ public class Plane implements Geometry{
     }
 
     /**
+     * Getter for the point on a plane
      *
-     * @return Point on the Plane
+     * @return the Point
      */
     public Point getPoint() {
-        return point;
-    } // add records
+        return this.point;
+    }
 
     /**
+     * Getter the orthogonal Vector to the Plane
      *
-     * @return the normal Vector to the Plane
+     * @return the orthogonal Vector
      */
     public Vector getNormal() {
-        return normal;
+        return this.normal;
     }
 
 

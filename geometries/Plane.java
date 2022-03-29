@@ -2,6 +2,8 @@ package geometries;
 
 import primitives.*;
 
+import java.util.List;
+
 /**
  * Plane class represents A two-dimensional and infinite Plane in 3D Cartesian coordinate
  * system
@@ -66,5 +68,10 @@ public class Plane implements Geometry {
                 "point=" + point +
                 ", normal=" + normal +
                 '}';
+    }
+
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+        return null;
     }
 }

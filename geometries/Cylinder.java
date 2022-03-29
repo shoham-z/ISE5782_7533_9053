@@ -2,6 +2,8 @@ package geometries;
 
 import primitives.*;
 
+import java.util.List;
+
 /**
  * Cylinder class represents a three-dimensional Cylinder in 3D Cartesian coordinate
  * system
@@ -47,5 +49,10 @@ public class Cylinder extends Tube implements Geometry {
         Point O = P0.add(dir.scale(t));
         Vector normal = point.subtract(O);
         return normal.normalize();
+    }
+
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+        return null;
     }
 }

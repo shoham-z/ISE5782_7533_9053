@@ -5,7 +5,7 @@ import primitives.*;
 /**
  * Interface for all the geometries needed
  */
-public interface Geometry {
+public interface Geometry extends Intersectable {
 
     /**
      * finds the normal of the geometry at the given point

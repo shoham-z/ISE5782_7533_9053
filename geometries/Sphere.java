@@ -2,6 +2,8 @@ package geometries;
 
 import primitives.*;
 
+import java.util.List;
+
 /**
  * Sphere class represents three-dimensional Sphere in 3D cartesian Coordinate system
  */
@@ -46,5 +48,10 @@ public class Sphere implements Geometry {
     @Override
     public String toString() {
         return "Sphere{" + center + ", " + radius + '}';
+    }
+
+    @Override
+    public List<Point> findIntsersections(Ray ray) {
+        return null;
     }
 }

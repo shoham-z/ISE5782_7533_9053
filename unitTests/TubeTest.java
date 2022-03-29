@@ -28,4 +28,11 @@ class TubeTest {
         assertEquals(t.getNormal(new Point(0,0,3)), new Vector(0,0,1),
                 "normal for tube is not working properly when point is parallel to the starting point");
     }
+
+    /**
+     * Test method for {@link geometries.Tube#findIntsersections(primitives.Ray)}
+     */
+    @Test
+    void findIntsersections() {
+    }
 }

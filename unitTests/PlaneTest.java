@@ -41,4 +41,12 @@ class PlaneTest {
         assertTrue(plane.getNormal(p).equals(new Vector(1,0,0)) || plane.getNormal(p).equals(new Vector(-1,0,0)),
                 "ERROR: getnormal method in Plane does not work properly");
     }
+
+
+    /**
+     * Test method for {@link geometries.Plane#findIntsersections(primitives.Ray)}
+     */
+    @Test
+    void findIntsersections() {
+    }
 }

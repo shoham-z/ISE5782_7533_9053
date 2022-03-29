@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TriangleTest {
 
     /**
-     * Test method for {@link geometries.Plane#getNormal(primitives.Point)}
+     * Test method for {@link geometries.Triangle#getNormal(primitives.Point)}
      */
     @Test
     void testGetNormal() {
@@ -24,5 +24,12 @@ class TriangleTest {
         Triangle triangle = new Triangle(p, new Point(1,2,1), new Point(1,1,2));
         assertTrue(triangle.getNormal(p).equals(new Vector(1,0,0)) || triangle.getNormal(p).equals(new Vector(-1,0,0)),
                 "ERROR: getnormal method in Triangle does not work properly");
+    }
+
+    /**
+     * Test method for {@link geometries.Triangle#findIntsersections(primitives.Ray)}
+     */
+    @Test
+    void findIntsersections() {
     }
 }

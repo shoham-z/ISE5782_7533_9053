@@ -24,4 +24,12 @@ class SphereTest {
         assertEquals(sphere.getNormal(new Point(5,0,0)), new Vector(1,0,0),
                 "ERROR: normal for sphere is not working");
     }
+
+
+    /**
+     * Test method for {@link geometries.Sphere#findIntsersections(primitives.Ray)}
+     */
+    @Test
+    void findIntsersections() {
+    }
 }

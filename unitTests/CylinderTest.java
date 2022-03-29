@@ -38,4 +38,12 @@ class CylinderTest {
         assertEquals(t.getNormal(new Point(3,0,0)), new Vector(1,0,0),
                 "normal for Cylinder is not working properly when point is at the center of top base");
     }
+
+
+    /**
+     * Test method for {@link geometries.Cylinder#findIntsersections(primitives.Ray)}
+     */
+    @Test
+    void findIntsersections() {
+    }
 }

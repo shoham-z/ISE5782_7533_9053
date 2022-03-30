@@ -4,6 +4,8 @@ import geometries.*;
 import org.junit.jupiter.api.Test;
 import primitives.*;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -44,9 +46,91 @@ class PlaneTest {
 
 
     /**
-     * Test method for {@link geometries.Plane#findIntsersections(primitives.Ray)}
+     * Test method for {@link geometries.Plane#findIntersections(primitives.Ray)}
      */
     @Test
     void findIntsersections() {
+        Plane plane = new Plane(new Point(1,1,1), new Vector(1,1,1));
+
+        // ============ Equivalence Partitions Tests ==============
+        // ****group : ray is neither orthogonal nor parallel to the plane
+        // EP01: Ray intersects the plane (1 point)
+        List<Point> result = plane.findIntersections(new Ray(new Point(0.5,0.5,0.5), new Vector(1,1,0)));
+        assertEquals(1, result.size(), "EP01: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(new Point(1.25,1.25, 0.5)), result, "EP01: Ray crosses sphere");
+        result.clear();
+
+        // EP02: Ray does not intersect with the plane (0 points)
+        result = plane.findIntersections(new Ray(new Point(1.5,1.5,1.5), new Vector(1,1,0)));
+        assertEquals(0, result.size(), "EP02: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(), result, "EP02: Ray crosses sphere");
+        result.clear();
+
+
+        // ============= Boundary Values Tests =================
+
+        // ****group: Ray is parallel to the plane
+        // BV01: Ray included in the plane (0 points) [well, actually infinity, but we can have infinite amount of data]
+        result = plane.findIntersections(new Ray(new Point(1,0,2), new Vector(0,-1,1)));
+        assertEquals(0, result.size(), "BV01: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(), result, "BV01: Ray crosses sphere");
+        result.clear();
+
+        // BV02: Ray not included in the plane (0 points)
+        result = plane.findIntersections(new Ray(new Point(1,1,1.5), new Vector(0,-1,1)));
+        assertEquals(0, result.size(), "BV02: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(), result, "BV02: Ray crosses sphere");
+        result.clear();
+
+
+        // ****group: Ray is orthogonal to the plane
+        // BV03: Ray starts before the plane (1 point)
+        result = plane.findIntersections(new Ray(new Point(0.5,0.5,0.5), new Vector(1,1,1)));
+        assertEquals(1, result.size(), "BV03: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(new Point(1,1,1)), result, "BV03: Ray crosses sphere");
+        result.clear();
+
+        // BV04: Ray starts at the plane (0 points)
+        result = plane.findIntersections(new Ray(new Point(1,0,2), new Vector(1,1,1)));
+        assertEquals(0, result.size(), "BV04: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(), result, "BV04: Ray crosses sphere");
+        result.clear();
+
+        // BV05: Ray starts after the plane (0 points)
+        result = plane.findIntersections(new Ray(new Point(1.5,1.5,1.5), new Vector(1,1,1)));
+        assertEquals(0, result.size(), "BV05: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(), result, "BV05: Ray crosses sphere");
+        result.clear();
+
+        //****group: special cases
+        // BV06: Ray starts at the plane but is neither orthogonal nor parallel to the plane (0 points)
+        result = plane.findIntersections(new Ray(new Point(1,0,2), new Vector(1,1.5,1)));
+        assertEquals(0, result.size(), "BV06: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(), result, "BV06: Ray crosses sphere");
+        result.clear();
+
+        // BV07: Ray starts at the point defining the plane but is neither orthogonal nor parallel to the plane
+        result = plane.findIntersections(new Ray(new Point(1,1,1), new Vector(1,1.5,1)));
+        assertEquals(0, result.size(), "BV07: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(), result, "BV07: Ray crosses sphere");
+        result.clear();
     }
 }

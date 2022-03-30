@@ -77,7 +77,7 @@ public class PolygonTest {
 
 
 	/**
-	 * Test method for {@link geometries.Polygon#findIntsersections(primitives.Ray)}
+	 * Test method for {@link geometries.Polygon#findIntersections(primitives.Ray)}
 	 */
 	@Test
 	void findIntsersections() {

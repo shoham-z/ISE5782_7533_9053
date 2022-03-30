@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Test;
 import primitives.*;
 
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -27,9 +29,68 @@ class TriangleTest {
     }
 
     /**
-     * Test method for {@link geometries.Triangle#findIntsersections(primitives.Ray)}
+     * Test method for {@link geometries.Triangle#findIntersections(primitives.Ray)}
      */
     @Test
     void findIntsersections() {
+        Triangle triangle = new Triangle(new Point(1,1,0),
+                                         new Point(1,0,0),
+                                         new Point(0,1,0));
+
+        // ============ Equivalence Partitions Tests ==============
+        // EP01: Ray intersects with Triangle (1 point)
+        List <Point> result = triangle.findIntersections(new Ray(new Point(0.75, 0.75, 0.75),
+                new Vector(0, 0, -1)));
+        assertEquals(1, result.size(), "EP01: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(new Point(0.75,0.75,0)), result, "EP01: Ray crosses sphere");
+        result.clear();
+
+        // EP02: Ray intersects with the plane against the edge of triangle (0 points)
+        result = triangle.findIntersections(new Ray(new Point(1.5, 1.5, 0.75),
+                new Vector(0, 0, -1)));
+        assertEquals(0, result.size(), "EP02: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(), result, "EP02: Ray crosses sphere");
+        result.clear();
+
+        // EP03: Ray intersects with the plane against the vertex of triangle (0 points)
+        result = triangle.findIntersections(new Ray(new Point(1.25, -1, 0.75),
+                new Vector(0, 0, -1)));
+        assertEquals(0, result.size(), "EP03: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(), result, "EP03: Ray crosses sphere");
+        result.clear();
+
+        // =============== Boundary Values Tests ==================
+        // BV01: Ray intersects with edge (0 points)
+        result = triangle.findIntersections(new Ray(new Point(1, 0.75, 0.75),
+                new Vector(0, 0, -1)));
+        assertEquals(1, result.size(), "BV01: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(new Point(1,0.75,0)), result, "BV01: Ray crosses sphere");
+        result.clear();
+
+        // BV02: Ray intersects with vertex (0 points)
+        result = triangle.findIntersections(new Ray(new Point(1, 1, 0.75),
+                new Vector(0, 0, -1)));
+        assertEquals(0, result.size(), "BV02: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(), result, "BV02: Ray crosses sphere");
+        result.clear();
+
+        // BV03: Ray intersects with edge's continuation (0 points)
+        result = triangle.findIntersections(new Ray(new Point(1, 1.5, 0.75),
+                new Vector(0, 0, -1)));
+        assertEquals(0, result.size(), "BV03: Wrong number of points");
+        if (result.get(0).getX() > result.get(1).getX())
+            result = List.of(result.get(1), result.get(0));
+        assertEquals(List.of(), result, "BV03: Ray crosses sphere");
+        result.clear();
     }
 }

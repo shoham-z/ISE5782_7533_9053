@@ -23,6 +23,10 @@ public class Point {
         this.xyz = new Double3(xyz.d1, xyz.d2, xyz.d3);//maybe assign this.xyz = xyz
     }
 
+    public double getX() {
+        return xyz.d1;
+    }
+
     /**
      * Subtract two Point object into a new Point where each couple of
      * numbers is subtracted

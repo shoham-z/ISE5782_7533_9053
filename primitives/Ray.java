@@ -45,6 +45,21 @@ public class Ray {
         return this.start;
     }
 
+    /**
+     * Calculates the starting point plus t steps in the direction of the ray
+     * @param t distance from starting point
+     * @return start + direction * t
+     */
+    public Point getPoint(double t){
+        if (t < 0){
+            throw new IllegalArgumentException();
+        }
+        if (t > 0) {
+            return this.start.add(this.direction.scale(t));
+        }
+        return this.start;
+    }
+
     @Override
     public String toString() {
         return "Ray{" +

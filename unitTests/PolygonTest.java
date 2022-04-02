@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import geometries.*;
 import primitives.*;
 
+import java.util.List;
+
 /**
  * Testing Polygons
  * 
@@ -72,7 +74,7 @@ public class PolygonTest {
 		// EP01: There is a simple single test here
 		Polygon pl = new Polygon(new Point(0, 0, 1), new Point(1, 0, 0), new Point(0, 1, 0), new Point(-1, 1, 1));
 		double sqrt3 = Math.sqrt(1d / 3);
-		assertEquals(new Vector(sqrt3, sqrt3, sqrt3), pl.getNormal(new Point(0, 0, 1)), "Bad normal to triangle");
+		assertEquals(new Vector(sqrt3, sqrt3, sqrt3), pl.getNormal(new Point(0, 0, 1)), "Bad normal to polygon");
 	}
 
 
@@ -81,5 +83,65 @@ public class PolygonTest {
 	 */
 	@Test
 	void findIntsersections() {
+		Polygon polygon = new Polygon(new Point(2,2,0),
+									  new Point(-2,2,0),
+									  new Point(-2,-2,0),
+									  new Point(2,-2,0));
+
+		// ================== Equivalence Partition Tests ======================
+		// EP01: Ray intersects with polygon (1 point)
+		List<Point> result = polygon.findIntersections(new Ray(new Point(0.75, 0.75, 0.75),
+				new Vector(0, 0, -1)));
+		assertEquals(1, result.size(), "EP01: Wrong number of points");
+		if (result.get(0).getX() > result.get(1).getX())
+			result = List.of(result.get(1), result.get(0));
+		assertEquals(List.of(new Point(0.75,0.75,0)), result, "EP01: Ray crosses polygon");
+		result.clear();
+
+		// EP02: Ray intersects with the plane against the edge of polygon (0 points)
+		result = polygon.findIntersections(new Ray(new Point(3, 1.5, 0.75),
+				new Vector(0, 0, -1)));
+		assertEquals(0, result.size(), "EP02: Wrong number of points");
+		if (result.get(0).getX() > result.get(1).getX())
+			result = List.of(result.get(1), result.get(0));
+		assertEquals(List.of(), result, "EP02: Ray crosses polygon");
+		result.clear();
+
+		// EP03: Ray intersects with the plane against the vertex of polygon (0 points)
+		result = polygon.findIntersections(new Ray(new Point(3, 3, 0.75),
+				new Vector(0, 0, -1)));
+		assertEquals(0, result.size(), "EP03: Wrong number of points");
+		if (result.get(0).getX() > result.get(1).getX())
+			result = List.of(result.get(1), result.get(0));
+		assertEquals(List.of(), result, "EP03: Ray crosses polygon");
+		result.clear();
+
+		// =============== Boundary Values Tests ==================
+		// BV01: Ray intersects with edge (0 points)
+		result = polygon.findIntersections(new Ray(new Point(2, 1, 0.75),
+				new Vector(0, 0, -1)));
+		assertEquals(1, result.size(), "BV01: Wrong number of points");
+		if (result.get(0).getX() > result.get(1).getX())
+			result = List.of(result.get(1), result.get(0));
+		assertEquals(List.of(new Point(1,0.75,0)), result, "BV01: Ray crosses polygon");
+		result.clear();
+
+		// BV02: Ray intersects with vertex (0 points)
+		result = polygon.findIntersections(new Ray(new Point(2, 2, 0.75),
+				new Vector(0, 0, -1)));
+		assertEquals(0, result.size(), "BV02: Wrong number of points");
+		if (result.get(0).getX() > result.get(1).getX())
+			result = List.of(result.get(1), result.get(0));
+		assertEquals(List.of(), result, "BV02: Ray crosses polygon");
+		result.clear();
+
+		// BV03: Ray intersects with edge's continuation (0 points)
+		result = polygon.findIntersections(new Ray(new Point(2, 3, 0.75),
+				new Vector(0, 0, -1)));
+		assertEquals(0, result.size(), "BV03: Wrong number of points");
+		if (result.get(0).getX() > result.get(1).getX())
+			result = List.of(result.get(1), result.get(0));
+		assertEquals(List.of(), result, "BV03: Ray crosses polygon");
+		result.clear();
 	}
 }

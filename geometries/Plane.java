@@ -2,7 +2,10 @@ package geometries;
 
 import primitives.*;
 
+import java.util.LinkedList;
 import java.util.List;
+
+import static primitives.Util.*;
 
 /**
  * Plane class represents A two-dimensional and infinite Plane in 3D Cartesian coordinate
@@ -72,6 +75,17 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        return null;
+        double b = this.normal.dotProduct(ray.getDirection());
+        if (isZero(b))
+            return null;
+        if (this.point.equals(ray.getStart()))
+            return null;
+        double a = this.normal.dotProduct(this.point.subtract(ray.getStart()));
+        double t = alignZero(a/b);
+        if (t <= 0)
+            return null;
+        List<Point> intersection = new LinkedList<Point>();
+        intersection.add(ray.getPoint(t));
+        return intersection;
     }
 }

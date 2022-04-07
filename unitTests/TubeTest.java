@@ -34,5 +34,8 @@ class TubeTest {
      */
     @Test
     void findIntsersections() {
+        Tube tube = new Tube(new Ray(new Point(1,1,1), new Vector(1,0,0)),1);
+        // EP01
+        assertNull(tube);
     }
 }

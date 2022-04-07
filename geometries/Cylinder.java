@@ -8,7 +8,7 @@ import java.util.List;
  * Cylinder class represents a three-dimensional Cylinder in 3D Cartesian coordinate
  * system
  */
-public class Cylinder extends Tube implements Geometry {
+public class Cylinder extends Tube {
     private final double height;
 
     /**
@@ -35,19 +35,19 @@ public class Cylinder extends Tube implements Geometry {
     @Override
     public Vector getNormal(Point point) {
         Vector dir = this.getDirection().getDirection();
-        Point P0 = this.getDirection().getStart();
-        if (point.equals(P0)) {
+        Point p0 = this.getDirection().getStart();
+        if (point.equals(p0)) {
             return dir.scale(-1);
         }
-        double t = dir.dotProduct(point.subtract(P0));
+        double t = dir.dotProduct(point.subtract(p0));
         if (t == 0) {
             return dir.scale(-1);
         }
         if (t == this.height) {
             return dir;
         }
-        Point O = P0.add(dir.scale(t));
-        Vector normal = point.subtract(O);
+        Point o = p0.add(dir.scale(t));
+        Vector normal = point.subtract(o);
         return normal.normalize();
     }
 

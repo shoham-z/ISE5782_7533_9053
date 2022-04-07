@@ -23,6 +23,10 @@ class PointTest {
         // EP01: makes sure point subtraction works properly
         assertEquals(new Vector(1, 1, 1), new Point(2, 3, 4).subtract(p1),
                 "ERROR: Point - Point does not work correctly");
+
+        // BV01: the subtract equals zero
+        assertThrows(IllegalArgumentException.class,()-> p1.subtract(p1),
+                "ERROR: Point - Point does not work correctly");
     }
 
     /**
@@ -72,6 +76,6 @@ class PointTest {
         // ============ Boundary Value Analysis ================
 
         // BV01: makes sure that point distance works when distance is 0
-        assertTrue(isZero(p.distance(p)),
+        assertEquals(0,p.distance(p),
                 "ERROR: Point distance for distance equals 0 doesn't work");    }
 }

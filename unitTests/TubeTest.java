@@ -62,9 +62,30 @@ class TubeTest {
         //EP06: the  ray starts outside the tube and transverses it twice
         assertNull(tube.findIntersections(new Ray(new Point(2,-1,1.5),new Vector(0,1,0))),
                 "the  ray starts outside the tube and transverses it twice");
-        //EP07: the ray starts outside the tube and does not transvers it
+        //EP07: the ray starts outside the tube and does not transverse it
         assertNull(tube.findIntersections(new Ray(new Point(2,-1,1.5),new Vector(0,1,0))),
                 "the ray starts outside the tube and does not transverse it");
+        //EP08: the ray starts outside the tube and does not transverse it but the opposite direction does
+        assertNull(tube.findIntersections(new Ray(new Point(1,1.5,3),new Vector(0,0,1))),
+                "the ray starts outside the tube and does not transverse it but the opposite direction does");
+
+        // ============ Boundary Value Tests ====================
+        //BV02: the ray starts on the  tube towards outside
+        assertNull(tube.findIntersections(new Ray(new Point(1,0,1),new Vector(0,-1,0))),
+                "the ray starts on the tube towards outside");
+        //BV03: the ray starts on the  tube towards inside
+        assertNull(tube.findIntersections(new Ray(new Point(1,0,1),new Vector(0,1,0))),
+                "the ray starts on the tube towards inside");
+        //BV04: the ray is tangent to the tube
+        assertNull(tube.findIntersections(new Ray(new Point(1,0,-1),new Vector(0,0,1))),
+                "the ray is tangent to the tube");
+        //BV05: the opposite way of the ray is tangent to the tube
+        assertNull(tube.findIntersections(new Ray(new Point(1,0,-1),new Vector(0,0,-1))),
+                "the opposite way of the ray is tangent to the tube");
+        //BV06: the ray is vertical twice to the tube
+        assertNull(tube.findIntersections(new Ray(new Point(1,-1,1),new Vector(0,0,1))),
+                "the ray is vertical twice to the tube");
+        //BV07: the ray starts at the center of the tube
 
     }
 }

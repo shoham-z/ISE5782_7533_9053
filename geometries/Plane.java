@@ -43,21 +43,17 @@ public class Plane implements Geometry {
     }
 
     /**
-     * Getter for the point on a plane
-     *
-     * @return the Point
+     * @return Point on the Plane
      */
     public Point getPoint() {
-        return this.point;
-    }
+        return point;
+    } // add records
 
     /**
-     * Getter the orthogonal Vector to the Plane
-     *
-     * @return the orthogonal Vector
+     * @return the normal Vector to the Plane
      */
     public Vector getNormal() {
-        return this.normal;
+        return normal;
     }
 
 
@@ -75,17 +71,18 @@ public class Plane implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        double b = this.normal.dotProduct(ray.getDirection());
-        if (isZero(b))
+        double denominator = this.normal.dotProduct(ray.getDirection());
+        if (isZero(denominator))
             return null;
-        if (this.point.equals(ray.getStart()))
+
+        Vector u;
+        try {
+            u = this.point.subtract(ray.getStart());
+        } catch (IllegalArgumentException ignore) {
             return null;
-        double a = this.normal.dotProduct(this.point.subtract(ray.getStart()));
-        double t = alignZero(a/b);
-        if (t <= 0)
-            return null;
-        List<Point> intersection = new LinkedList<Point>();
-        intersection.add(ray.getPoint(t));
-        return intersection;
+        }
+
+        double t = alignZero(this.normal.dotProduct(u) / denominator);
+        return t <= 0 ? null : List.of(ray.getPoint(t));
     }
 }

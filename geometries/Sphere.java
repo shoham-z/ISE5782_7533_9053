@@ -1,9 +1,9 @@
 package geometries;
 
 import primitives.*;
+
 import static primitives.Util.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -12,6 +12,7 @@ import java.util.List;
 public class Sphere implements Geometry {
     private final Point center;
     private final double radius;
+    private final double radius2;
 
     /**
      * Constructor for a sphere
@@ -22,6 +23,7 @@ public class Sphere implements Geometry {
     public Sphere(Point center, double radius) {
         this.center = center;
         this.radius = radius;
+        this.radius2 = radius * radius;
     }
 
     /**
@@ -54,30 +56,23 @@ public class Sphere implements Geometry {
 
     @Override
     public List<Point> findIntersections(Ray ray) {
-        if (this.center.equals(ray.getStart())){
-            List <Point> intersection = new LinkedList<Point>();
-            intersection.add(ray.getPoint(this.radius));
-            return intersection;
+        Vector u;
+        try {
+            u = this.center.subtract(ray.getStart());
+        } catch (IllegalArgumentException ignore) {
+            return List.of(ray.getPoint(this.radius));
         }
-        Vector u = this.center.subtract(ray.getStart());
+
         double tm = ray.getDirection().dotProduct(u);
-        if(tm < 0)
-            return null;
-        double d = Math.sqrt(alignZero(u.lengthSquared() - tm * tm));
-        if (d >= this.radius)
-            return null;
-        List <Point> intersection = new LinkedList<Point>();
-        double th = Math.sqrt(alignZero(this.radius * this.radius - d * d));
-        double t1 = alignZero(tm + th), t2 = alignZero(tm - th);
-        if (t2 < t1 && t2 > 0){
-            t1 = t1 + t2;
-            t2 = t1 - t2;
-            t1 = t1 - t2;
-        }
-        if (t1 > 0)
-            intersection.add(ray.getPoint(t1));
-        if (t2 > 0)
-            intersection.add(ray.getPoint(t2));
-        return intersection;
+        double d2 = u.lengthSquared() - tm * tm;
+        double th2 = alignZero(this.radius2 - d2);
+        if (th2 <= 0) return null;
+
+        double th = Math.sqrt(th2);
+        double t2 = alignZero(tm + th);
+        if (t2 <= 0) return null;
+
+        double t1 = alignZero(tm - th);
+        return t1 <= 0 ? List.of(ray.getPoint(t2)) : List.of(ray.getPoint(t1), ray.getPoint(t2));
     }
 }

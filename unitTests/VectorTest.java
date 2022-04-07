@@ -1,5 +1,3 @@
-package unitTests;
-
 import primitives.Vector;
 
 import org.junit.jupiter.api.Test;
@@ -27,7 +25,7 @@ class VectorTest {
     /**
      * Test method for {@link primitives.Vector#scale(double)}
      */
-    @org.junit.jupiter.api.Test
+    @Test
     void scale() {
 
         Vector v = new Vector(1,1,1);

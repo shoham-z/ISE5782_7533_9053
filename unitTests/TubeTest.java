@@ -1,4 +1,4 @@
-package unitTests;
+
 
 import geometries.*;
 import primitives.*;
@@ -35,7 +35,36 @@ class TubeTest {
     @Test
     void findIntsersections() {
         Tube tube = new Tube(new Ray(new Point(1,1,1), new Vector(1,0,0)),1);
-        // EP01
-        assertNull(tube);
+        // **** Group: ray is parallel to the tube
+        // ============ Equivalence Partitions Tests ==============
+        //EP01: the ray is outside the tube all the time( 0 intersections)
+        assertNull(tube.findIntersections(new Ray(new Point(1,0,0),new Vector(1,0,0))),
+        "the ray is outside the tube all the time( 0 intersections)");
+        //EP02: the ray is congruent to the edge of the tube
+        assertNull(tube.findIntersections(new Ray(new Point(1,1,0),new Vector(1,0,0))),
+                "the ray is congruent to the tube");
+        //EP03: the ray is inside the tube
+        assertNull(tube.findIntersections(new Ray(new Point(1,1,1.5),new Vector(1,0,0))),
+                "the ray is inside the tube");
+        //EP04: the ray is congruent to the center of the tube
+        assertNull(tube.findIntersections(new Ray(new Point(2,1,1),new Vector(1,0,0))),
+                "the ray is congruent to the center of the tube");
+        // ============ Boundary Value Tests ====================
+        //BV01: the ray is cngruent to the center of the tube and starts at the same point
+        assertNull(tube.findIntersections(new Ray(new Point(1,1,1),new Vector(1,0,0))),
+                "the ray is congruent to the center of the tube and starts at the same point");
+
+        //**** Group:the ray is vertical to the tube
+        // ============ Equivalence Partitions Tests ==============
+        //EP05: the ray starts inside the tube
+        assertNull(tube.findIntersections(new Ray(new Point(2,1.5,1),new Vector(0,1,0))),
+                "the ray starts inside the tube");
+        //EP06: the  ray starts outside the tube and transverses it twice
+        assertNull(tube.findIntersections(new Ray(new Point(2,-1,1.5),new Vector(0,1,0))),
+                "the  ray starts outside the tube and transverses it twice");
+        //EP07: the ray starts outside the tube and does not transvers it
+        assertNull(tube.findIntersections(new Ray(new Point(2,-1,1.5),new Vector(0,1,0))),
+                "the ray starts outside the tube and does not transverse it");
+
     }
 }

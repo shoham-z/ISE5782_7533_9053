@@ -11,9 +11,9 @@ import java.util.List;
 public interface Intersectable {
 
     /**
-     * Finds intersections between the ray (shot from camera through view plane)
+     * Finds intersections between the ray
      * and the geometry
-     * @param ray The ray shot through VP
+     * @param ray The ray to intersect with the geometry
      * @return List of intersection points
      */
     List<Point> findIntersections(Ray ray);

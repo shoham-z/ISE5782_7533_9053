@@ -11,8 +11,8 @@ public class Camera {
     private Vector vTo;
     private Vector vUp;
     private Vector vRight;
-    private double vpHeight;
-    private double vpWidth;
+    private int vpHeight;
+    private int vpWidth;
     private double distanceFromVp;
 
     /**
@@ -51,7 +51,7 @@ public class Camera {
      * Getter for the VP height
      * @return the height
      */
-    public double getVpHeight() {
+    public int getVpHeight() {
         return this.vpHeight;
     }
 
@@ -59,7 +59,7 @@ public class Camera {
      * Getter for the VP width
      * @return the width
      */
-    public double getVpWidth() {
+    public int getVpWidth() {
         return this.vpWidth;
     }
 
@@ -93,7 +93,7 @@ public class Camera {
      * @param height the height
      * @return This object
      */
-    public Camera setVPSize(double width, double height){
+    public Camera setVPSize(int height, int width){
         this.vpHeight = height;
         this.vpWidth = width;
         return this;
@@ -118,7 +118,12 @@ public class Camera {
      * @return the ray
      */
     public Ray constructRay(int nX, int nY, int j, int i){
-        return null;
+        Point pIJ = this.position.add(this.vTo.scale(this.distanceFromVp));
+        double xJ = (j - ((nX - 1) / 2d)) * ((double)this.vpWidth / nX);
+        double yI = (((nY - 1) / 2d) - i) * ((double)this.vpWidth / nY);
+        if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
+        if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
+        return new Ray(this.position, pIJ.subtract(this.position));
     }
 
 }

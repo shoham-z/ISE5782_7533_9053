@@ -17,6 +17,12 @@ public class Geometries implements Intersectable{
         this.geometries = List.of(geometries);
     }
 
+    /**
+     * Constructor for empty list of Intersectable objects
+     */
+    public Geometries() {
+        this.geometries = new ArrayList<>();
+    }
 
     /**
      * Adds the geometries to the geometries list

@@ -43,7 +43,7 @@ class TriangleTest {
                 new Vector(0, 0, -1)));
         assertEquals(1, result.size(), "EP01: Wrong number of points");
         assertEquals(List.of(new Point(0.75,0.75,0)), result, "EP01: Ray crosses triangle");
-        result.clear();
+        result = null;
 
         // EP02: Ray intersects with the plane against the edge of triangle (0 points)
         result = triangle.findIntersections(new Ray(new Point(1.5, 1.5, 0.75),

@@ -20,11 +20,11 @@ class RayTest {
         Point p = new Point( 1,1,1);
         // EP01: Makes sure we can't create a ray with zero vector from 3 doubles constructor
         assertThrows(IllegalArgumentException.class, () -> new Ray(p, new Vector(0, 0, 0)),
-                "ERROR: zero vector does not throw an exception");
+                "EP01: zero vector does not throw an exception");
 
         // EP02: Makes sure we can't create a ray with zero vector from double3 constructor
         assertThrows(IllegalArgumentException.class, () -> new Ray(p, new Vector(new Double3(0, 0, 0))),
-                "ERROR: zero vector does not throw an exception");
+                "EP02: zero vector does not throw an exception");
     }
 
     /**

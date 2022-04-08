@@ -19,7 +19,7 @@ class VectorTest {
 
         // EP01: Makes sure we can't create a zero vector from 3 doubles constructor
         assertThrows(IllegalArgumentException.class, () -> new Vector(0, 0, 0),
-                "ERROR: zero vector does not throw an exception");
+                "EP01: zero vector does not throw an exception");
     }
 
     /**
@@ -33,34 +33,34 @@ class VectorTest {
 
         // EP01: scalar is greater than 1
         assertEquals(new Vector(3,3,3), v.scale(3),
-                "ERROR: scaling with scalar greater than 1 is not working");
+                "EP01: scaling with scalar greater than 1 is not working");
 
         // EP02: scalar is greater than 0 and less than 1
         assertEquals(new Vector(1d/3,1d/3,1d/3), v.scale(1d/3),
-                "ERROR: scaling with scalar greater than 0 and less than 1 is not working");
+                "EP02: scaling with scalar greater than 0 and less than 1 is not working");
 
         // EP03: scalar is greater than -1 and less than 0
         assertEquals(new Vector(1d/3,1d/3,1d/3), v.scale( 1d/3 ),
-                "ERROR: scaling with scalar greater than -1 and less than 0 is not working");
+                "EP03: scaling with scalar greater than -1 and less than 0 is not working");
 
         // EP04: scalar is less than -1
         assertEquals(new Vector(-3,-3,-3), v.scale(-3),
-                "ERROR: scaling with scalar less than -1 is not working");
+                "EP04: scaling with scalar less than -1 is not working");
 
 
         // =============== Boundary Values Tests ==================
 
         // BV01: scalar is 1
         assertEquals(v, v.scale(1),
-                "ERROR: scaling with scalar equal 1 not working");
+                "BV01: scaling with scalar equal 1 not working");
 
         // BV02: scalar is -1
         assertEquals(new Vector(-1,-1,-1), v.scale(-1),
-                "ERROR: scaling with scalar equal -1 not working");
+                "BV02: scaling with scalar equal -1 not working");
 
         // BV03: scalar is 0
         assertThrows(IllegalArgumentException.class, () -> v.scale(0),
-                "ERROR: scaling vector with scalar equals 0 does NOT throw exception");
+                "BV03: scaling vector with scalar equals 0 does NOT throw exception");
     }
 
     /**
@@ -73,13 +73,34 @@ class VectorTest {
         Vector v2 = new Vector(-2, -4, -6);
         Vector v3 = new Vector(0, 3, -2);
 
-        // EP01: Test to make sure that the dot product of two orthogonal vector works properly
-        assertEquals(v1.dotProduct(v3), 0,
-                "ERROR: dotProduct() for orthogonal vectors is not zero");
+        // EP01: dot product larger than 1
+        assertEquals(28, v1.dotProduct(v2.scale(-1)), 0.000001,
+                "EP01: dotProduct wrong value");
 
-        // EP02: Test to make sure that the dot product value of a vector is proper
-        assertEquals(v1.dotProduct(v2) + 28, 0, 0.000001,
-                "ERROR: dotProduct() wrong value");
+        // EP02: dot product between 1 and 0
+        assertEquals(0.03741, v1.scale(-0.01).dotProduct(v2.normalize()), 0.0001,
+                "EP02: dotProduct wrong value");
+        // EP03: dot product between -1 and 0
+
+        assertEquals(-0.03741, v1.scale(0.01).dotProduct(v2.normalize()), 0.00001,
+                "EP03: dotProduct wrong value");
+
+        // EP04: dot product is smaller than -1
+        assertEquals( -28, v1.dotProduct(v2), 0.000001,
+                "EP04: dotProduct wrong value");
+
+
+        // BV01: dot product is 0
+        assertEquals(v1.dotProduct(v3), 0,
+                "BV01: dotProduct for orthogonal vectors is not zero");
+
+        // BV02: dot product is 1
+        assertEquals(1, v1.normalize().dotProduct(v2.normalize().scale(-1)), 0.000001,
+                "BV02: dotProduct wrong value");
+
+        // BV03: dot product is -1
+        assertEquals(-1, v1.normalize().dotProduct(v2.normalize()), 0.000001,
+                "BV03: dotProduct wrong value");
     }
 
     /**
@@ -132,8 +153,13 @@ class VectorTest {
         Vector v1 = new Vector(1, 2, 3);
 
         // EP01: Test to make sure that the squared length of a vector is proper
-        assertEquals(v1.lengthSquared() - 14, 0, 0.000001,
-                "ERROR: lengthSquared() wrong value");
+        assertEquals(14, v1.lengthSquared(), 0.000001,
+                "EP01: lengthSquared() wrong value");
+
+        // =============== Boundary Values Tests ==================
+        // BV01: length squared is almost 0
+        assertEquals(0.000102, new Vector(0.01,0.001,0.001).lengthSquared(), 0.000001,
+                "BV01: lengthSquared() wrong value");
     }
 
     /**
@@ -144,8 +170,9 @@ class VectorTest {
         // ============ Equivalence Partitions Tests ==============
 
         // EP01: Test to make sure that the length of a vector is proper
-        assertEquals(new Vector(0, 3, 4).length() - 5, 0, 0.000001,
-                "ERROR: length() wrong value");
+        assertEquals(5, new Vector(0, 3, 4).length(), 0.000001,
+                "EP01: length() wrong value");
+
     }
 
     /**
@@ -154,10 +181,16 @@ class VectorTest {
     @Test
     void normalize() {
         // ============ Equivalence Partitions Tests ==============
-        Vector v = new Vector(0, 3, 4);
+        Vector v1 = new Vector(0, 3, 4);
 
         // EP01: make sure that vector.normalize works properly
-        assertEquals(v.normalize(), new Vector(0,0.6,0.8),
-                "ERROR: normalizing vector is not done correctly");
+        assertEquals(v1.normalize(), new Vector(0,0.6,0.8),
+                "EP01: normalizing vector is not done correctly");
+
+        // =============== Boundary Values Tests ==================
+        // BV01: normalizing unit vector
+        Vector v2 = v1.normalize();
+        assertEquals(v2, v2.normalize(),
+                "BV01: normalizing vector is not done correctly");
     }
 }

@@ -22,11 +22,11 @@ class PointTest {
 
         // EP01: makes sure point subtraction works properly
         assertEquals(new Vector(1, 1, 1), new Point(2, 3, 4).subtract(p1),
-                "ERROR: Point - Point does not work correctly");
+                "EP01: Point - Point does not work correctly");
 
         // BV01: the subtract equals zero
         assertThrows(IllegalArgumentException.class,()-> p1.subtract(p1),
-                "ERROR: Point - Point does not work correctly");
+                "BV01: Point - Point does not work correctly");
     }
 
     /**
@@ -39,7 +39,7 @@ class PointTest {
 
         // EP01: makes sure point + vector works properly
         assertEquals(p1.add(new Vector(-1, -2, -3)), new Point(0, 0, 0),
-                "ERROR: Point + Vector does not work correctly");
+                "EP01: Point + Vector does not work correctly");
     }
 
     /**
@@ -52,13 +52,13 @@ class PointTest {
 
         // EP01: makes sure that point distance squared works when distance is greater than 0
         assertEquals(p.distanceSquared(new Point(0, 0, 0)), 3,
-                "EP1: Point distance squared for distance greater than 0 doesn't work");
+                "EP01: Point distance squared for distance greater than 0 doesn't work");
 
         // ============ Boundary Value Analysis ================
 
         // BV01: makes sure that point distance squared works when distance is 0
         assertEquals(0d, p.distanceSquared(p), 0.0000001,
-                "VB1: Point distance squared for distance equals 0 doesn't work");
+                "VB01: Point distance squared for distance equals 0 doesn't work");
     }
 
     /**
@@ -71,11 +71,11 @@ class PointTest {
 
         // EP01: makes sure that point distance works when distance is greater than 0
         assertEquals(p.distance(new Point(0, 0, 0)), 5,
-                "ERROR: Point distance for distance greater than 0 doesn't work");
+                "EP01: Point distance for distance greater than 0 doesn't work");
 
         // ============ Boundary Value Analysis ================
 
         // BV01: makes sure that point distance works when distance is 0
         assertEquals(0,p.distance(p),
-                "ERROR: Point distance for distance equals 0 doesn't work");    }
+                "EP02: Point distance for distance equals 0 doesn't work");    }
 }

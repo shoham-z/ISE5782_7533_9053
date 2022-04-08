@@ -57,7 +57,7 @@ class PlaneTest {
         List<Point> result = plane.findIntersections(new Ray(new Point(0.5,0.5,0.5), new Vector(1,1,0)));
         assertEquals(1, result.size(), "EP01: Wrong number of points");
         assertEquals(List.of(new Point(1.25,1.25, 0.5)), result, "EP01: Ray crosses plane");
-        result.clear();
+        result = null;
 
         // EP02: Ray does not intersect with the plane (0 points)
         result = plane.findIntersections(new Ray(new Point(1.5,1.5,1.5), new Vector(1,1,0)));
@@ -82,7 +82,7 @@ class PlaneTest {
         result = plane.findIntersections(new Ray(new Point(0.5,0.5,0.5), new Vector(1,1,1)));
         assertEquals(1, result.size(), "BV03: Wrong number of points");
         assertEquals(List.of(new Point(1,1,1)), result, "BV03: Ray crosses plane");
-        result.clear();
+        result = null;
 
         // BV04: Ray starts at the plane (0 points)
         result = plane.findIntersections(new Ray(new Point(1,0,2), new Vector(1,1,1)));

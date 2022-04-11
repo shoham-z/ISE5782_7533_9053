@@ -7,6 +7,7 @@ import static primitives.Util.isZero;
 
 /**
  * Unit tests for primitives.Point class
+ *
  * @author Shoham
  */
 class PointTest {
@@ -25,7 +26,7 @@ class PointTest {
                 "EP01: Point - Point does not work correctly");
 
         // BV01: the subtract equals zero
-        assertThrows(IllegalArgumentException.class,()-> p1.subtract(p1),
+        assertThrows(IllegalArgumentException.class, () -> p1.subtract(p1),
                 "BV01: Point - Point does not work correctly");
     }
 
@@ -47,7 +48,7 @@ class PointTest {
      */
     @Test
     void distanceSquared() {
-        Point p = new Point(1,1,1);
+        Point p = new Point(1, 1, 1);
         // ============ Equivalence Partitions Tests ==============
 
         // EP01: makes sure that point distance squared works when distance is greater than 0
@@ -66,7 +67,7 @@ class PointTest {
      */
     @Test
     void distance() {
-        Point p = new Point(0,3,4);
+        Point p = new Point(0, 3, 4);
         // ============ Equivalence Partitions Tests ==============
 
         // EP01: makes sure that point distance works when distance is greater than 0
@@ -76,6 +77,7 @@ class PointTest {
         // ============ Boundary Value Analysis ================
 
         // BV01: makes sure that point distance works when distance is 0
-        assertEquals(0,p.distance(p),
-                "EP02: Point distance for distance equals 0 doesn't work");    }
+        assertEquals(0, p.distance(p),
+                "EP02: Point distance for distance equals 0 doesn't work");
+    }
 }

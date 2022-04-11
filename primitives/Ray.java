@@ -1,5 +1,7 @@
 package primitives;
 
+import java.util.List;
+
 public class Ray {
     private final Vector direction;
     private final Point start;
@@ -47,17 +49,38 @@ public class Ray {
 
     /**
      * Calculates the starting point plus t steps in the direction of the ray
+     *
      * @param t distance from starting point
      * @return start + direction * t
      */
-    public Point getPoint(double t){
-        if (t < 0){
+    public Point getPoint(double t) {
+        if (t < 0) {
             throw new IllegalArgumentException();
         }
         if (t > 0) {
             return this.start.add(this.direction.scale(t));
         }
         return this.start;
+    }
+
+    public Point findClosestPoint(List<Point> points) {
+        try {
+            int index = -1;
+            double distance = 999999999999d;
+            for (Point point :
+                    points) {
+                if(point.subtract(this.start).dotProduct(this.direction) > 0){
+                    double d = this.start.distance(point);
+                    if (d < distance) {
+                        distance = d;
+                        index = points.indexOf(point);
+                    }
+                }
+            }
+            return points.get(index);
+        } catch (Exception ignore) {
+            return null;
+        }
     }
 
     @Override

@@ -3,6 +3,8 @@ import org.junit.jupiter.api.Test;
 import primitives.*;
 
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -49,4 +51,30 @@ class RayTest {
                 "BV01: not working");
     }
 
+    /**
+     * Test method for {@link primitives.Ray#findClosestPoint(List)}
+     */
+    @Test
+    public void findClosestPointTest(){
+        Ray ray = new Ray(new Point(1,0,0), new Vector(1,0,0));
+        Point p = new Point(5,0,0);
+
+        // ============== Equivalence Partitions Tests ==================
+        // EP01: closest point is in the middle of the list
+        assertEquals(p, ray.findClosestPoint(List.of(p.add(new Vector(1,0,0)), p, p.add(new Vector(-7,0,0)), p.add(new Vector(21,0,0)))),
+                "EP01: not working");
+
+        // ================ Boundary Values Tests ===================
+        // BV01: list of points is empty
+        assertNull(ray.findClosestPoint(null),
+                "BV01: not working");
+
+        // BV02: closest point is first
+        assertEquals(p, ray.findClosestPoint(List.of(p, p.add(new Vector(1,0,0)), p.add(new Vector(-7,0,0)), p.add(new Vector(21,0,0)))),
+                "BV02: not working");
+
+        // BV03: closest point is last
+        assertEquals(p, ray.findClosestPoint(List.of(p.add(new Vector(1,0,0)), p.add(new Vector(-7,0,0)), p.add(new Vector(21,0,0)), p)),
+                "BV03: not working");
+    }
 }

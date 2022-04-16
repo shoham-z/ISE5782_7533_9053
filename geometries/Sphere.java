@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Sphere class represents three-dimensional Sphere in 3D cartesian Coordinate system
  */
-public class Sphere implements Geometry {
+public class Sphere extends Geometry {
     private final Point center;
     private final double radius;
     private final double radius2;

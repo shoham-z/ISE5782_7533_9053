@@ -2,7 +2,6 @@ package geometries;
 
 import primitives.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.*;
@@ -11,7 +10,7 @@ import static primitives.Util.*;
  * Plane class represents A two-dimensional and infinite Plane in 3D Cartesian coordinate
  * system
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
 
     private final Point point;
     private final Vector normal;

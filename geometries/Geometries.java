@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Geometries implements Intersectable{
+public class Geometries extends Intersectable{
     List<Intersectable> geometries =new ArrayList<>();
 
     /**

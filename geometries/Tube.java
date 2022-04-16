@@ -10,7 +10,7 @@ import static primitives.Util.isZero;
  * Tube class represents a three-dimensional tube in 3D Cartesian coordinate
  * system
  */
-public class Tube implements Geometry {
+public class Tube extends Geometry {
     private final Ray axis;
     private final double radius;
 

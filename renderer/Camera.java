@@ -154,8 +154,9 @@ public class Camera {
 
     /**
      * Renders the image
+     * @return the camera
      */
-    public void renderImage() {
+    public Camera renderImage() {
         if (this.vpHeight <= 0 || this.vpWidth <= 0 || !(this.distanceFromVp > 0) || this.imageWriter == null || this.rayTracer == null) {
             throw new MissingResourceException("missing resource", "Camera", "");
         }
@@ -166,6 +167,7 @@ public class Camera {
                 this.imageWriter.writePixel(i, j, this.rayTracer.traceRay(this.constructRay(xPixels, yPixels, i, j)));
             }
         }
+        return this;
     }
 
     /**

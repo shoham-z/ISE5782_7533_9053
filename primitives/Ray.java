@@ -63,6 +63,11 @@ public class Ray {
         return this.start;
     }
 
+    /**
+     * finds the closest point to the start of the ray
+     * @param points the points
+     * @return the closest point
+     */
     public Point findClosestPoint(List<Point> points) {
         try {
             int index = -1;

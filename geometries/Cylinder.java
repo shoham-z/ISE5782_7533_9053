@@ -29,7 +29,7 @@ public class Cylinder extends Tube {
      * @return the height
      */
     public double getHeight() {
-        return height;
+        return this.height;
     }
 
     @Override

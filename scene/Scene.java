@@ -1,6 +1,6 @@
 package scene;
 
-import elements.*;
+import lighting.*;
 import geometries.*;
 import primitives.*;
 

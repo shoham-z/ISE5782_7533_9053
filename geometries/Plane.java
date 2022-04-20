@@ -2,6 +2,7 @@ package geometries;
 
 import primitives.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import static primitives.Util.*;
@@ -69,7 +70,9 @@ public class Plane extends Geometry {
     }
 
     @Override
-    public List<Point> findIntersections(Ray ray) {
+
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+
         double denominator = this.normal.dotProduct(ray.getDirection());
         if (isZero(denominator))
             return null;
@@ -82,6 +85,7 @@ public class Plane extends Geometry {
         }
 
         double t = alignZero(this.normal.dotProduct(u) / denominator);
-        return t <= 0 ? null : List.of(ray.getPoint(t));
+        return t <= 0 ? null : List.of(new GeoPoint(this, ray.getPoint(t)));
     }
+
 }

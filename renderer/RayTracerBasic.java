@@ -4,8 +4,7 @@ import primitives.*;
 
 import scene.Scene;
 
-import java.util.List;
-
+import geometries.Intersectable.GeoPoint;
 /**
  * Class to trace rays and find the pixel's color
  */
@@ -23,13 +22,14 @@ public class RayTracerBasic extends RayTracerBase{
 
     @Override
     public Color traceRay(Ray ray) {
-        List<Point> intersections = this.scene.geometries.findIntersections(ray);
-        if(intersections==null) return this.scene.background;
-        Point closest = ray.findClosestPoint(intersections);
-        return calcColor(closest);
+        var intersections = scene.geometries.findGeoIntersections(ray);
+        if (intersections == null) return scene.background;
+        GeoPoint closestPoint = ray.findClosestGeoPoint(intersections);
+        return calcColor(closestPoint);
     }
 
-    private Color calcColor(Point point){
-        return this.scene.ambientLight.getIntensity();
+    private Color calcColor(GeoPoint gp) {
+        return scene.ambientLight.getIntensity()
+                .add(gp.geometry.getEmission());
     }
 }

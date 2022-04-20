@@ -1,10 +1,8 @@
 package lighting;
 
-import primitives.Color;
-import primitives.Point;
-import primitives.Vector;
+import primitives.*;
 
-public class DirectionalLight extends Light implements LightSource{
+public class DirectionalLight extends Light implements LightSource {
     private Vector direction;
 
     /**
@@ -27,4 +25,6 @@ public class DirectionalLight extends Light implements LightSource{
     public Vector getL(Point p) {
         return this.direction;
     }
+
+
 }

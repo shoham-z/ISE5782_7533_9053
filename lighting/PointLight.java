@@ -90,4 +90,7 @@ public class PointLight extends Light implements LightSource {
         return p.subtract(this.position);
     }
 
+
+
+
 }

@@ -4,6 +4,7 @@ import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
 import geometries.Intersectable.GeoPoint;
+
 import static primitives.Util.alignZero;
 
 /**
@@ -54,14 +55,14 @@ public class RayTracerBasic extends RayTracerBase {
         return color;
     }
 
-    private Double3 calcDiffusive(Material material, double nl){
+    private Double3 calcDiffusive(Material material, double nl) {
         return material.kD.scale(Math.abs(nl));
     }
 
     public Double3 calcSpecular(Material material, Vector n, Vector l, Vector v, double nl) {
-        Vector r = l.subtract(n.scale(-2 * l.dotProduct(n)));
-        double vr = r.scale(-1).dotProduct(v);
-        if (vr <0) return new Double3(0);
+        Vector r =n.scale(-2 * nl).add(l);
+        double vr = -1 * r.dotProduct(v);
+        if (vr <= 0) return new Double3(0);
         double vrn = Math.pow(vr, material.nShininess);
         return material.kS.scale(vrn);
     }

@@ -44,14 +44,15 @@ public abstract class Intersectable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             GeoPoint geoPoint = (GeoPoint) o;
-            return geometry.equals(geoPoint.geometry) && point.equals(geoPoint.point);
+            if(this.geometry == null || geoPoint.geometry == null) return this.point.equals(geoPoint.point);
+            return this.geometry.equals(geoPoint.geometry) && this.point.equals(geoPoint.point);
         }
 
         @Override
         public String toString() {
             return "GeoPoint{" +
-                    "geometry=" + geometry +
-                    ", point=" + point +
+                    "geometry=" + this.geometry +
+                    ", point=" + this.point +
                     '}';
         }
 

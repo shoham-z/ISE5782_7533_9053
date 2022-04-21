@@ -88,6 +88,8 @@ public class PolygonTest {
 									  new Point(-2,-2,0),
 									  new Point(2,-2,0));
 
+		fail("not implemented yet");
+
 		// ================== Equivalence Partition Tests ======================
 		// EP01: Ray intersects with polygon (1 point)
 		List<Point> result = polygon.findIntersections(new Ray(new Point(0.75, 0.75, 0.75),

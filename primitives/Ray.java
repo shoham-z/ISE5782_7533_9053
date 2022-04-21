@@ -75,7 +75,7 @@ public class Ray {
 
     public GeoPoint findClosestGeoPoint(List<GeoPoint> geoPoints){
         int index = -1;
-        double distance = 999999999999d;
+        double distance = Double.POSITIVE_INFINITY;
         for (GeoPoint geoPoint:
              geoPoints) {
             if(geoPoint.point.subtract(this.start).dotProduct(this.direction) > 0){

@@ -2,6 +2,8 @@ package lighting;
 
 import primitives.*;
 
+import static primitives.Util.alignZero;
+
 public class SpotLight extends PointLight{
     private Vector direction;
 
@@ -34,13 +36,12 @@ public class SpotLight extends PointLight{
 
     @Override
     public Color getIntensity(Point p) {
-        double v = this.direction.dotProduct(p.subtract(this.position).normalize());
-        if(v<=0)return new Color(0,0,0);
-        return super.getIntensity(p).scale(v);
+        double v = alignZero(this.direction.dotProduct(this.getL(p)));
+        return v > 0 ? super.getIntensity(p).scale(v) : new Color(0,0,0);
     }
 
     @Override
     public Vector getL(Point p) {
-        return this.direction;
+        return p.subtract(this.position).normalize();
     }
 }

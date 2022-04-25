@@ -2,6 +2,8 @@ package lighting;
 
 import primitives.*;
 
+import static primitives.Util.alignZero;
+
 public class PointLight extends Light implements LightSource {
     protected Point position;
     private double kC;
@@ -81,16 +83,12 @@ public class PointLight extends Light implements LightSource {
 
     @Override
     public Color getIntensity(Point p) {
-        double distance = this.position.distance(p);
-        return this.getIntensity().scale(1 / (this.kC + this.kL * distance + this.kQ * distance * distance));
+        double distance = alignZero(this.position.distance(p));
+        return this.getIntensity().scale(1d / (this.kC + this.kL * distance + this.kQ * distance * distance));
     }
 
     @Override
     public Vector getL(Point p) {
         return p.subtract(this.position).normalize();
     }
-
-
-
-
 }

@@ -44,4 +44,8 @@ public class SpotLight extends PointLight{
     public Vector getL(Point p) {
         return p.subtract(this.position).normalize();
     }
+
+    public PointLight setNarrowBeam(int i) {
+        return this;
+    }
 }

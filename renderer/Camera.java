@@ -104,9 +104,10 @@ public class Camera {
             throw new IllegalArgumentException();
         }
         this.position = position;
-        this.vRight = to.crossProduct(up).normalize();
         this.vTo = to.normalize();
         this.vUp = up.normalize();
+        // Cross product of 2 orthogonal unit vectors is always a unit vector
+        this.vRight = this.vTo.crossProduct(this.vUp);
     }
 
     /**

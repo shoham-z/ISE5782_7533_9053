@@ -190,7 +190,7 @@ public class LightsTests {
 	public void trianglesMultipleLights() {
 		scene2.geometries.add(triangle1, triangle2);
 		scene2.lights.add(new PointLight(purple, trPL).setKl(0.001).setKq(0.0002));
-		scene2.lights.add(new SpotLight(new Color(GREEN), trPL.add(new Vector(-40,-40,0)), trDL).setKl(0.001).setKq(0.0001));
+		scene2.lights.add(new PointLight(new Color(GREEN), new Point(30,-60,-100)).setKl(0.001).setKq(0.0002));
 		scene2.lights.add(new DirectionalLight(new Color(BLUE), trDL));
 
 

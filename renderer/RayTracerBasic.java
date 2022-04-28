@@ -29,8 +29,8 @@ public class RayTracerBasic extends RayTracerBase {
      */
     @Override
     public Color traceRay(Ray ray) {
-        var intersections = scene.geometries.findGeoIntersections(ray);
-        if (intersections == null) return scene.background;
+        var intersections = this.scene.geometries.findGeoIntersections(ray);
+        if (intersections == null) return this.scene.background;
         GeoPoint closestPoint = ray.findClosestGeoPoint(intersections);
         return calcColor(closestPoint, ray);
     }
@@ -42,7 +42,7 @@ public class RayTracerBasic extends RayTracerBase {
      * @return the color of the pixel
      */
     private Color calcColor(GeoPoint gp, Ray ray) {
-        return scene.ambientLight.getIntensity()
+        return this.scene.ambientLight.getIntensity()
                 .add(calcLocalEffects(gp, ray));
     }
 

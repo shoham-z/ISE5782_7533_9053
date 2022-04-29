@@ -22,11 +22,6 @@ public class RayTracerBasic extends RayTracerBase {
         super(scene);
     }
 
-    /**
-     * Traces the ray to get the color of the pixel
-     * @param ray the ray
-     * @return the color of the pixel
-     */
     @Override
     public Color traceRay(Ray ray) {
         var intersections = this.scene.geometries.findGeoIntersections(ray);
@@ -47,10 +42,10 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     *
-     * @param gp
-     * @param ray
-     * @return
+     * Calculates the local effects (diffusion, specular) at a point and returns the color
+     * @param gp the GeoPoint at the pixel
+     * @param ray the ray at the pixel
+     * @return the color
      */
     private Color calcLocalEffects(GeoPoint gp, Ray ray) {
         Color color = gp.geometry.getEmission();

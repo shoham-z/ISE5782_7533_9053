@@ -1,14 +1,69 @@
+import primitives.Point;
 import primitives.Vector;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
 /**
  * Unit tests for primitives.Vector class
+ *
  * @author Shoham
  */
 class VectorTest {
+    /**
+     * Test method for {@link primitives.Vector#add(Vector)}
+     */
+    @Test
+    public void addTest() {
+        // ============ Equivalence Partitions Tests ==============
+        Vector v1 = new Vector(1, 1, 1);
+        Vector v2 = new Vector(2, 2, 2);
+        Vector v3 = new Vector(3, 3, 3);
+        Vector v4 = new Vector(4, 4, 4);
+        // ****group: add result is not zero vector
+        // EP01: first vector length > second vector length
+        assertEquals(v3, v2.add(v1), "EP01");
+
+        // EP02: first vector length < second vector length
+        assertEquals(v4, v1.add(v3), "EP02");
+
+        // EP03: first vector length = second vector length
+        assertEquals(v4, v2.add(v2), "EP03");
+
+        // =============== Boundary Values Tests ==================
+        // BV01: add result is zero vector
+        assertThrows(IllegalArgumentException.class, () -> v2.add(new Vector(-2, -2, -2)), "VB01");
+    }
+
+    /**
+     * Test method for {@link primitives.Vector#subtract(Point)}
+     */
+    @Test
+    public void subtractTest() {
+        // ============ Equivalence Partitions Tests ==============
+        Vector v1 = new Vector(1, 1, 1);
+        Vector v2 = new Vector(2, 2, 2);
+        Vector _v2 = new Vector(-2, -2, -2);
+        Vector v3 = new Vector(3, 3, 3);
+        Vector v4 = new Vector(4, 4, 4);
+
+        // ****group: subtract result is not zero vector
+        // EP01: first vector length > second vector length
+        assertEquals(v1, v2.subtract(v1), "EP01");
+
+        // EP02: first vector length < second vector length
+        assertEquals(_v2, v1.subtract(v3), "EP02");
+
+        // EP03: first vector length = second vector length
+        assertEquals(v4, v2.subtract(_v2), "EP03");
+
+        // =============== Boundary Values Tests ==================
+        // BV01: subtract result is zero vector
+        assertThrows(IllegalArgumentException.class, () -> v2.subtract(v2), "VB01");
+    }
+
 
     /**
      * Test method for {@link primitives.Vector#Vector(double, double, double)}
@@ -28,23 +83,23 @@ class VectorTest {
     @Test
     void scale() {
 
-        Vector v = new Vector(1,1,1);
+        Vector v = new Vector(1, 1, 1);
         // ============ Equivalence Partitions Tests ==============
 
         // EP01: scalar is greater than 1
-        assertEquals(new Vector(3,3,3), v.scale(3),
+        assertEquals(new Vector(3, 3, 3), v.scale(3),
                 "EP01: scaling with scalar greater than 1 is not working");
 
         // EP02: scalar is greater than 0 and less than 1
-        assertEquals(new Vector(1d/3,1d/3,1d/3), v.scale(1d/3),
+        assertEquals(new Vector(1d / 3, 1d / 3, 1d / 3), v.scale(1d / 3),
                 "EP02: scaling with scalar greater than 0 and less than 1 is not working");
 
         // EP03: scalar is greater than -1 and less than 0
-        assertEquals(new Vector(1d/3,1d/3,1d/3), v.scale( 1d/3 ),
+        assertEquals(new Vector(1d / 3, 1d / 3, 1d / 3), v.scale(1d / 3),
                 "EP03: scaling with scalar greater than -1 and less than 0 is not working");
 
         // EP04: scalar is less than -1
-        assertEquals(new Vector(-3,-3,-3), v.scale(-3),
+        assertEquals(new Vector(-3, -3, -3), v.scale(-3),
                 "EP04: scaling with scalar less than -1 is not working");
 
 
@@ -55,7 +110,7 @@ class VectorTest {
                 "BV01: scaling with scalar equal 1 not working");
 
         // BV02: scalar is -1
-        assertEquals(new Vector(-1,-1,-1), v.scale(-1),
+        assertEquals(new Vector(-1, -1, -1), v.scale(-1),
                 "BV02: scaling with scalar equal -1 not working");
 
         // BV03: scalar is 0
@@ -86,7 +141,7 @@ class VectorTest {
                 "EP03: dotProduct wrong value");
 
         // EP04: dot product is smaller than -1
-        assertEquals( -28, v1.dotProduct(v2), 0.000001,
+        assertEquals(-28, v1.dotProduct(v2), 0.000001,
                 "EP04: dotProduct wrong value");
 
 
@@ -140,7 +195,7 @@ class VectorTest {
         // =============== Boundary Values Tests ==================
         // BV01: test zero vector from cross-product of co-lined vectors
         Vector v3 = new Vector(-2, -4, -6);
-        assertThrows(IllegalArgumentException.class, () ->v1.crossProduct(v3),
+        assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v3),
                 "crossProduct() for parallel vectors does not throw an exception");
     }
 
@@ -158,7 +213,7 @@ class VectorTest {
 
         // =============== Boundary Values Tests ==================
         // BV01: length squared is almost 0
-        assertEquals(0.000102, new Vector(0.01,0.001,0.001).lengthSquared(), 0.000001,
+        assertEquals(0.000102, new Vector(0.01, 0.001, 0.001).lengthSquared(), 0.000001,
                 "BV01: lengthSquared() wrong value");
     }
 
@@ -184,7 +239,7 @@ class VectorTest {
         Vector v1 = new Vector(0, 3, 4);
 
         // EP01: make sure that vector.normalize works properly
-        assertEquals(v1.normalize(), new Vector(0,0.6,0.8),
+        assertEquals(v1.normalize(), new Vector(0, 0.6, 0.8),
                 "EP01: normalizing vector is not done correctly");
 
         // =============== Boundary Values Tests ==================

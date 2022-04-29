@@ -22,7 +22,7 @@ public class AmbientLight extends Light {
      * sets the background color as black
      */
     public AmbientLight() {
-         super(Color.BLACK);
+        super(Color.BLACK);
     }
 
     /**

@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Unit tests for geometries.Plane class
+ *
  * @author Shoham
  */
 class TriangleTest {
@@ -22,9 +23,9 @@ class TriangleTest {
     void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // EP01: There is a simple single test here
-        Point p = new Point(1,1,1);
-        Triangle triangle = new Triangle(p, new Point(1,2,1), new Point(1,1,2));
-        assertTrue(triangle.getNormal(p).equals(new Vector(1,0,0)) || triangle.getNormal(p).equals(new Vector(-1,0,0)),
+        Point p = new Point(1, 1, 1);
+        Triangle triangle = new Triangle(p, new Point(1, 2, 1), new Point(1, 1, 2));
+        assertTrue(triangle.getNormal(p).equals(new Vector(1, 0, 0)) || triangle.getNormal(p).equals(new Vector(-1, 0, 0)),
                 "ERROR: getnormal method in Triangle does not work properly");
     }
 
@@ -33,16 +34,16 @@ class TriangleTest {
      */
     @Test
     void findIntsersections() {
-        Triangle triangle = new Triangle(new Point(1,1,0),
-                                         new Point(1,0,0),
-                                         new Point(0,1,0));
+        Triangle triangle = new Triangle(new Point(1, 1, 0),
+                new Point(1, 0, 0),
+                new Point(0, 1, 0));
 
         // ============ Equivalence Partitions Tests ==============
         // EP01: Ray intersects with Triangle (1 point)
-        List <Point> result = triangle.findIntersections(new Ray(new Point(0.75, 0.75, 0.75),
+        List<Point> result = triangle.findIntersections(new Ray(new Point(0.75, 0.75, 0.75),
                 new Vector(0, 0, -1)));
         assertEquals(1, result.size(), "EP01: Wrong number of points");
-        assertEquals(List.of(new Point(0.75,0.75,0)), result, "EP01: Ray crosses triangle");
+        assertEquals(List.of(new Point(0.75, 0.75, 0)), result, "EP01: Ray crosses triangle");
         result = null;
 
         // EP02: Ray intersects with the plane against the edge of triangle (0 points)

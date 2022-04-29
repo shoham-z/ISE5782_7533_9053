@@ -11,6 +11,7 @@ public interface LightSource {
 
     /**
      * returns the intensity of the light source at the given point
+     *
      * @param p the point
      * @return the intensity
      */
@@ -18,6 +19,7 @@ public interface LightSource {
 
     /**
      * returns the direction of the light source to the given point
+     *
      * @param p the point
      * @return the direction
      */

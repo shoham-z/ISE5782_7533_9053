@@ -4,6 +4,7 @@ public class Point {
     final protected Double3 xyz;
 
     public static final Point ZERO = new Point(0, 0, 0);
+
     /**
      * Constructor to initialize Point based object with its three number values
      *

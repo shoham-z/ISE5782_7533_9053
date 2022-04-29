@@ -32,7 +32,8 @@ public class RayTracerBasic extends RayTracerBase {
 
     /**
      * calculates the color of the pixel using ray and GeoPoint
-     * @param gp tuple of the geometry and a point on the geometry
+     *
+     * @param gp  tuple of the geometry and a point on the geometry
      * @param ray the ray
      * @return the color of the pixel
      */
@@ -43,7 +44,8 @@ public class RayTracerBasic extends RayTracerBase {
 
     /**
      * Calculates the local effects (diffusion, specular) at a point and returns the color
-     * @param gp the GeoPoint at the pixel
+     *
+     * @param gp  the GeoPoint at the pixel
      * @param ray the ray at the pixel
      * @return the color
      */
@@ -68,8 +70,9 @@ public class RayTracerBasic extends RayTracerBase {
 
     /**
      * Calculates the diffusive effects at a pixel
+     *
      * @param material the material of the Geometry
-     * @param nl dot product of the normal of the geometry and the light direction
+     * @param nl       dot product of the normal of the geometry and the light direction
      * @return the diffusive effects
      */
     private Double3 calcDiffusive(Material material, double nl) {
@@ -77,15 +80,16 @@ public class RayTracerBasic extends RayTracerBase {
     }
 
     /**
-     *Calculates the specular effects at a pixel
+     * Calculates the specular effects at a pixel
+     *
      * @param material the material of the Geometry
-     * @param n the normal vector to the geometry
-     * @param l the light direction vector
-     * @param nl dot product of the normal of the geometry and the light direction
-     * @param v the vector from the camera to the point
+     * @param n        the normal vector to the geometry
+     * @param l        the light direction vector
+     * @param nl       dot product of the normal of the geometry and the light direction
+     * @param v        the vector from the camera to the point
      * @return the specular effects
      */
-    public Double3 calcSpecular(Material material, Vector n, Vector l,double nl, Vector v) {
+    public Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
         Vector r = n.scale(2 * nl).subtract(l);
         double vr = r.dotProduct(v);
         if (vr <= 0) return Double3.ZERO;

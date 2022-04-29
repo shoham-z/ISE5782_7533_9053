@@ -43,6 +43,7 @@ public class PointLight extends Light implements LightSource {
 
     /**
      * Setter for position
+     *
      * @param position the position
      * @return the point light
      */
@@ -53,6 +54,7 @@ public class PointLight extends Light implements LightSource {
 
     /**
      * Setter for constant attenuation
+     *
      * @param kC the constant attenuation
      * @return the point light
      */
@@ -63,6 +65,7 @@ public class PointLight extends Light implements LightSource {
 
     /**
      * Setter for linear attenuation
+     *
      * @param kL the linear attenuation
      * @return the point light
      */
@@ -73,6 +76,7 @@ public class PointLight extends Light implements LightSource {
 
     /**
      * Setter for quadratic attenuation
+     *
      * @param kQ the quadratic attenuation
      * @return the point light
      */

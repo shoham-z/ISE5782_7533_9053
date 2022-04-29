@@ -13,6 +13,7 @@ public abstract class Intersectable {
     /**
      * Finds intersections between the ray
      * and the geometry
+     *
      * @param ray The ray to intersect with the geometry
      * @return List of intersection points
      */
@@ -31,8 +32,9 @@ public abstract class Intersectable {
 
         /**
          * constructor for GeoPoint
+         *
          * @param geometry a geometry
-         * @param point a point
+         * @param point    a point
          */
         public GeoPoint(Geometry geometry, Point point) {
             this.geometry = geometry;
@@ -44,7 +46,7 @@ public abstract class Intersectable {
             if (this == o) return true;
             if (o == null || getClass() != o.getClass()) return false;
             GeoPoint geoPoint = (GeoPoint) o;
-            if(this.geometry == null || geoPoint.geometry == null) return this.point.equals(geoPoint.point);
+            if (this.geometry == null || geoPoint.geometry == null) return this.point.equals(geoPoint.point);
             return this.geometry.equals(geoPoint.geometry) && this.point.equals(geoPoint.point);
         }
 
@@ -57,7 +59,8 @@ public abstract class Intersectable {
         }
 
     }
-    public List<GeoPoint> findGeoIntersections(Ray ray){
+
+    public List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersectionsHelper(ray);
     }
 

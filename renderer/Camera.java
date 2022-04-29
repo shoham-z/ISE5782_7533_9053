@@ -155,6 +155,7 @@ public class Camera {
 
     /**
      * Renders the image
+     *
      * @return the camera
      */
     public Camera renderImage() {
@@ -181,7 +182,7 @@ public class Camera {
         if (this.imageWriter == null) throw new MissingResourceException("missing imageWriter", "Camera", "");
         for (int i = 0; i < this.imageWriter.getNx(); i++) {
             for (int j = 0; j < this.imageWriter.getNx(); j++) {
-                if(i%interval == 0 || j%interval == 0) this.imageWriter.writePixel(i, j, color);
+                if (i % interval == 0 || j % interval == 0) this.imageWriter.writePixel(i, j, color);
             }
         }
     }

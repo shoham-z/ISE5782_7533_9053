@@ -4,17 +4,17 @@ import primitives.*;
 
 import static primitives.Util.alignZero;
 
-public class SpotLight extends PointLight{
+public class SpotLight extends PointLight {
     private Vector direction;
 
     /**
      * constructor for point light
      *
      * @param intensity the light intensity
-     * @param position position of light
-     * @param kC constant attenuation with distance
-     * @param kL linear attenuation with distance
-     * @param kQ quadratic attenuation with distance
+     * @param position  position of light
+     * @param kC        constant attenuation with distance
+     * @param kL        linear attenuation with distance
+     * @param kQ        quadratic attenuation with distance
      * @param direction the light direction
      */
     public SpotLight(Color intensity, Point position, double kC, double kL, double kQ, Vector direction) {
@@ -25,9 +25,9 @@ public class SpotLight extends PointLight{
     /**
      * constructor for point light
      *
-     * @param spCL the light color
+     * @param spCL     the light color
      * @param position position of light
-     * @param dir the light direction
+     * @param dir      the light direction
      */
     public SpotLight(Color spCL, Point position, Vector dir) {
         super(spCL, position);
@@ -37,7 +37,7 @@ public class SpotLight extends PointLight{
     @Override
     public Color getIntensity(Point p) {
         double v = alignZero(this.direction.dotProduct(this.getL(p)));
-        return v > 0 ? super.getIntensity(p).scale(v) : new Color(0,0,0);
+        return v > 0 ? super.getIntensity(p).scale(v) : new Color(0, 0, 0);
     }
 
     @Override

@@ -11,14 +11,16 @@ public abstract class Light {
 
     /**
      * constructor for the light
+     *
      * @param intensity the light intensity
      */
-    protected Light(Color intensity){
+    protected Light(Color intensity) {
         this.intensity = intensity;
     }
 
     /**
      * Getter for light intensity;
+     *
      * @return the intensity
      */
     public Color getIntensity() {

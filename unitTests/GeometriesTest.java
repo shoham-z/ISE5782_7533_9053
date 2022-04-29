@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class GeometriesTest {
     /**
-     * Test method for {@link geometries.Geometries#add(Intersectable geometries)}
+     * Test method for {@link geometries.Geometries#add(Intersectable...)}
      */
     @Test
     void TestAdd() {

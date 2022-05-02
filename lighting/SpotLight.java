@@ -46,6 +46,7 @@ public class SpotLight extends PointLight {
     }
 
     public PointLight setNarrowBeam(int i) {
+        // i is to compute (cos(angle))^i to get narrower beam
         return this;
     }
 }

@@ -105,5 +105,6 @@ class TubeTest {
         assertNull(tube.findIntersections(new Ray(new Point(3, 2.5, 1), new Vector(0, -1, 0))),
                 " the ray starts inside the tube towards outside,the other side goes threw the center ");
 
+
     }
 }

@@ -54,6 +54,8 @@ public class Tube extends Geometry {
     }
 
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+        // if tube's ray and the ray we got have dot product of +-1 => return null
+        // find reduction from 3d to 2d as shown in whatsapp
         return null;
     }
 

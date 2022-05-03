@@ -6,7 +6,7 @@ import primitives.*;
  * Class light represents light
  */
 public abstract class Light {
-    protected Color intensity;
+    protected final Color intensity;
 
 
     /**

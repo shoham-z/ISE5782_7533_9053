@@ -7,7 +7,7 @@ import scene.Scene;
  * Class with methods to trace rays
  */
 public abstract class RayTracerBase {
-    protected Scene scene;
+    protected final Scene scene;
 
     /**
      * constructor for RayTracerBase class

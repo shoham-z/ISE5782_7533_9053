@@ -4,6 +4,8 @@ import geometries.Intersectable.GeoPoint;
 
 import java.util.List;
 
+import static primitives.Util.isZero;
+
 public class Ray {
     private final Vector direction;
     private final Point start;
@@ -21,13 +23,8 @@ public class Ray {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (!(obj instanceof Ray))
-            return false;
-        Ray other = (Ray) obj;
+        if (this == obj) return true;
+        if (!(obj instanceof Ray other)) return false;
         return this.direction.equals(other.direction) && this.start.equals(other.start);
     }
 
@@ -50,19 +47,13 @@ public class Ray {
     }
 
     /**
-     * Calculates the starting point plus t steps in the direction of the ray
+     * Calculates a point on the line of the ray at a given distance from the starting point
      *
-     * @param t distance from starting point
-     * @return start + direction * t
+     * @param t the distance from the starting point
+     * @return the point on the line of the ray
      */
     public Point getPoint(double t) {
-        if (t < 0) {
-            throw new IllegalArgumentException();
-        }
-        if (t > 0) {
-            return this.start.add(this.direction.scale(t));
-        }
-        return this.start;
+        return isZero(t) ? this.start : this.start.add(this.direction.scale(t));
     }
 
     /**
@@ -76,20 +67,22 @@ public class Ray {
                 : findClosestGeoPoint(points.stream().map(p -> new GeoPoint(null, p)).toList()).point;
     }
 
+    /**
+     * TODO
+     * @param geoPoints TODO
+     * @return TODO
+     */
     public GeoPoint findClosestGeoPoint(List<GeoPoint> geoPoints) {
-        int index = -1;
+        GeoPoint point = null;
         double distance = Double.POSITIVE_INFINITY;
-        for (GeoPoint geoPoint :
-                geoPoints) {
-            if (geoPoint.point.subtract(this.start).dotProduct(this.direction) > 0) {
-                double d = this.start.distance(geoPoint.point);
-                if (d < distance) {
-                    distance = d;
-                    index = geoPoints.indexOf(geoPoint);
-                }
+        for (GeoPoint geoPoint : geoPoints) {
+            double d = this.start.distance(geoPoint.point);
+            if (d < distance) {
+                distance = d;
+                point = geoPoint;
             }
         }
-        return geoPoints.get(index);
+        return point;
     }
 
     @Override

@@ -4,7 +4,6 @@ import primitives.*;
 
 import static primitives.Util.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -61,7 +60,7 @@ public class Sphere extends Geometry {
         try {
             u = this.center.subtract(ray.getStart());
         } catch (IllegalArgumentException ignore) {
-            return List.of(new GeoPoint(this, ray.getPoint(this.radius)));
+            return List.of(getGeoPoint(ray, radius));
         }
 
         double tm = ray.getDirection().dotProduct(u);
@@ -74,6 +73,17 @@ public class Sphere extends Geometry {
         if (t2 <= 0) return null;
 
         double t1 = alignZero(tm - th);
-        return t1 <= 0 ? List.of(new GeoPoint(this, ray.getPoint(t2))) : List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
+        return t1 <= 0 ? List.of(getGeoPoint(ray, t2)) : List.of(getGeoPoint(ray, t1), getGeoPoint(ray, t2));
+    }
+
+    /**
+     * Helper function to calculate a point on a ray on the sphere
+     *
+     * @param ray intersects the sphere
+     * @param t   distance from the ray start point to a point
+     * @return sphere with the point
+     */
+    private GeoPoint getGeoPoint(Ray ray, double t) {
+        return new GeoPoint(this, ray.getPoint(t));
     }
 }

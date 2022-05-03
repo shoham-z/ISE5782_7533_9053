@@ -18,7 +18,6 @@ public class Camera {
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
 
-
     public Camera setImageWriter(ImageWriter imageWriter) {
         this.imageWriter = imageWriter;
         return this;
@@ -159,7 +158,7 @@ public class Camera {
      * @return the camera
      */
     public Camera renderImage() {
-        if (this.vpHeight <= 0 || this.vpWidth <= 0 || !(this.distanceFromVp > 0) || this.imageWriter == null || this.rayTracer == null) {
+        if (this.vpHeight <= 0 || this.vpWidth <= 0 || this.distanceFromVp <= 0 || this.imageWriter == null || this.rayTracer == null) {
             throw new MissingResourceException("missing resource", "Camera", "");
         }
         int yPixels = this.imageWriter.getNy();
@@ -194,6 +193,5 @@ public class Camera {
         if (this.imageWriter == null) throw new MissingResourceException("missing imageWriter", "Camera", "");
         this.imageWriter.writeToImage();
     }
-
 
 }

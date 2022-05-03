@@ -11,8 +11,11 @@ import java.util.List;
  * Scene class represents a scene
  */
 public class Scene {
-    public String name;
-    public Color background;
+    /**
+     * the general name of the scene
+     */
+    public final String name;
+    public Color background = Color.BLACK;
     public AmbientLight ambientLight = new AmbientLight();
     public Geometries geometries = new Geometries();
     public List<LightSource> lights = new LinkedList<>();
@@ -27,20 +30,12 @@ public class Scene {
         return this;
     }
 
+    /**
+     * TODO
+     * @param name TODO
+     */
     public Scene(String name) {
         this.name = name;
-        this.background = Color.BLACK;
-    }
-
-    /**
-     * Setter for the name of scene
-     *
-     * @param name the name
-     * @return the scene
-     */
-    public Scene setName(String name) {
-        this.name = name;
-        return this;
     }
 
     /**

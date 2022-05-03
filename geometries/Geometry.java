@@ -29,8 +29,6 @@ public abstract class Geometry extends Intersectable {
         return this;
     }
 
-    ;
-
     /**
      * Getter for the material of the geometry
      *

@@ -18,14 +18,7 @@ public class Geometries extends Intersectable {
      * @param geometries List of geometries
      */
     public Geometries(Intersectable... geometries) {
-        this.geometries = List.of(geometries);
-    }
-
-    /**
-     * Constructor for empty list of Intersectable objects
-     */
-    public Geometries() {
-        this.geometries = new LinkedList<>();
+        this.add(geometries);
     }
 
     /**
@@ -34,21 +27,17 @@ public class Geometries extends Intersectable {
      * @param geometries geometries to add
      */
     public void add(Intersectable... geometries) {
-        if (geometries.length > 0) {
-            this.geometries.addAll(Arrays.asList(geometries));
-        }
+        if (geometries.length > 0) this.geometries.addAll(Arrays.asList(geometries));
     }
 
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
         List<GeoPoint> intersections = null;
-        for (Intersectable geometry :
-                this.geometries) {
+        for (Intersectable geometry : this.geometries) {
             List<GeoPoint> geopoints = geometry.findGeoIntersections(ray);
-
             if (geopoints != null) {
                 if (intersections == null)
-                    intersections = new LinkedList<GeoPoint>(geopoints);
+                    intersections = new LinkedList<>(geopoints);
                 else
                     intersections.addAll(geopoints);
             }

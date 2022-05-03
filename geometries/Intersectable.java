@@ -44,10 +44,8 @@ public abstract class Intersectable {
         @Override
         public boolean equals(Object o) {
             if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            GeoPoint geoPoint = (GeoPoint) o;
-            if (this.geometry == null || geoPoint.geometry == null) return this.point.equals(geoPoint.point);
-            return this.geometry.equals(geoPoint.geometry) && this.point.equals(geoPoint.point);
+            if (!(o instanceof GeoPoint geoPoint)) return false;
+            return this.geometry == geoPoint.geometry && this.point.equals(geoPoint.point);
         }
 
         @Override
@@ -64,8 +62,5 @@ public abstract class Intersectable {
         return findGeoIntersectionsHelper(ray);
     }
 
-    protected List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        return null;
-    }
-
+    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 }

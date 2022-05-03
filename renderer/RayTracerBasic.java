@@ -12,7 +12,6 @@ import static primitives.Util.alignZero;
  */
 public class RayTracerBasic extends RayTracerBase {
 
-
     /**
      * constructor for RayTracerBase class
      *
@@ -25,9 +24,7 @@ public class RayTracerBasic extends RayTracerBase {
     @Override
     public Color traceRay(Ray ray) {
         var intersections = this.scene.geometries.findGeoIntersections(ray);
-        if (intersections == null) return this.scene.background;
-        GeoPoint closestPoint = ray.findClosestGeoPoint(intersections);
-        return calcColor(closestPoint, ray);
+        return intersections == null ?  this.scene.background : calcColor(ray.findClosestGeoPoint(intersections), ray);
     }
 
     /**
@@ -90,10 +87,10 @@ public class RayTracerBasic extends RayTracerBase {
      * @return the specular effects
      */
     public Double3 calcSpecular(Material material, Vector n, Vector l, double nl, Vector v) {
-        Vector r = n.scale(2 * nl).subtract(l);
-        double vr = r.dotProduct(v);
-        if (vr <= 0) return Double3.ZERO;
-        return material.kS.scale(Math.pow(vr, material.nShininess));
+        Vector minusR = n.scale(2 * nl).subtract(l);
+        double minusVR = minusR.dotProduct(v);
+        if (minusVR <= 0) return Double3.ZERO;
+        return material.kS.scale(Math.pow(minusVR, material.nShininess));
     }
 
 }

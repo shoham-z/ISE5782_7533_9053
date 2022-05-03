@@ -27,7 +27,13 @@ public abstract class Intersectable {
      * The class represents point on the geometry
      */
     public static class GeoPoint {
+        /**
+         * The geometry that the point is on
+         */
         public Geometry geometry;
+        /**
+         * A point on the geometry
+         */
         public Point point;
 
         /**
@@ -58,9 +64,19 @@ public abstract class Intersectable {
 
     }
 
+    /**
+     * Finds intersection points of ray with the geometry
+     * @param ray the ray to intersect with
+     * @return list of the geometry with the intersection point(s)
+     */
     public List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersectionsHelper(ray);
     }
 
+    /**
+     * A helper function to {@link geometries.Intersectable#findGeoIntersections(Ray)}
+     * @param ray the ray to intersect with
+     * @return list of the geometry with the intersection point(s)
+     */
     protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 }

@@ -6,6 +6,7 @@ import static primitives.Util.alignZero;
 
 public class SpotLight extends PointLight {
     private Vector direction;
+    private int beam;
 
     /**
      * constructor for point light
@@ -20,6 +21,7 @@ public class SpotLight extends PointLight {
     public SpotLight(Color intensity, Point position, double kC, double kL, double kQ, Vector direction) {
         super(intensity, position, kC, kL, kQ);
         this.direction = direction.normalize();
+        this.beam = 1;
     }
 
     /**
@@ -36,7 +38,7 @@ public class SpotLight extends PointLight {
 
     @Override
     public Color getIntensity(Point p) {
-        double v = alignZero(this.direction.dotProduct(this.getL(p)));
+        double v = alignZero(Math.pow(this.direction.dotProduct(this.getL(p)), this.beam));
         return v > 0 ? super.getIntensity(p).scale(v) : new Color(0, 0, 0);
     }
 
@@ -46,6 +48,8 @@ public class SpotLight extends PointLight {
     }
 
     public PointLight setNarrowBeam(int i) {
+        // i is to compute (cos(angle))^i to get narrower beam
+        this.beam = i;
         return this;
     }
 }

@@ -60,7 +60,7 @@ class TubeTest {
         //**** Group:the ray is vertical to the tube
         // ============ Equivalence Partitions Tests ==============
         //EP05: the ray starts inside the tube
-        assertNull(tube.findIntersections(new Ray(new Point(2, 1.5, 1), new Vector(0, 1, 0))),
+        assertEquals(List.of(new Point(2,2,1)),tube.findIntersections(new Ray(new Point(2, 1.5, 1), new Vector(0, 1, 0))),
                 "the ray starts inside the tube");
         //EP06: the  ray starts outside the tube and transverses it twice
         assertNull(tube.findIntersections(new Ray(new Point(2, -1, 1.5), new Vector(0, 1, 0))),
@@ -74,7 +74,7 @@ class TubeTest {
 
         // ============ Boundary Value Tests ====================
         //BV02: the ray starts on the  tube towards outside
-        assertEquals(List.of(new Point(2,2,1)),tube.findIntersections(new Ray(new Point(1, 0, 1), new Vector(0, -1, 0))),
+        assertNull(tube.findIntersections(new Ray(new Point(1, 0, 1), new Vector(0, -1, 0))),
                 "the ray starts on the tube towards outside");
         //BV03: the ray starts on the tube towards inside
         assertNull(tube.findIntersections(new Ray(new Point(1, 0, 1), new Vector(0, 1, 0))),

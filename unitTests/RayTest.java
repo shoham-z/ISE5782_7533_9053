@@ -62,7 +62,7 @@ class RayTest {
 
         // ============== Equivalence Partitions Tests ==================
         // EP01: closest point is in the middle of the list
-        assertEquals(p, ray.findClosestPoint(List.of(p.add(new Vector(1, 0, 0)), p, p.add(new Vector(-7, 0, 0)), p.add(new Vector(21, 0, 0)))),
+        assertEquals(p, ray.findClosestPoint(List.of(p.add(new Vector(1, 0, 0)), p, p.add(new Vector(7, 0, 0)), p.add(new Vector(21, 0, 0)))),
                 "EP01: not working");
 
         // ================ Boundary Values Tests ===================
@@ -71,11 +71,11 @@ class RayTest {
                 "BV01: not working");
 
         // BV02: closest point is first
-        assertEquals(p, ray.findClosestPoint(List.of(p, p.add(new Vector(1, 0, 0)), p.add(new Vector(-7, 0, 0)), p.add(new Vector(21, 0, 0)))),
+        assertEquals(p, ray.findClosestPoint(List.of(p, p.add(new Vector(1, 0, 0)), p.add(new Vector(7, 0, 0)), p.add(new Vector(21, 0, 0)))),
                 "BV02: not working");
 
         // BV03: closest point is last
-        assertEquals(p, ray.findClosestPoint(List.of(p.add(new Vector(1, 0, 0)), p.add(new Vector(-7, 0, 0)), p.add(new Vector(21, 0, 0)), p)),
+        assertEquals(p, ray.findClosestPoint(List.of(p.add(new Vector(1, 0, 0)), p.add(new Vector(7, 0, 0)), p.add(new Vector(21, 0, 0)), p)),
                 "BV03: not working");
     }
 }

@@ -4,6 +4,8 @@ import geometries.*;
 import primitives.*;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
@@ -72,7 +74,7 @@ class TubeTest {
 
         // ============ Boundary Value Tests ====================
         //BV02: the ray starts on the  tube towards outside
-        assertNull(tube.findIntersections(new Ray(new Point(1, 0, 1), new Vector(0, -1, 0))),
+        assertEquals(List.of(new Point(2,2,1)),tube.findIntersections(new Ray(new Point(1, 0, 1), new Vector(0, -1, 0))),
                 "the ray starts on the tube towards outside");
         //BV03: the ray starts on the tube towards inside
         assertNull(tube.findIntersections(new Ray(new Point(1, 0, 1), new Vector(0, 1, 0))),

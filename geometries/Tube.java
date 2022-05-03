@@ -70,7 +70,7 @@ public class Tube extends Geometry {
         Vector later = deltaP.subtract(w);
         if (uv == 0) {
             a = alignZero(rayAxis.lengthSquared());
-            b = alignZero(2 * rayAxis.dotProduct(later));
+            b = alignZero(2 * rayAxis.subtract(tubeAxis).dotProduct(later));
         } else {
             Vector temp = tubeAxis.scale(uv);
             if (rayAxis.equals(temp)) return null;
@@ -83,12 +83,42 @@ public class Tube extends Geometry {
         double discriminant2 = alignZero(b * b - 4 * a * c);
 
         if (discriminant2 < 0) return null;
-        if (discriminant2 == 0) return List.of(new GeoPoint(this, ray.getPoint(-b / 2 * a)));
-        double discriminant = Math.sqrt(discriminant2);
-        double t1 = alignZero((-b + discriminant) / 2 * a);
+        if (discriminant2 == 0) return List.of(new GeoPoint(this, ray.getPoint(-b / (2 * a))));
+        double discriminant = alignZero(Math.sqrt(discriminant2));
+        double t1 = alignZero((-b + discriminant) / (2 * a));
         if (t1 < 0) return null;
-        double t2 = alignZero((-b - discriminant) / 2 * a);
+        double t2 = alignZero((-b - discriminant) / (2 * a));
         if (t2 < 0) return List.of(new GeoPoint(this, ray.getPoint(t1)));
         return List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
+    }
+
+    private List<Double> quadratic(double a, double b, double c){
+        double root1, root2;
+
+        // calculate the determinant (b2 - 4ac)
+        double determinant = b * b - 4 * a * c;
+
+
+        // if determinant is less than zero
+        if (determinant < 0) {
+            return null;
+        }
+
+        // check if determinant is equal to 0
+        else if (determinant == 0) {
+
+            // two real and equal roots
+            // determinant is equal to 0
+            // so -b + 0 == -b
+            root1 = -b / (2 * a);
+            return List.of(root1);
+        }
+
+        // check if determinant is greater than 0
+
+        // two real and distinct roots
+        root1 = (-b + Math.sqrt(determinant)) / (2 * a);
+        root2 = (-b - Math.sqrt(determinant)) / (2 * a);
+        return List.of(root1, root2);
     }
 }

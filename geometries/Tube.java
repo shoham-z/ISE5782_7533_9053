@@ -53,10 +53,24 @@ public class Tube extends Geometry {
         return point.subtract(o).normalize();
     }
 
+    @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
-        // if tube's ray and the ray we got have dot product of +-1 => return null
-        // find reduction from 3d to 2d as shown in whatsapp
-        return null;
-    }
+        if(ray.equals(this.axis)) return null;
+        Vector v = this.axis.getDirection();
+        Vector u = ray.getDirection();
+        double uv = u.dotProduct(v);
+        if(uv == 0) return null;
+        Vector temp = v.scale(uv);
+        if (u.equals(temp)) return null;
+        Vector deltaP = ray.getStart().subtract(this.axis.getStart());
 
+        double a = u.subtract(temp).lengthSquared();
+        double b = 2 * u.subtract(temp).dotProduct(deltaP.subtract(v.scale(deltaP.dotProduct(v))));
+        double c = deltaP.subtract(v.scale(deltaP.dotProduct(v))).lengthSquared() - this.radius * radius;
+        double discriminant = b * b - 4 * a * c;
+
+        if (discriminant < 0) return null;
+        if (discriminant==0) return List.of (new GeoPoint(this,ray.getPoint(-b/2*a)));
+        return List.of (new GeoPoint(this,ray.getPoint((-b + discriminant)/2*a)),new GeoPoint(this,ray.getPoint((-b-discriminant)/2*a)));
+    }
 }

@@ -51,7 +51,7 @@ class TubeTest {
         assertNull(tube.findIntersections(new Ray(new Point(2, 1, 1), new Vector(1, 0, 0))),
                 "the ray is congruent to the center of the tube");
         // ============ Boundary Value Tests ====================
-        //BV01: the ray is cngruent to the center of the tube and starts at the same point
+        //BV01: the ray is congruent to the center of the tube and starts at the same point
         assertNull(tube.findIntersections(new Ray(new Point(1, 1, 1), new Vector(1, 0, 0))),
                 "the ray is congruent to the center of the tube and starts at the same point");
 

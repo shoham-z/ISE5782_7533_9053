@@ -20,8 +20,8 @@ public class Triangle extends Polygon {
         super(vertices);
     }
 
-
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    @Override
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
 
         List<Point> intersection = this.plane.findIntersections(ray);
         if (intersection == null)

@@ -55,7 +55,7 @@ public class Tube extends Geometry {
     }
 
     @Override
-    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray) {
+    public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
         if (ray.equals(this.axis)) return null;
         Vector tubeAxis = this.axis.getDirection();
         Vector rayAxis = ray.getDirection();
@@ -92,7 +92,7 @@ public class Tube extends Geometry {
         return List.of(new GeoPoint(this, ray.getPoint(t1)), new GeoPoint(this, ray.getPoint(t2)));
     }
 
-    private List<Double> quadratic(double a, double b, double c){
+    private List<Double> quadratic(double a, double b, double c) {
         double root1, root2;
 
         // calculate the determinant (b2 - 4ac)

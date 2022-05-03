@@ -70,7 +70,17 @@ public abstract class Intersectable {
      * @return list of the geometry with the intersection point(s)
      */
     public List<GeoPoint> findGeoIntersections(Ray ray) {
-        return findGeoIntersectionsHelper(ray);
+        return findGeoIntersectionsHelper(ray,Double.POSITIVE_INFINITY);
+    }
+
+    /**
+     * Finds intersection points of ray with the geometry
+     * @param ray the ray to intersect with
+     * @param maxDistance the maximum distance of point(s) from light
+     * @return list of the geometry with the intersection point(s)
+     */
+    public final List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
+        return findGeoIntersectionsHelper(ray, maxDistance);
     }
 
     /**
@@ -78,5 +88,5 @@ public abstract class Intersectable {
      * @param ray the ray to intersect with
      * @return list of the geometry with the intersection point(s)
      */
-    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
+    protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance);
 }

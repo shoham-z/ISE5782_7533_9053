@@ -1,9 +1,12 @@
 package renderer;
 
+import geometries.Triangle;
 import lighting.LightSource;
 import primitives.*;
 import scene.Scene;
 import geometries.Intersectable.GeoPoint;
+
+import java.util.List;
 
 import static primitives.Util.alignZero;
 
@@ -11,6 +14,11 @@ import static primitives.Util.alignZero;
  * Class to trace rays and find the pixel's color
  */
 public class RayTracerBasic extends RayTracerBase {
+
+    /**
+     * Constant to move the point by a small distance
+     */
+    private static final double DELTA = 0.1;
 
     /**
      * constructor for RayTracerBase class
@@ -24,7 +32,9 @@ public class RayTracerBasic extends RayTracerBase {
     @Override
     public Color traceRay(Ray ray) {
         var intersections = this.scene.geometries.findGeoIntersections(ray);
-        return intersections == null ?  this.scene.background : calcColor(ray.findClosestGeoPoint(intersections), ray);
+        if (intersections == null) return this.scene.background;
+        GeoPoint closestPoint = ray.findClosestGeoPoint(intersections);
+        return calcColor(closestPoint, ray);
     }
 
     /**
@@ -57,9 +67,11 @@ public class RayTracerBasic extends RayTracerBase {
             Vector l = lightSource.getL(gp.point);
             double nl = alignZero(n.dotProduct(l));
             if (nl * nv > 0) { // sign(nl) == sign(nv)
-                Color iL = lightSource.getIntensity(gp.point);
-                color = color.add(iL.scale(calcDiffusive(material, nl)),
-                        iL.scale(calcSpecular(material, n, l, nl, v)));
+                if (unshaded(gp, lightSource, l, n, nv)) {
+                    Color iL = lightSource.getIntensity(gp.point);
+                    color = color.add(iL.scale(calcDiffusive(material, nl)),
+                            iL.scale(calcSpecular(material, n, l, nl, v)));
+                }
             }
         }
         return color;
@@ -93,4 +105,23 @@ public class RayTracerBasic extends RayTracerBase {
         return material.kS.scale(Math.pow(minusVR, material.nShininess));
     }
 
+    /**
+     * Checks if a point on the geometry is unshaded
+     *
+     * @param gp the geometry and the point
+     * @param l  the light direction
+     * @param n  the geometry normal at the point
+     * @param nv dot product of n and ray's vector
+     * @return is point unshaded
+     */
+    private boolean unshaded(GeoPoint gp, LightSource light, Vector l, Vector n, double nv)
+    {
+        Vector lightDirection = l.scale(-1); // from point to light source
+        Vector deltaVector = n.scale(nv < 0 ? this.DELTA : -this.DELTA);
+        Point point = gp.point.add(deltaVector);
+        Ray lightRay = new Ray(point, lightDirection);
+        List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay, light.getDistance(gp.point));
+
+        return intersections == null;
+    }
 }

@@ -106,7 +106,5 @@ class TubeTest {
         //BV12: the ray starts outside the tube and goes threw the center
         assertEquals(List.of(new Point(3,2,1),new Point(3,0,1)),tube.findIntersections(new Ray(new Point(3, 2.5, 1), new Vector(0, -1, 0))),
                 " the ray starts inside the tube towards outside,the other side goes threw the center ");
-
-
     }
 }

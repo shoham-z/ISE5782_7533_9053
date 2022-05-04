@@ -69,7 +69,7 @@ public abstract class Intersectable {
      * @param ray the ray to intersect with
      * @return list of the geometry with the intersection point(s)
      */
-    public List<GeoPoint> findGeoIntersections(Ray ray) {
+    public final List<GeoPoint> findGeoIntersections(Ray ray) {
         return findGeoIntersectionsHelper(ray,Double.POSITIVE_INFINITY);
     }
 

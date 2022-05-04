@@ -68,9 +68,9 @@ public class Ray {
     }
 
     /**
-     * TODO
-     * @param geoPoints TODO
-     * @return TODO
+     * Finds the closest point to the start of the ray
+     * @param geoPoints list of geometries and points on them, correspondingly
+     * @return the closest geometry and a point on the geometry
      */
     public GeoPoint findClosestGeoPoint(List<GeoPoint> geoPoints) {
         GeoPoint point = null;

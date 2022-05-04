@@ -1,8 +1,20 @@
 package primitives;
 
+/**
+ * Material class represents a material
+ */
 public class Material {
+    /**
+     * The diffusive factor of the material
+     */
     public Double3 kD = Double3.ZERO;
+    /**
+     * The specular factor of the material
+     */
     public Double3 kS = Double3.ZERO;
+    /**
+     * The shininess factor of the material
+     */
     public int nShininess = 0;
 
     /**

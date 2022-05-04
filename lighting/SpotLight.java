@@ -32,8 +32,13 @@ public class SpotLight extends PointLight {
         return p.subtract(this.position).normalize();
     }
 
+    /**
+     * Setter for a narrower beam (used for flashlights)
+     * @param i the narrowness of the beam
+     * @return this spotlight object
+     */
     public PointLight setNarrowBeam(int i) {
-        // i is to compute (cos(angle))^i to get narrower beam
+        // I is to compute (cos(angle))^i to get narrower beam
         this.beam = i;
         return this;
     }

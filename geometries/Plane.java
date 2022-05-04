@@ -84,7 +84,7 @@ public class Plane extends Geometry {
         }
 
         double t = alignZero(this.normal.dotProduct(u) / denominator);
-        return (alignZero(t - maxDistance) > 0 || t <= 0) ? null : List.of(new GeoPoint(this, ray.getPoint(t)));
+        return (alignZero(t - maxDistance) <= 0 && t > 0) ? List.of(new GeoPoint(this, ray.getPoint(t))) : null;
     }
 
 }

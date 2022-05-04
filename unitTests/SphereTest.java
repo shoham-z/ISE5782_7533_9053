@@ -1,5 +1,5 @@
 
-
+import geometries.Intersectable.GeoPoint;
 import geometries.*;
 import org.junit.jupiter.api.Test;
 import primitives.*;
@@ -33,7 +33,7 @@ class SphereTest {
      * Test method for {@link Sphere#findIntersections(Ray)}
      */
     @Test
-    void findIntsersections() {
+    void testFindIntersections() {
         Sphere sphere = new Sphere(new Point(1, 0, 0), 1d);
 
         // ============ Equivalence Partitions Tests ==============
@@ -150,7 +150,43 @@ class SphereTest {
         result = sphere.findIntersections(new Ray(new Point(3, 2, 0),
                 new Vector(0, -0.5, 0)));
         assertNull(result, "BV12: Wrong number of points");
+    }
 
+    /**
+     * Test method for {@link geometries.Sphere#findGeoIntersections(Ray, double)}
+     */
+    @Test
+    void testFindGeoPoint() {
+        Sphere sphere = new Sphere(new Point(1, 0, 0), 1d);
+        Ray ray1 = new Ray(new Point(-1,0,0), new Vector(1,0,0));
+        // ============ Equivalence Partitions Tests ==============
+        // **** group 1: there is intersection
+        // EP01: Point's distance from the start of the ray is less the distance given
+        assertEquals(List.of(new GeoPoint(sphere, new Point(0,0,0))) , sphere.findGeoIntersections(ray1, 2),
+                "EP01");
+
+        // EP02: Point's distance from the start of the ray is more the distance given
+        assertNull(sphere.findGeoIntersections(ray1, 0.5),"EP02");
+
+        // **** group 2: there is no intersection
+        Ray ray2 = new Ray(new Point(-1,0,0), new Vector(1,1,0));
+        // EP03: Point's distance from the start of the ray is less the distance given
+        assertNull(sphere.findGeoIntersections(ray2, 2), "EP03");
+
+        // EP04: Point's distance from the start of the ray is more the distance given
+        assertNull(sphere.findGeoIntersections(ray2, 0.5),"EP04");
+
+
+
+        // ============ Boundary Value Tests ====================
+        // **** group 1: there is intersection
+        // BV01: The point is at the distance exactly
+        assertEquals(List.of(new GeoPoint(sphere, new Point(0,0,0))) , sphere.findGeoIntersections(ray1, 1),
+                "BV01");
+
+        // **** group 2: there is no intersection
+        // BV02: The point is at the distance exactly
+        assertNull(sphere.findGeoIntersections(ray2, 1), "BV02");
 
     }
 }

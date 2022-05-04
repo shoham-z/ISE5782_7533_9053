@@ -6,7 +6,11 @@ import primitives.*;
 import renderer.*;
 import scene.Scene;
 
+import java.util.List;
+
 import static java.awt.Color.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Test rendering a basic image
@@ -166,7 +170,7 @@ public class LightsTests {
     }
 
     /**
-     * Produce a picture of a sphere lighted by a multiple light sources
+     * Produce a picture of a sphere lighted by multiple light sources
      */
     @Test
     public void sphereMultipleLights() {
@@ -199,6 +203,31 @@ public class LightsTests {
                 .setRayTracer(new RayTracerBasic(scene2)) //
                 .renderImage() //
                 .writeToImage(); //
+    }
+
+    /**
+     * Tests method for {@link lighting.LightSource#getDistance(Point)}
+     */
+    @Test
+    void testGetDistanceSpotLight(){
+        SpotLight spotLight = new SpotLight(spCL, spPL, new Vector(1, 1, -0.5));
+        PointLight pointLight = new PointLight(trCL, trPL);
+        DirectionalLight directionalLight = new DirectionalLight(trCL, trDL);
+
+        // ============== Equivalence Partitions Tests ==================
+        // EP01: Testing spotlight.getDistance
+        assertEquals(75 ,spotLight.getDistance(Point.ZERO),
+                "EP01: not working");
+
+
+        // EP02: Testing point-light.getDistance
+        assertEquals(104.880884817, pointLight.getDistance(Point.ZERO), 0.00001,
+                "EP02: not working");
+
+        // EP02: Testing directional light.getDistance
+        assertEquals(Double.POSITIVE_INFINITY, directionalLight.getDistance(Point.ZERO),
+                "EP02: not working");
+
     }
 
 }

@@ -1,5 +1,8 @@
 
 import geometries.*;
+import geometries.Intersectable.GeoPoint;
+
+import geometries.Plane;
 import org.junit.jupiter.api.Test;
 import primitives.*;
 
@@ -49,7 +52,7 @@ class PlaneTest {
      * Test method for {@link geometries.Plane#findIntersections(primitives.Ray)}
      */
     @Test
-    void findIntsersections() {
+    void testFindIntersections() {
         Plane plane = new Plane(new Point(1, 1, 1), new Vector(1, 1, 1));
 
         // ============ Equivalence Partitions Tests ==============
@@ -101,5 +104,43 @@ class PlaneTest {
         // BV07: Ray starts at the point defining the plane but is neither orthogonal nor parallel to the plane
         result = plane.findIntersections(new Ray(new Point(1, 1, 1), new Vector(1, 1.5, 1)));
         assertNull(result, "BV07: Wrong number of points");
+    }
+
+    /**
+     * Test method for {@link geometries.Plane#findGeoIntersections(Ray, double)} 
+     */
+    @Test
+    void testFindGeoPoint() {
+        Plane plane = new Plane(new Point(1, 0, 0), new Vector(1,0,0));
+        Ray ray1 = new Ray(new Point(-1,0,0), new Vector(1,0,0));
+        // ============ Equivalence Partitions Tests ==============
+        // **** group 1: there is intersection
+        // EP01: Point's distance from the start of the ray is less the distance given
+        assertEquals(List.of(new GeoPoint(plane, new Point(1,0,0))) , plane.findGeoIntersections(ray1, 3),
+                "EP01");
+
+        // EP02: Point's distance from the start of the ray is more the distance given
+        assertNull(plane.findGeoIntersections(ray1, 1),"EP02");
+
+        // **** group 2: there is no intersection
+        Ray ray2 = new Ray(new Point(-1,0,0), new Vector(-1,0,0));
+        // EP03: Point's distance from the start of the ray is less the distance given
+        assertNull(plane.findGeoIntersections(ray2, 2), "EP03");
+
+        // EP04: Point's distance from the start of the ray is more the distance given
+        assertNull(plane.findGeoIntersections(ray2, 0.5),"EP04");
+
+
+
+        // ============ Boundary Value Tests ====================
+        // **** group 1: there is intersection
+        // BV01: The point is at the distance exactly
+        assertEquals(List.of(new GeoPoint(plane, new Point(1,0,0))) , plane.findGeoIntersections(ray1, 2),
+                "BV01");
+
+        // **** group 2: there is no intersection
+        // BV02: The point is at the distance exactly
+        assertNull(plane.findGeoIntersections(ray2, 1), "BV02");
+
     }
 }

@@ -45,7 +45,9 @@ public class Triangle extends Polygon {
         double vn3 = alignZero(v.dotProduct(n3));
         if (vn1 * vn3 <= 0) return null;
 
-        return List.of(new GeoPoint(this, intersection.get(0)));
+
+        Point intersect = intersection.get(0);
+        return (p0.distance(intersect) - maxDistance <=0) ? List.of(new GeoPoint(this, intersect)) : null;
     }
 
     @Override

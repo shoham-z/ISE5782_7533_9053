@@ -209,7 +209,7 @@ public class LightsTests {
      * Tests method for {@link lighting.LightSource#getDistance(Point)}
      */
     @Test
-    void testGetDistanceSpotLight(){
+    void testGetDistance(){
         SpotLight spotLight = new SpotLight(spCL, spPL, new Vector(1, 1, -0.5));
         PointLight pointLight = new PointLight(trCL, trPL);
         DirectionalLight directionalLight = new DirectionalLight(trCL, trDL);

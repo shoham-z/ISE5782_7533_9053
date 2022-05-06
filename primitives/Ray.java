@@ -11,6 +11,11 @@ public class Ray {
     private final Point start;
 
     /**
+     * Constant to move the point by a small distance
+     */
+    private static final double DELTA = 0.1;
+
+    /**
      * Constructor to create a Ray from a Point to direction of dir
      *
      * @param start Point: start of the Ray
@@ -19,6 +24,19 @@ public class Ray {
     public Ray(Point start, Vector dir) {
         this.start = start;
         this.direction = dir.normalize();
+    }
+
+    /**
+     * Constructs a ray, the head is moved by DELTA
+     *
+     * @param head      The head of the ray
+     * @param direction The direction of the ray
+     * @param normal    The normal to the geometry, on this vector's line the point will move
+     * @param nv        Determines if the point will move in positive direction or negative
+     */
+    public Ray(Point head, Vector direction, Vector normal, double nv) {
+        this.start = head.add(normal.scale(nv < 0 ? this.DELTA : -this.DELTA));
+        this.direction = direction.normalize();
     }
 
     @Override
@@ -69,6 +87,7 @@ public class Ray {
 
     /**
      * Finds the closest point to the start of the ray
+     *
      * @param geoPoints list of geometries and points on them, correspondingly
      * @return the closest geometry and a point on the geometry
      */

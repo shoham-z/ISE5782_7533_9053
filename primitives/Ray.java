@@ -32,10 +32,9 @@ public class Ray {
      * @param head      The head of the ray
      * @param direction The direction of the ray
      * @param normal    The normal to the geometry, on this vector's line the point will move
-     * @param nv        Determines if the point will move in positive direction or negative
      */
-    public Ray(Point head, Vector direction, Vector normal, double nv) {
-        this.start = head.add(normal.scale(nv < 0 ? this.DELTA : -this.DELTA));
+    public Ray(Point head, Vector direction, Vector normal) {
+        this.start = head.add(normal.scale(normal.dotProduct(direction) > 0 ? this.DELTA : -this.DELTA));
         this.direction = direction.normalize();
     }
 

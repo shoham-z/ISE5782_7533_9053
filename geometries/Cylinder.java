@@ -57,98 +57,37 @@ public class Cylinder extends Tube {
 
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance){
-        /*Point tubeStart = this.getDirection().getStart();
-        Vector tubeDir = this.getDirection().getDirection();
-        List<GeoPoint> cylinderCaseIntersections = super.findGeoIntersectionsHelper(ray,maxDistance);
-        if (cylinderCaseIntersections != null) {
-            cylinderCaseIntersections.removeIf(p -> {
-                double height = tubeDir.dotProduct(p.point.subtract(tubeStart));
-                return !(height > 0 && height < this.height);
-            });
-        }
+        List<Point> points = new ArrayList<Point>();
 
+        Point upPoint = this.getDirection().getStart().add(this.getDirection().getDirection().scale(height));
+        List<GeoPoint> pointsT = super.findGeoIntersectionsHelper(ray, maxDistance);
 
-        GeoPoint base1 = findBaseIntersection(tubeStart, ray);
-        GeoPoint base2 = findBaseIntersection(tubeStart.add(tubeDir.scale(this.height)), ray);
-        if (cylinderCaseIntersections == null || cylinderCaseIntersections.isEmpty())
-            if(base1 == null && base2 == null)
-                return null;
-        // There is at least one point
+        if (pointsT != null)
+            for (GeoPoint geopoint : pointsT) {
+                double A = geopoint.point.distanceSquared(this.getDirection().getStart());
+                double R = this.getRadius() * this.getRadius();
+                Vector v = this.getDirection().getStart().subtract(geopoint.point);
+                if (Math.sqrt(A - R) <= height && v.dotProduct(this.getDirection().getDirection()) <= 0)
+                    points.add(geopoint.point);
+            }
+
+        Plane p1 = new Plane(this.getDirection().getStart(), this.getDirection().getDirection().scale(-1));
+        Plane p2 = new Plane(upPoint, this.getDirection().getDirection());
+
+        List<Point> point1 = p1.findIntersections(ray);
+        List<Point> point2 = p2.findIntersections(ray);
+
+        if (point1 != null && alignZero(point1.get(0).distance(this.getDirection().getStart()) - this.getRadius()) <= 0)
+            points.add(point1.get(0));
+        if (point2 != null && alignZero(point2.get(0).distance(upPoint) - this.getRadius()) <= 0)
+            points.add(point2.get(0));
+
+        if (points.isEmpty())
+            return null;
         List<GeoPoint> intersections = new LinkedList<>();
-        if (cylinderCaseIntersections != null)
-            for(GeoPoint geoP : cylinderCaseIntersections)
-                intersections.add(new GeoPoint(this, geoP.point));
-        if (base1 != null) intersections.add(base1);
-        if (base2 != null) intersections.add(base2);
-        return intersections;*/
-        List<GeoPoint> intersections = super.findGeoIntersectionsHelper(ray, maxDistance);
-
-        Point p0 = this.getDirection().getStart();
-        Vector dir = this.getDirection().getDirection();
-
-        if (intersections != null)
-        {
-            List<GeoPoint> temp = new ArrayList<>();
-
-            for (GeoPoint g : intersections)
-            {
-                double pointHeight = alignZero(g.point.subtract(p0).dotProduct(dir));
-                if (pointHeight > 0 && pointHeight < height)
-                {
-                    temp.add(g);
-                }
-            }
-
-            if (temp.isEmpty())
-            {
-                intersections = null;
-            }
-            else
-            {
-                intersections = temp;
-            }
+        for (Point point: points) {
+            intersections.add(new GeoPoint(this,point));
         }
-
-        List<GeoPoint> planeIntersection = new Plane(p0, dir).findGeoIntersections(ray, maxDistance);
-        if (planeIntersection != null)
-        {
-            GeoPoint point = planeIntersection.get(0);
-            if (point.point.equals(p0) || alignZero(point.point.subtract(p0).lengthSquared() - this.getRadius() * this.getRadius()) < 0)
-            {
-                if (intersections == null)
-                {
-                    intersections = new ArrayList<>();
-                }
-                point.geometry = this;
-                intersections.add(point);
-            }
-        }
-
-        Point p1 = p0.add(dir.scale(height));
-
-        planeIntersection = new Plane(p1, dir).findGeoIntersections(ray, maxDistance);
-        if (planeIntersection != null)
-        {
-            GeoPoint point = planeIntersection.get(0);
-            if (point.point.equals(p1) || alignZero(point.point.subtract(p1).lengthSquared() - this.getRadius() * this.getRadius()) < 0)
-            {
-                if (intersections == null)
-                {
-                    intersections = new ArrayList<>();
-                }
-                point.geometry = this;
-                intersections.add(point);
-            }
-        }
-
-        if (intersections != null)
-        {
-            for (GeoPoint g : intersections)
-            {
-                g.geometry = this;
-            }
-        }
-
         return intersections;
     }
 

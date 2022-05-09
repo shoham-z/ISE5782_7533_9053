@@ -36,7 +36,7 @@ class TubeTest {
      * Test method for {@link geometries.Tube#findIntersections(primitives.Ray)}
      */
     @Test
-    void findIntsersections() {
+    void findIntersections() {
         Tube tube = new Tube(new Ray(new Point(1, 1, 1), new Vector(1, 0, 0)), 1);
         // **** Group: ray is parallel to the tube
         // ============ Equivalence Partitions Tests ==============
@@ -63,7 +63,7 @@ class TubeTest {
         assertEquals(List.of(new Point(2,2,1)),tube.findIntersections(new Ray(new Point(2, 1.5, 1), new Vector(0, 1, 0))),
                 "the ray starts inside the tube");
         //EP06: the  ray starts outside the tube and transverses it twice
-        assertEquals(List.of(new Point(2,0,1.5),new Point(2,2,1.5)),tube.findIntersections(new Ray(new Point(2, -1, 1.5), new Vector(0, 1, 0))),
+        assertEquals(List.of(new Point(2,1.8660254037844384,1.5),new Point(2,0.1339745962155614,1.5)),tube.findIntersections(new Ray(new Point(2, -1, 1.5), new Vector(0, 1, 0))),
                 "the  ray starts outside the tube and transverses it twice");
         //EP07: the ray starts outside the tube and does not transverse it
         assertNull(tube.findIntersections(new Ray(new Point(2, -1, 1.5), new Vector(0, -1, 0))),

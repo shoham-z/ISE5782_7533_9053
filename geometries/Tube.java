@@ -81,12 +81,19 @@ public class Tube extends Geometry {
         double b = 2 * K.dotProduct(E);
         double c = E.lengthSquared() - this.radius * this.radius;
         double delta = alignZero(b * b - 4 * a * c);
-        if (delta <= 0)
+        if (delta < 0)
             return null;
+        if (delta == 0){
+            double t = alignZero((-b)/(2*a));
+            List<GeoPoint> intersections = new LinkedList<>();
+            intersections.add(new GeoPoint(this, t == 0 ? rayStart : rayStart.add(rayDir.scale(t))));
+            return intersections;
+
+        }
         double sDelta = Math.sqrt(delta);
         double t1 = alignZero((-b + sDelta) / (2 * a));
         double t2 = alignZero((-b - sDelta) / (2 * a));
-        if (t1 < 0) return null;
+        if (t1 <= 0) return null;
         List<GeoPoint> intersections = new LinkedList<>();
         if (alignZero(t1 - maxDistance) <= 0)
             intersections.add(new GeoPoint(this, t1 == 0 ? rayStart : rayStart.add(rayDir.scale(t1))));

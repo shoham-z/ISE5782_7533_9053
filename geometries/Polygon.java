@@ -1,5 +1,7 @@
 package geometries;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import primitives.*;
@@ -92,6 +94,39 @@ public class Polygon extends Geometry {
 
     @Override
     public List<GeoPoint> findGeoIntersectionsHelper(Ray ray, double maxDistance) {
-        return null;
+        List<GeoPoint> intersectionList = plane.findGeoIntersections(ray, maxDistance);
+
+        if (intersectionList == null)
+            return null;
+
+        //here we decide whether the point is on the polygon or not
+        List<Vector> vectors = new ArrayList<>(vertices.size());
+
+        Point rayStart = ray.getStart();
+        for (Point vertice : vertices) {
+            vectors.add(vertice.subtract(rayStart));
+        }
+
+        List<Vector> normals = new ArrayList<>(vertices.size());
+        for (int i = 0; i < vertices.size(); ++i) {
+            normals.add(vectors.get(i).crossProduct(vectors.get((i + 1) % vertices.size())).normalize());
+        }
+
+        Vector v = ray.getDirection();
+
+        double initialSign = v.dotProduct(normals.get(0));
+        boolean pos = !(initialSign < 0);
+
+        if (isZero(initialSign)) return null;
+
+        for (Vector normal : normals) {
+            double sign = v.dotProduct(normal);
+
+            if (isZero(sign) || (pos && sign < 0) || (!pos && sign > 0)) return null;
+        }
+
+        //update that the geometry is the polygon and not the plain
+        intersectionList.get(0).geometry = this;
+        return intersectionList;
     }
 }

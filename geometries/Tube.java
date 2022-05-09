@@ -73,7 +73,7 @@ public class Tube extends Geometry {
             E = rayStart.subtract(tubeStart).crossProduct(tubeDir);
         } catch (IllegalArgumentException e) {
             List<GeoPoint> intersections = new LinkedList<>();
-            intersections.add(new GeoPoint(this, tubeStart.add(rayDir.scale(getRadius() / K.length()))));
+            intersections.add(new GeoPoint(this, rayStart.add(rayDir.scale(getRadius() / K.length()))));
             return intersections;
         }
 
@@ -85,6 +85,8 @@ public class Tube extends Geometry {
             return null;
         if (delta == 0){
             double t = alignZero((-b)/(2*a));
+            if(t<=0)
+                return null;
             List<GeoPoint> intersections = new LinkedList<>();
             intersections.add(new GeoPoint(this, t == 0 ? rayStart : rayStart.add(rayDir.scale(t))));
             return intersections;

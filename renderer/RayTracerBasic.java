@@ -159,13 +159,14 @@ public class RayTracerBasic extends RayTracerBase {
      */
     private Double3 transparency(GeoPoint gp, LightSource light, Vector l, Vector n) {
         Vector lightDirection = l.scale(-1);
+        double lightDistance = light.getDistance(gp.point);
         List<GeoPoint> intersections = scene.geometries
-                .findGeoIntersections(constructRefractedRay(gp.point, lightDirection, n), light.getDistance(gp.point));
+                .findGeoIntersections(constructRefractedRay(gp.point, lightDirection, n), lightDistance);
         if(intersections == null) return Double3.ONE;
         Double3 ktr = Double3.ONE;
 
         for (GeoPoint intersection : intersections) {
-            if(alignZero(intersection.point.distance(gp.point) - light.getDistance(gp.point)) <= 0) {
+            if(alignZero(intersection.point.distance(gp.point) - lightDistance) <= 0) {
                 ktr = intersection.geometry.getMaterial().kT.product(ktr);
                 if (ktr.lowerThan(MIN_CALC_COLOR_K)) return Double3.ZERO;
             }

@@ -125,7 +125,7 @@ public class OURImages {
                 ));
         scene.geometries.add(new Polygon(new Point(-100, 100, 45), new Point(100, 100, 45),
                 new Point(100, 30, 45), new Point(-100, 30, 45))
-                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40))
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40).setKr(0.3))
                 .setEmission(new Color(0,105,148)
                 ));
         scene.geometries.add(new Polygon(new Point(20, 20, 40), new Point(0, 20, 40),
@@ -148,13 +148,15 @@ public class OURImages {
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40).setKr(0.5))
                 .setEmission(new Color(CYAN)));
 
-        scene.lights.add(new SpotLight(new Color(magenta), new Point(100, 100, 0), new Vector(-1, -1, 1))
-                .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
+        scene.lights.add(new DirectionalLight(new Color(YELLOW).scale(0.15), new Vector(1,-1,100)));
 
-        scene.lights.add(new SpotLight(purple, new Point(-100, -100, 0), new Vector(1, 1, 1))
-                .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
+        //scene.lights.add(new SpotLight(new Color(magenta), new Point(100, 100, 0), new Vector(-1, -1, 1))
+        //        .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
 
-        ImageWriter imageWriter = new ImageWriter("sea bottom", 500, 500);
+        //scene.lights.add(new SpotLight(purple, new Point(-100, -100, 0), new Vector(1, 1, 1))
+        //        .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
+
+        ImageWriter imageWriter = new ImageWriter("sea bottom", 5000, 5000);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //

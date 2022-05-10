@@ -87,7 +87,7 @@ public class OURImages {
         scene.lights.add(new SpotLight(purple, new Point(-100, -100, 0), new Vector(1, 1, 1))
                 .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
 
-        ImageWriter imageWriter = new ImageWriter("chess", 10000, 10000);
+        ImageWriter imageWriter = new ImageWriter("chess", 1000, 1000);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
@@ -110,13 +110,13 @@ public class OURImages {
         Material material = new Material().setKd(0.5).setKs(0.5).setShininess(5);
         scene.geometries.add(constructCube(new Point(-50, -50, 10), 50, camera.getvRight(), camera.getvTo(), new Color(YELLOW), material));
         scene.geometries.add(constructCube(new Point(50, 50, 10), 30, camera.getvRight(), camera.getvTo(), new Color(RED), material));
-        scene.geometries.add(constructPyramid(new Point(0, 0, 10), 100,100, camera.getvRight().add(new Vector(0.2,0,0)), camera.getvUp().add(new Vector(0,0,-0.4)), new Color(GREEN), material.setKt(0.7)));
+        //scene.geometries.add(constructPyramid(new Point(0, 0, 10), 100,100, camera.getvRight().add(new Vector(0.2,0,0)), camera.getvUp().add(new Vector(0,0,-0.4)), new Color(GREEN), material.setKt(0.7)));
+scene.geometries.add(constructTower(Point.ZERO,Math.PI/5,40,camera.getvUp(),new Color(YELLOW),material));
+        //scene.lights.add(new SpotLight(new Color(magenta), new Point(50, 50, -50), new Vector(-1, -1, 1))
+        //        .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
 
-        scene.lights.add(new SpotLight(new Color(magenta), new Point(50, 50, -50), new Vector(-1, -1, 1))
-                .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
-
-        scene.lights.add(new SpotLight(purple, new Point(-50, -50, -50), new Vector(1, 1, 1))
-                .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
+        //scene.lights.add(new SpotLight(purple, new Point(-50, -50, -50), new Vector(1, 1, 1))
+        //       .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
 
         ImageWriter imageWriter = new ImageWriter("just couple cubes and pyramid", 500, 500);
         camera.setImageWriter(imageWriter) //
@@ -126,9 +126,9 @@ public class OURImages {
     }
 
 
-    Geometries constructTower(Point base, double radius, double height,Vector vUp, Color color, Material material){
-        Geometry baseTower = new Cylinder(new Ray(base, vUp),radius,height).setEmission(color).setMaterial(material);
-        Geometry top = new Cone(new Ray(base, vUp),radius ,height/5).setEmission(color).setMaterial(material);
+    Geometries constructTower(Point base, double angle, double height,Vector vUp, Color color, Material material){
+        Geometry baseTower = new Cylinder(new Ray(base, vUp),angle*height/(Math.PI/2),height).setEmission(color).setMaterial(material);
+        Geometry top = new Cone(new Ray(base.add(vUp.normalize().scale(height*5/4)), vUp.normalize().scale(-1)),angle ,height/4).setEmission(color).setMaterial(material);
         return new Geometries(baseTower, top);
     }
 

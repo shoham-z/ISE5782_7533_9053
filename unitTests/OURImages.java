@@ -95,7 +95,7 @@ public class OURImages {
     }
     @Test
     void seaImage() {
-        Camera camera = new Camera(new Point(0, 60, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0))
+        Camera camera = new Camera(new Point(0, -100, -1000), new Vector(0, 160, 1000), new Vector(0, 1000, -160))
                 .setVPSize(160, 160) // 16x9 scaled by 20
                 .setVPDistance(1000);
 
@@ -154,7 +154,75 @@ public class OURImages {
         scene.lights.add(new SpotLight(purple, new Point(-100, -100, 0), new Vector(1, 1, 1))
                 .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
 
-        ImageWriter imageWriter = new ImageWriter("sea", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("sea bottom", 500, 500);
+        camera.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage() //
+                .writeToImage(); //
+    }
+
+    @Test
+    void seaFrontImage() {
+        Camera camera = new Camera(new Point(0, -60, -1000), new Vector(0, 120, 1000), new Vector(0, 1000, -120))
+                .setVPSize(160, 160) // 16x9 scaled by 20
+                .setVPDistance(1000);
+
+        Scene scene = new Scene("Chess..?").setBackground(new Color(135, 206, 235));
+        //.setAmbientLight(new AmbientLight(new Color(249,215,28),new Double3(0.5)))
+
+        scene.geometries.add(new Triangle(new Point(30,60,40),new Point(20,75,40),new Point(10,60,40))
+                .setEmission(new Color(WHITE))
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(50)));
+
+        scene.geometries.add(new Cylinder(new Ray(new Point(20, 50, 40), new Vector(0, 1, 0)), 0.5, 30)
+                .setEmission(new Color(192,192,192))
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(50)));
+
+        scene.geometries.add(new Cylinder(new Ray(new Point(0, 50, 40), new Vector(1, 0, 0)), 2, 40)
+                .setEmission(new Color(202,164,114))
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(50)));
+
+        scene.geometries.add(new Sphere(new Point(0, 0, 40), 8)
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40).setKt(0.5))
+                .setEmission(new Color(GREEN).reduce(2)));
+
+        scene.geometries.add(new Polygon(new Point(-100, 30, 45), new Point(100, 30, 45),
+                new Point(100, -40, 45), new Point(-100, -40, 45))
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40))
+                .setEmission(new Color(242,217,181)
+                ));
+        scene.geometries.add(new Polygon(new Point(-100, 100, 45), new Point(100, 100, 45),
+                new Point(100, 30, 45), new Point(-100, 30, 45))
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40))
+                .setEmission(new Color(0,105,148)
+                ));
+        scene.geometries.add(new Polygon(new Point(20, 20, 40), new Point(0, 20, 40),
+                new Point(0, 0, 40), new Point(20, 0, 40))
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40).setKr(0.5))
+                .setEmission(new Color(BLUE)));
+
+        scene.geometries.add(new Polygon(new Point(0, 20, 40), new Point(-20, 20, 40),
+                new Point(-20, 0, 40), new Point(0, 0, 40))
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40).setKr(0.5))
+                .setEmission(new Color(YELLOW)));
+
+        scene.geometries.add(new Polygon(new Point(0, 0, 40), new Point(0, -20, 40),
+                new Point(-20, -20, 40), new Point(-20, 0, 40))
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40).setKr(0.5))
+                .setEmission(new Color(RED)));
+
+        scene.geometries.add(new Polygon(new Point(0, -20, 40), new Point(20, -20, 40),
+                new Point(20, 0, 40), new Point(0, 0, 40))
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40).setKr(0.5))
+                .setEmission(new Color(CYAN)));
+
+        scene.lights.add(new SpotLight(new Color(magenta), new Point(100, 100, 0), new Vector(-1, -1, 1))
+                .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
+
+        scene.lights.add(new SpotLight(purple, new Point(-100, -100, 0), new Vector(1, 1, 1))
+                .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
+
+        ImageWriter imageWriter = new ImageWriter("seaFront", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //

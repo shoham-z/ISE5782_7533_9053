@@ -19,16 +19,16 @@ public class Camera {
     private double distanceFromVp;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
-    private int antiAliasingRays;
+    private SuperSampling superSampling = new SuperSampling();
 
     /**
      * Setter for antiAliasingGrid
      *
-     * @param antiAliasingRays the number of rays
+     * @param amount the number of rays
      * @return this camera object
      */
-    public Camera setAntiAliasingGrid(int antiAliasingRays) {
-        this.antiAliasingRays = antiAliasingRays;
+    public Camera setAntiAliasingGrid(int amount) {
+        this.superSampling.setSize(amount);
         return this;
     }
 
@@ -172,35 +172,16 @@ public class Camera {
         Point pIJ = this.position.add(this.vTo.scale(this.distanceFromVp));
         double sizeOfX = (double) this.vpWidth / nX;
         double sizeOfY = (double) this.vpHeight / nY;
-        if (this.antiAliasingRays==1) {
+        if (this.superSampling.size==1) {
             double xJ = (j - ((nX - 1) / 2d)) * sizeOfX;
             double yI = (((nY - 1) / 2d) - i) * sizeOfY;
             if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
             if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
             return List.of(new Ray(this.position, pIJ.subtract(this.position)));
         }
-        return constructRaysViaPixels(sizeOfX,sizeOfY, pIJ);
+        return this.superSampling.constructRaysThroughGrid(sizeOfY, sizeOfX, this.position, pIJ, this.vUp, this.vRight);
     }
 
-    public List<Ray> constructRaysViaPixels(double sizeOfX, double sizeOfY, Point centerOfPixel) {
-        List<Ray> rays = new LinkedList<>();
-        double xJ = -sizeOfX/(2*this.antiAliasingRays)-(sizeOfX/2);
-        double yI = -sizeOfY/(2*this.antiAliasingRays)-(sizeOfY/2);
-        for (int i = 0; i < this.antiAliasingRays; i++) {
-            yI+=sizeOfY/this.antiAliasingRays;
-            if (yI>(sizeOfY/2))
-                yI=-sizeOfY/(2*this.antiAliasingRays);
-            for (int j = 0; j < this.antiAliasingRays; j++) {
-                xJ+=sizeOfX/this.antiAliasingRays;
-                if (xJ>(sizeOfX/2))
-                    xJ=-sizeOfX/(2*this.antiAliasingRays);
-                if (xJ != 0) centerOfPixel = centerOfPixel.add(vRight.scale(xJ));
-                if (yI != 0) centerOfPixel = centerOfPixel.add(vUp.scale(yI));
-                rays.add(new Ray(this.position, centerOfPixel.subtract(this.position)));
-            }
-        }
-        return rays;
-    }
 
 
     /**

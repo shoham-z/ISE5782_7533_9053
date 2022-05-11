@@ -227,6 +227,7 @@ public class OURImages {
         ImageWriter imageWriter = new ImageWriter("seaFront", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
+                .setAntiAliasingGrid(2)
                 .renderImage() //
                 .writeToImage(); //
     }

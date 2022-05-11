@@ -6,8 +6,6 @@ import primitives.*;
 import renderer.*;
 import scene.Scene;
 
-import java.util.List;
-
 import static java.awt.Color.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -85,7 +83,7 @@ public class LightsTests {
         ImageWriter imageWriter = new ImageWriter("lightSpherePoint1", 500, 500);
         camera1.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene1)) //
-                .setAntiAliasingGrid(2)
+                .setAntiAliasing(2)
                 .renderImage() //
                 .writeToImage(); //
     }

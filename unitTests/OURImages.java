@@ -150,13 +150,13 @@ public class OURImages {
 
         scene.lights.add(new DirectionalLight(new Color(YELLOW).scale(0.15), new Vector(1,-1,100)));
 
-        //scene.lights.add(new SpotLight(new Color(magenta), new Point(100, 100, 0), new Vector(-1, -1, 1))
-        //        .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
+        scene.lights.add(new SpotLight(new Color(magenta), new Point(100, 100, 0), new Vector(-1, -1, 1))
+                .setNarrowBeam(2).setKl(0.00001).setKq(0.00001));
 
-        //scene.lights.add(new SpotLight(purple, new Point(-100, -100, 0), new Vector(1, 1, 1))
-        //        .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
+        scene.lights.add(new SpotLight(purple, new Point(-100, -100, 0), new Vector(1, 1, 1))
+               .setNarrowBeam(2).setKl(0.00001).setKq(0.00001));
 
-        ImageWriter imageWriter = new ImageWriter("sea bottom", 5000, 5000);
+        ImageWriter imageWriter = new ImageWriter("sea bottom", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
@@ -227,10 +227,12 @@ public class OURImages {
         ImageWriter imageWriter = new ImageWriter("seaFront", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
-                .setAntiAliasingGrid(2)
                 .renderImage() //
                 .writeToImage(); //
     }
+
+
+
 
 
     /**

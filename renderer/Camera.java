@@ -1,6 +1,5 @@
 package renderer;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.MissingResourceException;
 
@@ -19,7 +18,7 @@ public class Camera {
     private double distanceFromVp;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
-    private SuperSampling superSampling = new SuperSampling();
+    private SuperSampling antiAliasing = new SuperSampling();
 
     /**
      * Setter for antiAliasingGrid
@@ -27,8 +26,8 @@ public class Camera {
      * @param amount the number of rays
      * @return this camera object
      */
-    public Camera setAntiAliasingGrid(int amount) {
-        this.superSampling.setSize(amount);
+    public Camera setAntiAliasing(int amount) {
+        this.antiAliasing.setSize(amount);
         return this;
     }
 
@@ -172,16 +171,14 @@ public class Camera {
         Point pIJ = this.position.add(this.vTo.scale(this.distanceFromVp));
         double sizeOfX = (double) this.vpWidth / nX;
         double sizeOfY = (double) this.vpHeight / nY;
-        if (this.superSampling.size==1) {
-            double xJ = (j - ((nX - 1) / 2d)) * sizeOfX;
-            double yI = (((nY - 1) / 2d) - i) * sizeOfY;
-            if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
-            if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
-            return List.of(new Ray(this.position, pIJ.subtract(this.position)));
-        }
-        return this.superSampling.constructRaysThroughGrid(sizeOfY, sizeOfX, this.position, pIJ, this.vUp, this.vRight);
-    }
 
+        double xJ = (j - ((nX - 1) / 2d)) * sizeOfX;
+        double yI = (((nY - 1) / 2d) - i) * sizeOfY;
+        if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
+        if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
+
+        return this.antiAliasing.constructRaysThroughGrid(sizeOfY, sizeOfX, this.position, pIJ, this.vUp, this.vRight);
+    }
 
 
     /**
@@ -197,12 +194,12 @@ public class Camera {
         int xPixels = this.imageWriter.getNx();
         for (int i = 0; i < xPixels; i++) {
             for (int j = 0; j < yPixels; j++) {
-                List <Ray> rayList=this.constructRay(xPixels, yPixels, i, j);
-                Color myColor = new Color(java.awt.Color.BLACK);
-                for (Ray ray: rayList) {
-                    myColor =myColor.add(this.rayTracer.traceRay(ray));
+                List<Ray> rayList = this.constructRay(xPixels, yPixels, i, j);
+                Color myColor = Color.BLACK;
+                for (Ray ray : rayList) {
+                    myColor = myColor.add(this.rayTracer.traceRay(ray));
                 }
-                this.imageWriter.writePixel(i, j, myColor.scale((double) 1/rayList.size()));
+                this.imageWriter.writePixel(i, j, myColor.reduce(rayList.size()));
             }
         }
         return this;

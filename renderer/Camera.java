@@ -1,5 +1,7 @@
 package renderer;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.MissingResourceException;
 
 import primitives.*;
@@ -17,6 +19,18 @@ public class Camera {
     private double distanceFromVp;
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
+    private int antiAliasingRays;
+
+    /**
+     * Setter for antiAliasingGrid
+     *
+     * @param antiAliasingRays the number of rays
+     * @return this camera object
+     */
+    public Camera setAntiAliasingGrid(int antiAliasingRays) {
+        this.antiAliasingRays = antiAliasingRays;
+        return this;
+    }
 
     /**
      * Setter for imageWriter
@@ -154,13 +168,38 @@ public class Camera {
      * @param i  row number of pixel (vertical)
      * @return the ray
      */
-    public Ray constructRay(int nX, int nY, int j, int i) {
+    public List<Ray> constructRay(int nX, int nY, int j, int i) {
         Point pIJ = this.position.add(this.vTo.scale(this.distanceFromVp));
-        double xJ = (j - ((nX - 1) / 2d)) * ((double) this.vpWidth / nX);
-        double yI = (((nY - 1) / 2d) - i) * ((double) this.vpHeight / nY);
-        if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
-        if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
-        return new Ray(this.position, pIJ.subtract(this.position));
+        double sizeOfX = (double) this.vpWidth / nX;
+        double sizeOfY = (double) this.vpHeight / nY;
+        if (this.antiAliasingRays==1) {
+            double xJ = (j - ((nX - 1) / 2d)) * sizeOfX;
+            double yI = (((nY - 1) / 2d) - i) * sizeOfY;
+            if (xJ != 0) pIJ = pIJ.add(vRight.scale(xJ));
+            if (yI != 0) pIJ = pIJ.add(vUp.scale(yI));
+            return List.of(new Ray(this.position, pIJ.subtract(this.position)));
+        }
+        return constructRaysViaPixels(sizeOfX,sizeOfY, pIJ);
+    }
+
+    public List<Ray> constructRaysViaPixels(double sizeOfX, double sizeOfY, Point centerOfPixel) {
+        List<Ray> rays = new LinkedList<>();
+        double xJ = -sizeOfX/(2*this.antiAliasingRays)-(sizeOfX/2);
+        double yI = -sizeOfY/(2*this.antiAliasingRays)-(sizeOfY/2);
+        for (int i = 0; i < this.antiAliasingRays; i++) {
+            yI+=sizeOfY/this.antiAliasingRays;
+            if (yI>(sizeOfY/2))
+                yI=-sizeOfY/(2*this.antiAliasingRays);
+            for (int j = 0; j < this.antiAliasingRays; j++) {
+                xJ+=sizeOfX/this.antiAliasingRays;
+                if (xJ>(sizeOfX/2))
+                    xJ=-sizeOfX/(2*this.antiAliasingRays);
+                if (xJ != 0) centerOfPixel = centerOfPixel.add(vRight.scale(xJ));
+                if (yI != 0) centerOfPixel = centerOfPixel.add(vUp.scale(yI));
+                rays.add(new Ray(this.position, centerOfPixel.subtract(this.position)));
+            }
+        }
+        return rays;
     }
 
 
@@ -177,7 +216,12 @@ public class Camera {
         int xPixels = this.imageWriter.getNx();
         for (int i = 0; i < xPixels; i++) {
             for (int j = 0; j < yPixels; j++) {
-                this.imageWriter.writePixel(i, j, this.rayTracer.traceRay(this.constructRay(xPixels, yPixels, i, j)));
+                List <Ray> rayList=this.constructRay(xPixels, yPixels, i, j);
+                Color myColor = new Color(java.awt.Color.BLACK);
+                for (Ray ray: rayList) {
+                    myColor =myColor.add(this.rayTracer.traceRay(ray));
+                }
+                this.imageWriter.writePixel(i, j, myColor.scale((double) 1/rayList.size()));
             }
         }
         return this;

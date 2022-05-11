@@ -77,6 +77,18 @@ public class LightsTests {
                 .renderImage() //
                 .writeToImage(); //
     }
+    @Test
+    public void spherePoint1() {
+        scene1.geometries.add(sphere);
+        scene1.lights.add(new PointLight(spCL, spPL).setKl(0.001).setKq(0.0002));
+
+        ImageWriter imageWriter = new ImageWriter("lightSpherePoint1", 500, 500);
+        camera1.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(scene1)) //
+                .setAntiAliasingGrid(2)
+                .renderImage() //
+                .writeToImage(); //
+    }
 
     /**
      * Produce a picture of a sphere lighted by a spot light

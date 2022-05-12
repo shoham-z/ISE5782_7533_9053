@@ -93,6 +93,7 @@ public class OURImages {
                 .renderImage() //
                 .writeToImage(); //
     }
+
     @Test
     void seaImage() {
         Camera camera = new Camera(new Point(0, -100, -1000), new Vector(0, 160, 1000), new Vector(0, 1000, -160))
@@ -102,16 +103,16 @@ public class OURImages {
         Scene scene = new Scene("Chess..?").setBackground(new Color(135, 206, 235));
         //.setAmbientLight(new AmbientLight(new Color(249,215,28),new Double3(0.5)))
 
-        scene.geometries.add(new Triangle(new Point(30,60,40),new Point(20,75,40),new Point(10,60,40))
+        scene.geometries.add(new Triangle(new Point(30, 60, 40), new Point(20, 75, 40), new Point(10, 60, 40))
                 .setEmission(new Color(WHITE))
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(50)));
 
         scene.geometries.add(new Cylinder(new Ray(new Point(20, 50, 40), new Vector(0, 1, 0)), 0.5, 30)
-                .setEmission(new Color(192,192,192))
+                .setEmission(new Color(192, 192, 192))
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(50)));
 
         scene.geometries.add(new Cylinder(new Ray(new Point(0, 50, 40), new Vector(1, 0, 0)), 2, 40)
-                .setEmission(new Color(202,164,114))
+                .setEmission(new Color(202, 164, 114))
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(50)));
 
         scene.geometries.add(new Sphere(new Point(0, 0, 40), 8)
@@ -121,12 +122,12 @@ public class OURImages {
         scene.geometries.add(new Polygon(new Point(-100, 30, 45), new Point(100, 30, 45),
                 new Point(100, -40, 45), new Point(-100, -40, 45))
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40))
-                .setEmission(new Color(242,217,181)
+                .setEmission(new Color(242, 217, 181)
                 ));
         scene.geometries.add(new Polygon(new Point(-100, 100, 45), new Point(100, 100, 45),
                 new Point(100, 30, 45), new Point(-100, 30, 45))
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40).setKr(0.3))
-                .setEmission(new Color(0,105,148)
+                .setEmission(new Color(0, 105, 148)
                 ));
         scene.geometries.add(new Polygon(new Point(20, 20, 40), new Point(0, 20, 40),
                 new Point(0, 0, 40), new Point(20, 0, 40))
@@ -148,13 +149,13 @@ public class OURImages {
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40).setKr(0.5))
                 .setEmission(new Color(CYAN)));
 
-        scene.lights.add(new DirectionalLight(new Color(YELLOW).scale(0.15), new Vector(1,-1,100)));
+        scene.lights.add(new DirectionalLight(new Color(YELLOW).scale(0.15), new Vector(1, -1, 100)));
 
         scene.lights.add(new SpotLight(new Color(magenta), new Point(100, 100, 0), new Vector(-1, -1, 1))
                 .setNarrowBeam(2).setKl(0.00001).setKq(0.00001));
 
         scene.lights.add(new SpotLight(purple, new Point(-100, -100, 0), new Vector(1, 1, 1))
-               .setNarrowBeam(2).setKl(0.00001).setKq(0.00001));
+                .setNarrowBeam(2).setKl(0.00001).setKq(0.00001));
 
         ImageWriter imageWriter = new ImageWriter("sea bottom", 500, 500);
         camera.setImageWriter(imageWriter) //
@@ -172,16 +173,16 @@ public class OURImages {
         Scene scene = new Scene("Chess..?").setBackground(new Color(135, 206, 235));
         //.setAmbientLight(new AmbientLight(new Color(249,215,28),new Double3(0.5)))
 
-        scene.geometries.add(new Triangle(new Point(30,60,40),new Point(20,75,40),new Point(10,60,40))
+        scene.geometries.add(new Triangle(new Point(30, 60, 40), new Point(20, 75, 40), new Point(10, 60, 40))
                 .setEmission(new Color(WHITE))
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(50)));
 
         scene.geometries.add(new Cylinder(new Ray(new Point(20, 50, 40), new Vector(0, 1, 0)), 0.5, 30)
-                .setEmission(new Color(192,192,192))
+                .setEmission(new Color(192, 192, 192))
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(50)));
 
         scene.geometries.add(new Cylinder(new Ray(new Point(0, 50, 40), new Vector(1, 0, 0)), 2, 40)
-                .setEmission(new Color(202,164,114))
+                .setEmission(new Color(202, 164, 114))
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(50)));
 
         scene.geometries.add(new Sphere(new Point(0, 0, 40), 8)
@@ -191,12 +192,12 @@ public class OURImages {
         scene.geometries.add(new Polygon(new Point(-100, 30, 45), new Point(100, 30, 45),
                 new Point(100, -40, 45), new Point(-100, -40, 45))
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40))
-                .setEmission(new Color(242,217,181)
+                .setEmission(new Color(242, 217, 181)
                 ));
         scene.geometries.add(new Polygon(new Point(-100, 100, 45), new Point(100, 100, 45),
                 new Point(100, 30, 45), new Point(-100, 30, 45))
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40))
-                .setEmission(new Color(0,105,148)
+                .setEmission(new Color(0, 105, 148)
                 ));
         scene.geometries.add(new Polygon(new Point(20, 20, 40), new Point(0, 20, 40),
                 new Point(0, 0, 40), new Point(20, 0, 40))
@@ -232,9 +233,6 @@ public class OURImages {
     }
 
 
-
-
-
     /**
      * Creates an image of two cubes
      */
@@ -245,13 +243,13 @@ public class OURImages {
                 .setVPDistance(1000);
 
         Scene scene = new Scene("Chess..?").setBackground(new Color(135, 206, 235))
-        .setAmbientLight(new AmbientLight(new Color(249,215,28).scale(0.5),new Double3(0.5)));
+                .setAmbientLight(new AmbientLight(new Color(249, 215, 28).scale(0.5), new Double3(0.5)));
 
         Material material = new Material().setKd(0.5).setKs(0.5).setShininess(5);
-        scene.geometries.add(constructCube(new Point(-50, -50, 10), 50, camera.getvRight(), camera.getvTo(), new Color(YELLOW), material));
-        scene.geometries.add(constructCube(new Point(50, 50, 10), 30, camera.getvRight(), camera.getvTo(), new Color(RED), material));
+        scene.geometries.add(constructCube(new Point(-50, -50, 10), 50, camera.getVRight(), camera.getVTo(), new Color(YELLOW), material));
+        scene.geometries.add(constructCube(new Point(50, 50, 10), 30, camera.getVRight(), camera.getVTo(), new Color(RED), material));
         //scene.geometries.add(constructPyramid(new Point(0, 0, 10), 100,100, camera.getvRight().add(new Vector(0.2,0,0)), camera.getvUp().add(new Vector(0,0,-0.4)), new Color(GREEN), material.setKt(0.7)));
-scene.geometries.add(constructTower(Point.ZERO,Math.PI/5,40,camera.getvUp(),new Color(YELLOW),material));
+        scene.geometries.add(constructTower(Point.ZERO, Math.PI / 5, 40, camera.getVUp(), new Color(YELLOW), material));
         //scene.lights.add(new SpotLight(new Color(magenta), new Point(50, 50, -50), new Vector(-1, -1, 1))
         //        .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
 
@@ -266,42 +264,43 @@ scene.geometries.add(constructTower(Point.ZERO,Math.PI/5,40,camera.getvUp(),new 
     }
 
 
-    Geometries constructTower(Point base, double angle, double height,Vector vUp, Color color, Material material){
-        Geometry baseTower = new Cylinder(new Ray(base, vUp),angle*height/(Math.PI/2),height).setEmission(color).setMaterial(material);
-        Geometry top = new Cone(new Ray(base.add(vUp.normalize().scale(height*5/4)), vUp.normalize().scale(-1)),angle ,height/4).setEmission(color).setMaterial(material);
+    Geometries constructTower(Point base, double angle, double height, Vector vUp, Color color, Material material) {
+        Geometry baseTower = new Cylinder(new Ray(base, vUp), angle * height / (Math.PI / 2), height).setEmission(color).setMaterial(material);
+        Geometry top = new Cone(new Ray(base.add(vUp.normalize().scale(height * 5 / 4)), vUp.normalize().scale(-1)), angle, height / 4).setEmission(color).setMaterial(material);
         return new Geometries(baseTower, top);
     }
 
 
     /**
      * Constructs a pyramid
+     *
      * @param bottomCenter The bottom center point of the pyramid
-     * @param height The height of the pyramid
-     * @param width The width of the pyramid
-     * @param vTo The direction the pyramid is facing
-     * @param vUp The direction of the pyramid's head
-     * @param color The color of the pyramid
-     * @param material The material of the pyramid
+     * @param height       The height of the pyramid
+     * @param width        The width of the pyramid
+     * @param vTo          The direction the pyramid is facing
+     * @param vUp          The direction of the pyramid's head
+     * @param color        The color of the pyramid
+     * @param material     The material of the pyramid
      * @return The pyramid
      */
-    Geometries constructPyramid(Point bottomCenter, double height,double width, Vector vTo, Vector vUp, Color color, Material material){
+    Geometries constructPyramid(Point bottomCenter, double height, double width, Vector vTo, Vector vUp, Color color, Material material) {
         if (vTo.dotProduct(vUp) != 0) throw new IllegalArgumentException();
         Vector vRight = vTo.crossProduct(vUp).normalize();
         Point top = bottomCenter.add(vUp.normalize().scale(height));
-        Point frontCenter = bottomCenter.add(vTo.normalize().scale(width/2));
-        Point leftFront = frontCenter.add(vRight.normalize().scale(-width/2));
-        Point rightFront = frontCenter.add(vRight.normalize().scale(width/2));
-        Point backCenter = bottomCenter.add(vTo.normalize().scale(-width/2));
-        Point leftBack = backCenter.add(vRight.normalize().scale(-width/2));
-        Point rightBack = backCenter.add(vRight.normalize().scale(width/2));
+        Point frontCenter = bottomCenter.add(vTo.normalize().scale(width / 2));
+        Point leftFront = frontCenter.add(vRight.normalize().scale(-width / 2));
+        Point rightFront = frontCenter.add(vRight.normalize().scale(width / 2));
+        Point backCenter = bottomCenter.add(vTo.normalize().scale(-width / 2));
+        Point leftBack = backCenter.add(vRight.normalize().scale(-width / 2));
+        Point rightBack = backCenter.add(vRight.normalize().scale(width / 2));
 
-        Geometry front = new Triangle(leftFront,rightFront,top).setEmission(color).setMaterial(material);
-        Geometry back = new Triangle(leftBack,rightBack,top).setEmission(color).setMaterial(material);
-        Geometry right = new Triangle(rightBack,rightFront,top).setEmission(color).setMaterial(material);
-        Geometry left = new Triangle(leftFront,leftBack,top).setEmission(color).setMaterial(material);
-        Geometry bottom = new Polygon(leftBack,leftFront,rightFront,rightBack).setEmission(color).setMaterial(material);
+        Geometry front = new Triangle(leftFront, rightFront, top).setEmission(color).setMaterial(material);
+        Geometry back = new Triangle(leftBack, rightBack, top).setEmission(color).setMaterial(material);
+        Geometry right = new Triangle(rightBack, rightFront, top).setEmission(color).setMaterial(material);
+        Geometry left = new Triangle(leftFront, leftBack, top).setEmission(color).setMaterial(material);
+        Geometry bottom = new Polygon(leftBack, leftFront, rightFront, rightBack).setEmission(color).setMaterial(material);
 
-        return new Geometries(front,back,right,left,bottom);
+        return new Geometries(front, back, right, left, bottom);
     }
 
 

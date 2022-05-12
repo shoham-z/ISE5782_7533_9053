@@ -67,7 +67,7 @@ public class Camera {
      *
      * @return the vector
      */
-    public Vector getvTo() {
+    public Vector getVTo() {
         return this.vTo;
     }
 
@@ -76,7 +76,7 @@ public class Camera {
      *
      * @return the vector
      */
-    public Vector getvUp() {
+    public Vector getVUp() {
         return this.vUp;
     }
 
@@ -85,7 +85,7 @@ public class Camera {
      *
      * @return the vector
      */
-    public Vector getvRight() {
+    public Vector getVRight() {
         return this.vRight;
     }
 
@@ -94,7 +94,7 @@ public class Camera {
      *
      * @return the height
      */
-    public int getVpHeight() {
+    public int getVPHeight() {
         return this.vpHeight;
     }
 
@@ -103,17 +103,8 @@ public class Camera {
      *
      * @return the width
      */
-    public int getVpWidth() {
+    public int getVPWidth() {
         return this.vpWidth;
-    }
-
-    /**
-     * Getter for the distance between camera and VP
-     *
-     * @return the distance
-     */
-    public double getDistanceFromVp() {
-        return this.distanceFromVp;
     }
 
     /**

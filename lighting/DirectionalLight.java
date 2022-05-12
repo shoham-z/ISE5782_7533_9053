@@ -31,5 +31,4 @@ public class DirectionalLight extends Light implements LightSource {
         return Double.POSITIVE_INFINITY;
     }
 
-
 }

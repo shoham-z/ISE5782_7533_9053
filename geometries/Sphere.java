@@ -4,7 +4,6 @@ import primitives.*;
 
 import static primitives.Util.*;
 
-import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -69,18 +68,16 @@ public class Sphere extends Geometry {
         double th2 = alignZero(this.radius2 - d2);
         if (th2 <= 0) return null;
 
-        List<GeoPoint> intersections = new LinkedList<>();
-
         double th = Math.sqrt(th2);
 
         double t1 = alignZero(tm - th);
-        if (alignZero(t1 - maxDistance) <= 0 && t1 > 0) intersections.add(getGeoPoint(ray,t1));
-
+        if (alignZero(t1 - maxDistance) <= 0) return null;
         double t2 = alignZero(tm + th);
-        if (alignZero(t2 - maxDistance) <= 0 && t2 > 0) intersections.add(getGeoPoint(ray,t2));
+        if (t2 <= 0) return null;
 
-
-        return intersections.isEmpty() ? null : intersections;
+        if (alignZero(t2 - maxDistance) <= 0)
+            return t1 <= 0 ? null : List.of(getGeoPoint(ray, t1));
+        return t1 <= 0 ? List.of(getGeoPoint(ray, t2)) : List.of(getGeoPoint(ray, t1), getGeoPoint(ray, t2));
     }
 
     /**

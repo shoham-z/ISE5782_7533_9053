@@ -1,7 +1,6 @@
 package geometries;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 import primitives.*;
@@ -114,15 +113,12 @@ public class Polygon extends Geometry {
 
         Vector v = ray.getDirection();
 
-        double initialSign = v.dotProduct(normals.get(0));
-        boolean pos = !(initialSign < 0);
-
-        if (isZero(initialSign)) return null;
+        double initialSign = alignZero(v.dotProduct(normals.get(0)));
+        if (initialSign == 0) return null;
 
         for (Vector normal : normals) {
-            double sign = v.dotProduct(normal);
-
-            if (isZero(sign) || (pos && sign < 0) || (!pos && sign > 0)) return null;
+            double sign = alignZero(v.dotProduct(normal));
+            if (sign * initialSign <= 0) return null;
         }
 
         //update that the geometry is the polygon and not the plain

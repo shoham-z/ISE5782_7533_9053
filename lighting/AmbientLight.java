@@ -24,13 +24,4 @@ public class AmbientLight extends Light {
     public AmbientLight() {
         super(Color.BLACK);
     }
-
-    /**
-     * Getter for the color intensity
-     *
-     * @return the color intensity
-     */
-    public Color getIntensity() {
-        return this.intensity;
-    }
 }

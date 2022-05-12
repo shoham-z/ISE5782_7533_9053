@@ -8,7 +8,6 @@ import primitives.*;
 public abstract class Light {
     protected final Color intensity;
 
-
     /**
      * constructor for the light
      *

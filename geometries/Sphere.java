@@ -71,11 +71,11 @@ public class Sphere extends Geometry {
         double th = Math.sqrt(th2);
 
         double t1 = alignZero(tm - th);
-        if (alignZero(t1 - maxDistance) <= 0) return null;
+        if (alignZero(t1 - maxDistance) >= 0) return null;
         double t2 = alignZero(tm + th);
         if (t2 <= 0) return null;
 
-        if (alignZero(t2 - maxDistance) <= 0)
+        if (alignZero(t2 - maxDistance) >= 0)
             return t1 <= 0 ? null : List.of(getGeoPoint(ray, t1));
         return t1 <= 0 ? List.of(getGeoPoint(ray, t2)) : List.of(getGeoPoint(ray, t1), getGeoPoint(ray, t2));
     }

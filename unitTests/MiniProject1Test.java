@@ -13,7 +13,7 @@ import renderer.Camera;
 import renderer.RayTracerBasic;
 import scene.Scene;
 
-/*import geometries.*;
+import geometries.*;
 import lighting.*;
 
 import org.junit.jupiter.api.Test;
@@ -28,7 +28,7 @@ import static java.awt.Color.magenta;
 /**
  * Created several images, with and without anti-aliasing
  */
-/*public class MiniProject1Test {
+public class MiniProject1Test {
 
     private final Color purple = new Color(BLUE).add(new Color(RED));
 
@@ -36,7 +36,7 @@ import static java.awt.Color.magenta;
     /**
      * Produce a picture of a sphere lighted by a directional light *with* anti-aliasing
      */
-    /*@Test
+    @Test
     public void sphereDirectionalAA() {
         Scene scene1 = new Scene("Test scene");
 
@@ -66,7 +66,7 @@ import static java.awt.Color.magenta;
     /**
      * Produce a picture of a sphere lighted by a spot light using anti aliasing
      */
-    /*@Test
+@Test
     public void twoSpheresAA() {
         Scene scene = new Scene("Test scene");
 
@@ -93,7 +93,7 @@ import static java.awt.Color.magenta;
      * Produce a picture of a two triangles lighted by a spot light with a partially
      * transparent Sphere producing partial shadow and anti aliasing
      */
-    /*@Test
+    @Test
     public void trianglesTransparentSphereAA() {
         Scene scene = new Scene("Test scene");
         Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
@@ -123,7 +123,7 @@ import static java.awt.Color.magenta;
     /**
      * Creates an image of sea *with* anti-aliasing
      */
-    /*@Test
+    @Test
     void seaBottomImageAA() {
         Camera camera = new Camera(new Point(0, -100, -1000), new Vector(0, 160, 1000), new Vector(0, 1000, -160))
                 .setVPSize(160, 160) // 16x9 scaled by 20
@@ -155,7 +155,7 @@ import static java.awt.Color.magenta;
                 ));
         scene.geometries.add(new Polygon(new Point(-100, 100, 45), new Point(100, 100, 45),
                 new Point(100, 30, 45), new Point(-100, 30, 45))
-                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40).setKr(0.3))
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(40).setKr(0.3).setKt(0.3))
                 .setEmission(new Color(0, 105, 148)
                 ));
         scene.geometries.add(new Polygon(new Point(20, 20, 40), new Point(0, 20, 40),
@@ -193,4 +193,4 @@ import static java.awt.Color.magenta;
                 .renderImage() //
                 .writeToImage(); //
     }
-}*/
+}

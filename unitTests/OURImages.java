@@ -1,13 +1,12 @@
 import geometries.*;
-import lighting.AmbientLight;
-import lighting.DirectionalLight;
-import lighting.SpotLight;
+import lighting.*;
 import org.junit.jupiter.api.Test;
 import primitives.*;
-import renderer.Camera;
-import renderer.ImageWriter;
-import renderer.RayTracerBasic;
+import renderer.*;
 import scene.Scene;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static java.awt.Color.*;
 
@@ -33,20 +32,6 @@ public class OURImages {
             .setEmission(new Color(GRAY))
             .setMaterial(new Material().setKr(1));
 
-    /**
-     * This test method creates and image with a cylinder and a tube
-     */
-    @Test
-    void cylinderTubeImage() {
-        scene1.geometries.add(cylinder);
-        scene1.lights.add(new DirectionalLight(new Color(GREEN).scale(2), new Vector(-0.9, -0.9, -1)));
-
-        ImageWriter imageWriter = new ImageWriter("CylinderDirectional", 500, 500);
-        camera1.setImageWriter(imageWriter) //
-                .setRayTracer(new RayTracerBasic(scene1)) //
-                .renderImage() //
-                .writeToImage(); //
-    }
 
     @Test
     void shohamImages() {
@@ -234,29 +219,45 @@ public class OURImages {
 
 
     /**
-     * Creates an image of two cubes
+     * Creates an image of few houses
      */
     @Test
-    void justCoupleCubesAndPyramid() {
-        Camera camera = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0))
+    void street() {
+        Camera camera = new Camera(new Point(2000, 100, 450), new Vector(-2, -0.1, -0.5), new Vector(-0.1, 2, 0))
                 .setVPSize(200, 200)
                 .setVPDistance(1000);
 
-        Scene scene = new Scene("Chess..?").setBackground(new Color(135, 206, 235))
-                .setAmbientLight(new AmbientLight(new Color(249, 215, 28).scale(0.5), new Double3(0.5)));
+        Scene scene = new Scene("GroveStreet").setBackground(new Color(135, 206, 235));
 
-        Material material = new Material().setKd(0.5).setKs(0.5).setShininess(5);
-        scene.geometries.add(constructCube(new Point(-50, -50, 10), 50, camera.getVRight(), camera.getVTo(), new Color(YELLOW), material));
-        scene.geometries.add(constructCube(new Point(50, 50, 10), 30, camera.getVRight(), camera.getVTo(), new Color(RED), material));
-        //scene.geometries.add(constructPyramid(new Point(0, 0, 10), 100,100, camera.getvRight().add(new Vector(0.2,0,0)), camera.getvUp().add(new Vector(0,0,-0.4)), new Color(GREEN), material.setKt(0.7)));
-        scene.geometries.add(constructTower(Point.ZERO, Math.PI / 5, 40, camera.getVUp(), new Color(YELLOW), material));
+        // *group House
+        Vector up = new Vector(0, 1, 0);
+        Vector right = new Vector(0, 0, -1);
+
+        Geometries houses = new Geometries();
+
+        houses.add(getHouse(new Point(0, -50, 0), 50, up, right.add(new Vector(0, 0, -0.3))));
+        houses.add(getHouse(new Point(0, -50, -75), 50, up, right));
+
+
+        // *group Car
+        //Geometries car = new Geometries(new Polygon());
+
+
+        // Ground
+        Geometry ground = new Plane(new Point(0, -50, 0), new Vector(0, 1, 0)).setEmission(new Color(86, 125, 70).scale(1.3)).setMaterial(new Material().setKd(0.5));
+
+
+        scene.geometries.add(houses, ground);
+        //scene.geometries.add(car);
         //scene.lights.add(new SpotLight(new Color(magenta), new Point(50, 50, -50), new Vector(-1, -1, 1))
         //        .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
+
+        scene.lights.add(new DirectionalLight(new Color(WHITE).add(new Color(YELLOW)).scale(0.25), new Vector(2, -1, -0.25)));
 
         //scene.lights.add(new SpotLight(purple, new Point(-50, -50, -50), new Vector(1, 1, 1))
         //       .setNarrowBeam(5).setKl(0.00001).setKq(0.00001));
 
-        ImageWriter imageWriter = new ImageWriter("just couple cubes and pyramid", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("GroveStreet", 500, 500);
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
@@ -264,10 +265,42 @@ public class OURImages {
     }
 
 
-    Geometries constructTower(Point base, double angle, double height, Vector vUp, Color color, Material material) {
-        Geometry baseTower = new Cylinder(new Ray(base, vUp), angle * height / (Math.PI / 2), height).setEmission(color).setMaterial(material);
-        Geometry top = new Cone(new Ray(base.add(vUp.normalize().scale(height * 5 / 4)), vUp.normalize().scale(-1)), angle, height / 4).setEmission(color).setMaterial(material);
-        return new Geometries(baseTower, top);
+    /**
+     * Builds a house based at a point, with height and
+     * @param baseBottom Center of the base of the house
+     * @param height Height and width og the house
+     * @param up The up direction of the house, used to place the roof
+     * @param right The right direction, used to place the door
+     * @return A house
+     */
+    Geometries getHouse(Point baseBottom, double height, Vector up, Vector right) {
+        if (up.dotProduct(right) != 0) throw new IllegalArgumentException();
+        Material material = new Material().setKd(0.5).setKs(0.5).setShininess(30);
+        Vector to = right.crossProduct(up).normalize();
+        Geometries house = new Geometries();
+        right = right.normalize();
+        up = up.normalize();
+
+
+        Point frontBottomCenter = baseBottom.add(to.scale(height / 2)).add(to.scale(0.000001));
+
+        double doorWidth = height * 3 / 10;
+        double doorHeight = height * 3 / 5;
+
+        Point doorBottomRight = frontBottomCenter.add(right.scale(doorWidth / 2));
+        Point doorBottomLeft = frontBottomCenter.add(right.scale(-doorWidth / 2));
+        Point doorTopRight = doorBottomRight.add(up.scale(doorHeight));
+        Point doorTopLeft = doorBottomLeft.add(up.scale(doorHeight));
+
+        Geometry door = new Polygon(doorBottomRight, doorTopRight, doorTopLeft, doorBottomLeft).setMaterial(material).setEmission(new Color(175, 42, 42));
+
+
+        Geometries roof = constructPyramid(baseBottom.add(up.scale(height)), height, height, to, up, new Color(164, 74, 74), material);
+
+        Geometries body = constructCube(baseBottom.add(up.scale(height / 2)), height, up, right, new Color(249, 253, 183), material);
+
+        house.add(roof, body, door);
+        return house;
     }
 
 
@@ -331,15 +364,15 @@ public class OURImages {
      *
      * @param center   Center of the Cube
      * @param length   Length of the side of cube
-     * @param vTo      The direction the cube will be facing
+     * @param vUp      The direction the cube will be facing
      * @param vRight   The direction to the right of the cube
      * @param color    The color the cube will have
      * @param material The material of the cube
      * @return The new cube
      */
-    Intersectable constructCube(Point center, double length, Vector vTo, Vector vRight, Color color, Material material) {
-        if (vTo.dotProduct(vRight) != 0) throw new IllegalArgumentException();
-        Vector vUp = vRight.crossProduct(vTo);
+    Geometries constructCube(Point center, double length, Vector vUp, Vector vRight, Color color, Material material) {
+        if (vUp.dotProduct(vRight) != 0) throw new IllegalArgumentException();
+        Vector vTo = vRight.crossProduct(vUp);
         Geometries cube = new Geometries();
         double step = length / 2;
 

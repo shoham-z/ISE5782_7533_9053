@@ -1,5 +1,6 @@
 package scene;
 
+import ComplexObjects.StreetLamp;
 import lighting.*;
 import geometries.*;
 import primitives.*;
@@ -81,5 +82,13 @@ public class Scene {
     public Scene setGeometries(Geometries geometries) {
         this.geometries = geometries;
         return this;
+    }
+
+    /**
+     *
+     */
+    public void addStreetLamp(StreetLamp streetLamp){
+        this.geometries.add(streetLamp.getBody());
+        this.lights.add(streetLamp.getLight());
     }
 }

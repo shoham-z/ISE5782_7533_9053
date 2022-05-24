@@ -2,7 +2,7 @@ package renderer;
 
 import java.util.List;
 import java.util.MissingResourceException;
-
+import java.util.stream.*;
 import primitives.*;
 
 /**
@@ -20,6 +20,20 @@ public class Camera {
     private RayTracerBase rayTracer;
     private SuperSampling antiAliasing = new SuperSampling();
 
+
+
+    public Camera setThreadsCount(int threadsCount) {
+       this.threadsCount = threadsCount;
+       return this;
+    }
+
+    public Camera setPrintInterval(long printInterval) {
+        this.printInterval = printInterval;
+        return this;
+    }
+
+    int threadsCount = 1;
+    long printInterval = 1000l;
     /**
      * Setter for antiAliasingGrid
      *
@@ -181,18 +195,19 @@ public class Camera {
         if (this.vpHeight <= 0 || this.vpWidth <= 0 || this.distanceFromVp <= 0 || this.imageWriter == null || this.rayTracer == null) {
             throw new MissingResourceException("missing resource", "Camera", "");
         }
+
         int yPixels = this.imageWriter.getNy();
         int xPixels = this.imageWriter.getNx();
-        for (int i = 0; i < xPixels; i++) {
-            for (int j = 0; j < yPixels; j++) {
-                List<Ray> rayList = this.constructRay(xPixels, yPixels, i, j);
-                Color myColor = Color.BLACK;
-                for (Ray ray : rayList) {
-                    myColor = myColor.add(this.rayTracer.traceRay(ray));
-                }
-                this.imageWriter.writePixel(i, j, myColor.reduce(rayList.size()));
-            }
+        Pixel.initialize(yPixels, xPixels, printInterval);
+        while (threadsCount-- > 0) {
+            new Thread(() -> {
+                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
+                    this.imageWriter.writePixel(pixel.col,pixel.row,averageColor(xPixels, yPixels, pixel.col, pixel.row));
+            }).start();
         }
+        Pixel.waitToFinish();
+
+
         return this;
     }
 
@@ -219,6 +234,15 @@ public class Camera {
     public void writeToImage() {
         if (this.imageWriter == null) throw new MissingResourceException("missing imageWriter", "Camera", "");
         this.imageWriter.writeToImage();
+    }
+
+    public Color averageColor(int xPixels, int yPixels, int i, int j) {
+        List<Ray> rayList = this.constructRay(xPixels, yPixels, i, j);
+        Color myColor = Color.BLACK;
+        for (Ray ray : rayList) {
+            myColor = myColor.add(this.rayTracer.traceRay(ray));
+        }
+        return myColor.reduce(rayList.size());
     }
 
 }

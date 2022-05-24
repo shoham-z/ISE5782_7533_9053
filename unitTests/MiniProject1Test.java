@@ -1,3 +1,5 @@
+import ComplexObjects.House;
+import ComplexObjects.StreetLamp;
 import geometries.Cylinder;
 import geometries.Geometry;
 import geometries.Sphere;
@@ -21,6 +23,9 @@ import primitives.*;
 import renderer.*;
 
 import scene.Scene;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import static java.awt.Color.*;
 import static java.awt.Color.magenta;
@@ -62,7 +67,76 @@ public class MiniProject1Test {
                 .writeToImage(); //
     }
 
+    /**
+     * Creates an image of few houses
+     */
+    @Test
+    void street() {
+        Camera camera = new Camera(new Point(2000, 100, 450), new Vector(-2, -0.1, -0.5), new Vector(-0.1, 2, 0))
+                .setVPSize(200, 200)
+                .setVPDistance(1000);
 
+        int howManyHouses = 10;
+        double houseSize = 30;
+
+        Scene scene = new Scene("GroveStreet").setBackground(new Color(2, 25, 60));
+
+        // ****geometries start
+
+        // *group House
+        Vector up = new Vector(0, 1, 0);
+        Vector to = new Vector(-1, 0, 0);
+        Vector right = new Vector(0,0,-1);
+
+        List<House> houses = new LinkedList<>();
+        Point housesCenter = new Point(-30, -50, -140);
+
+
+        double step = 2;
+        for (int i = 1; i < howManyHouses * step; i += step) {
+            houses.add(new House(housesCenter.add(to.scale(houseSize * i)), houseSize, up, to.scale(-1)));
+        }
+        scene.geometries.add(new Polygon(housesCenter.add(right.scale(-100)),housesCenter.add(right.scale(-300))
+                ,housesCenter.add(right.scale(-300)).add(to.scale(600)),housesCenter.add(right.scale(-100)).add(to.scale(600)))
+                .setEmission(new Color(BLUE))
+                .setMaterial(new Material().setKr(0.5).setKs(0.5))
+                );
+        scene.geometries.add(new Sphere(camera.getPosition().add(camera.getVTo().scale(2000)),80)
+                .setEmission(new Color(BLUE))
+                .setMaterial(new Material().setKt(1).setKd(0.4).setKs(0.3).setShininess(100)));
+
+
+        //Geometries car = new Geometries(new Polygon());
+
+
+        Geometry ground = new Plane(new Point(0, -50, 0), new Vector(0, 1, 0)).setEmission(new Color(27, 55, 39).scale(0.85)).setMaterial(new Material().setKd(0.5));
+
+        for (House house : houses) scene.geometries.add(house.getHouse());
+        scene.geometries.add(ground);
+        // ****geometries end
+
+        // ****lights start
+        List<StreetLamp> streetLamps = new LinkedList<>();
+
+        for (int i = 1; i < howManyHouses * step/2; i += step) {
+            streetLamps.add(new StreetLamp(new Point(100, -50, -70).add(to.scale(houseSize/2)).add(to.scale(4 * houseSize * i)), 50,
+                    new Color(YELLOW).scale(0.5), up, 1.25));
+        }
+
+        for (StreetLamp streetLamp : streetLamps) scene.addStreetLamp(streetLamp);
+
+        //scene.lights.add(new DirectionalLight(new Color(GREEN), new Vector(0,-0.5,-1)));
+        // ****lights end
+
+        ImageWriter imageWriter = new ImageWriter("GroveStreet", 500, 500);
+        camera.setImageWriter(imageWriter)
+                .setAntiAliasing(33)//
+                .setThreadsCount(3)
+                .setPrintInterval(10l)
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage() //
+                .writeToImage(); //
+    }
     /**
      * Produce a picture of a sphere lighted by a spot light using anti aliasing
      */

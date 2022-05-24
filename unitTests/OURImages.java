@@ -229,22 +229,24 @@ public class OURImages {
                 .setVPSize(200, 200)
                 .setVPDistance(1000);
 
+        int howManyHouses = 20;
+        double houseSize = 30;
+
         Scene scene = new Scene("GroveStreet").setBackground(new Color(2, 25, 60));
 
         // ****geometries start
 
         // *group House
         Vector up = new Vector(0, 1, 0);
-        Vector right = new Vector(0, 0, -1);
         Vector to = new Vector(-1, 0, 0);
 
-        List <House> houses = new LinkedList<>();
-        Point housesCenter = new Point(-60, -50, -140);
-        double houseSize = 35;
+        List<House> houses = new LinkedList<>();
+        Point housesCenter = new Point(-30, -50, -140);
+
 
         double step = 2;
-        for (int i = 1; i < 3*step; i+=step) {
-            houses.add(new House(housesCenter.add(to.scale(houseSize*i)), houseSize, up, to.scale(-1)));
+        for (int i = 1; i < howManyHouses * step; i += step) {
+            houses.add(new House(housesCenter.add(to.scale(houseSize * i)), houseSize, up, to.scale(-1)));
         }
 
         //Geometries car = new Geometries(new Polygon());
@@ -252,28 +254,19 @@ public class OURImages {
 
         Geometry ground = new Plane(new Point(0, -50, 0), new Vector(0, 1, 0)).setEmission(new Color(27, 55, 39).scale(0.85)).setMaterial(new Material().setKd(0.5));
 
-        for (House house:houses) scene.geometries.add(house.getHouse());
+        for (House house : houses) scene.geometries.add(house.getHouse());
         scene.geometries.add(ground);
         // ****geometries end
 
         // ****lights start
-        // front of the houses
-        StreetLamp streetLamp1 = new StreetLamp(new Point(160,-50,80),35,
-                new Color(YELLOW).scale(0.5), up,1.25);
+        List<StreetLamp> streetLamps = new LinkedList<>();
 
-        StreetLamp streetLamp2 = new StreetLamp(new Point(100,-50,-120),35,
-                new Color(YELLOW).scale(0.5), up,1.25);
+        for (int i = 1; i < howManyHouses * step/2; i += step) {
+            streetLamps.add(new StreetLamp(new Point(100, -50, -70).add(to.scale(houseSize/2)).add(to.scale(4 * houseSize * i)), 50,
+                    new Color(YELLOW).scale(0.5), up, 1.25));
+        }
 
-        // back of the houses
-        StreetLamp streetLamp3 = new StreetLamp(new Point(-160,-50,80),35,
-                new Color(YELLOW).scale(0.5), up,1.25);
-
-
-        scene.addStreetLamp(streetLamp1);
-
-        scene.addStreetLamp(streetLamp2);
-
-        scene.addStreetLamp(streetLamp3);
+        for (StreetLamp streetLamp : streetLamps) scene.addStreetLamp(streetLamp);
 
         //scene.lights.add(new DirectionalLight(new Color(GREEN), new Vector(0,-0.5,-1)));
         // ****lights end

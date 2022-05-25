@@ -28,13 +28,14 @@ public class SuperSampling {
     }
 
     /**
-     * @param height
-     * @param width
-     * @param source
-     * @param gridCenter
-     * @param vUp
-     * @param vRight
-     * @return
+     * Constructs all the super-sampling rays through the pixel
+     * @param height Height of the target area
+     * @param width Width of the target area
+     * @param source Source point
+     * @param gridCenter Center point of the area
+     * @param vUp Up direction of the area
+     * @param vRight Right direction of the area
+     * @return List of the rays constructed through the target area
      */
     public List<Ray> constructRaysThroughGrid(double height, double width, Point source, Point gridCenter, Vector vUp, Vector vRight) {
         List<Ray> rays = new LinkedList<>();

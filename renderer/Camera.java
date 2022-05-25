@@ -3,6 +3,7 @@ package renderer;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.stream.*;
+
 import primitives.*;
 
 /**
@@ -19,21 +20,30 @@ public class Camera {
     private ImageWriter imageWriter;
     private RayTracerBase rayTracer;
     private SuperSampling antiAliasing = new SuperSampling();
+    int threadsCount = 1;
+    long printInterval = 1000l;
 
-
-
+    /**
+     * Setter for number of threads
+     * @param threadsCount Number of desired threads
+     * @return This camera object
+     */
     public Camera setThreadsCount(int threadsCount) {
-       this.threadsCount = threadsCount;
-       return this;
+        this.threadsCount = threadsCount;
+        return this;
     }
+
+    /**
+     * Setter for print interval
+     * @param printInterval The print interval
+     * @return This camera object
+     */
 
     public Camera setPrintInterval(long printInterval) {
         this.printInterval = printInterval;
         return this;
     }
 
-    int threadsCount = 1;
-    long printInterval = 1000l;
     /**
      * Setter for antiAliasingGrid
      *
@@ -198,14 +208,15 @@ public class Camera {
 
         int yPixels = this.imageWriter.getNy();
         int xPixels = this.imageWriter.getNx();
+
         Pixel.initialize(yPixels, xPixels, printInterval);
-        while (threadsCount-- > 0) {
-            new Thread(() -> {
-                for (Pixel pixel = new Pixel(); pixel.nextPixel(); Pixel.pixelDone())
-                    this.imageWriter.writePixel(pixel.col,pixel.row,averageColor(xPixels, yPixels, pixel.col, pixel.row));
-            }).start();
-        }
-        Pixel.waitToFinish();
+        IntStream.range(0, yPixels).parallel().forEach(i -> {
+            IntStream.range(0, xPixels).parallel().forEach(j -> {
+                this.imageWriter.writePixel(j,i,averageColor(xPixels, yPixels, j, i));
+                Pixel.pixelDone();
+                Pixel.printPixel();
+            });
+        });
 
 
         return this;
@@ -236,8 +247,17 @@ public class Camera {
         this.imageWriter.writeToImage();
     }
 
-    public Color averageColor(int xPixels, int yPixels, int i, int j) {
-        List<Ray> rayList = this.constructRay(xPixels, yPixels, i, j);
+    /**
+     * Calculates the average Color of the pixel
+     * @param xPixels Number of total pixels on x-axis
+     * @param yPixels Number of total pixels on y-axis
+     * @param j The x-axis index of the color
+     * @param i The y-axis index of the color
+     * @return The average color
+     */
+
+    public Color averageColor(int xPixels, int yPixels, int j, int i) {
+        List<Ray> rayList = this.constructRay(xPixels, yPixels, j, i);
         Color myColor = Color.BLACK;
         for (Ray ray : rayList) {
             myColor = myColor.add(this.rayTracer.traceRay(ray));

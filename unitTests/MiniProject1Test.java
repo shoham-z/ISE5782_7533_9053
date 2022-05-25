@@ -1,34 +1,17 @@
-import ComplexObjects.House;
-import ComplexObjects.StreetLamp;
-import geometries.Cylinder;
-import geometries.Geometry;
-import geometries.Sphere;
-import geometries.Triangle;
-import lighting.AmbientLight;
-import lighting.DirectionalLight;
-import lighting.SpotLight;
-import org.junit.jupiter.api.Test;
-import primitives.Double3;
-import primitives.Material;
-import primitives.Ray;
-import renderer.Camera;
-import renderer.RayTracerBasic;
-import scene.Scene;
-
+import ComplexObjects.*;
 import geometries.*;
-import lighting.*;
 
+import lighting.*;
 import org.junit.jupiter.api.Test;
 import primitives.*;
 import renderer.*;
-
 import scene.Scene;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import static java.awt.Color.*;
-import static java.awt.Color.magenta;
+
 
 /**
  * Created several images, with and without anti-aliasing
@@ -128,11 +111,11 @@ public class MiniProject1Test {
         //scene.lights.add(new DirectionalLight(new Color(GREEN), new Vector(0,-0.5,-1)));
         // ****lights end
 
-        ImageWriter imageWriter = new ImageWriter("GroveStreet", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("Miniproject1", 500, 500);
         camera.setImageWriter(imageWriter)
                 .setAntiAliasing(33)//
                 .setThreadsCount(3)
-                .setPrintInterval(10l)
+                .setPrintInterval(1)
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //
@@ -159,6 +142,7 @@ public class MiniProject1Test {
         camera.setImageWriter(new ImageWriter("refractionTwoSpheresAA", 500, 500)) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .setAntiAliasing(33)
+                .setThreadsCount(2)
                 .renderImage() //
                 .writeToImage();
     }
@@ -190,6 +174,7 @@ public class MiniProject1Test {
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .setAntiAliasing(33)
+                .setThreadsCount(2)
                 .renderImage() //
                 .writeToImage();
     }
@@ -264,6 +249,7 @@ public class MiniProject1Test {
         camera.setImageWriter(imageWriter) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .setAntiAliasing(33)
+                .setThreadsCount(2)
                 .renderImage() //
                 .writeToImage(); //
     }

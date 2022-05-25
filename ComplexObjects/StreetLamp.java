@@ -16,9 +16,9 @@ import static java.awt.Color.white;
  * Internal class to represent street lamps
  */
 public class StreetLamp{
-    Geometry pole;
-    Geometry sphere;
-    LightSource light;
+    private Geometry pole;
+    private Geometry sphere;
+    private LightSource light;
 
     /**
      * Constructor for street lamp

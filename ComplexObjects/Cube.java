@@ -8,7 +8,7 @@ import primitives.Point;
 import primitives.Vector;
 
 public class Cube {
-    Geometries cube;
+    private Geometries cube;
 
     /**
      * Constructor for Cube

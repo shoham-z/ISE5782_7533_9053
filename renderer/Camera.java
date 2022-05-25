@@ -25,6 +25,7 @@ public class Camera {
 
     /**
      * Setter for number of threads
+     *
      * @param threadsCount Number of desired threads
      * @return This camera object
      */
@@ -35,6 +36,7 @@ public class Camera {
 
     /**
      * Setter for print interval
+     *
      * @param printInterval The print interval
      * @return This camera object
      */
@@ -212,7 +214,7 @@ public class Camera {
         Pixel.initialize(yPixels, xPixels, printInterval);
         IntStream.range(0, yPixels).parallel().forEach(i -> {
             IntStream.range(0, xPixels).parallel().forEach(j -> {
-                this.imageWriter.writePixel(j,i,averageColor(xPixels, yPixels, j, i));
+                this.imageWriter.writePixel(j, i, averageColor(xPixels, yPixels, j, i));
                 Pixel.pixelDone();
                 Pixel.printPixel();
             });
@@ -249,10 +251,11 @@ public class Camera {
 
     /**
      * Calculates the average Color of the pixel
+     *
      * @param xPixels Number of total pixels on x-axis
      * @param yPixels Number of total pixels on y-axis
-     * @param j The x-axis index of the color
-     * @param i The y-axis index of the color
+     * @param j       The x-axis index of the color
+     * @param i       The y-axis index of the color
      * @return The average color
      */
 

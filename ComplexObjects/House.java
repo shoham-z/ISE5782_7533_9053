@@ -9,7 +9,7 @@ import primitives.Point;
 import primitives.Vector;
 
 public class House {
-    Geometries house;
+    private Geometries house;
 
 
     public House(Point baseBottom, double height, Vector up, Vector right) {

@@ -85,7 +85,7 @@ public class Scene {
     }
 
     /**
-     *
+     * adds streetlamp to the scene
      */
     public void addStreetLamp(StreetLamp streetLamp){
         this.geometries.add(streetLamp.getBody());

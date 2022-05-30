@@ -10,7 +10,7 @@ import primitives.Point;
 import primitives.Vector;
 
 public class Pyramid {
-    Geometries pyramid;
+    private Geometries pyramid;
 
     /**
      * Constructor for Pyramid

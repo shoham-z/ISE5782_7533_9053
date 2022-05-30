@@ -14,7 +14,7 @@ public class SuperSampling {
     /**
      * Width\Height of the grid
      */
-    public double size = 1;
+    public int size = 1;
 
     /**
      * Setter for size of super-sampling
@@ -22,7 +22,7 @@ public class SuperSampling {
      * @param size Width\Height of the grid
      * @return This SuperSampling object
      */
-    public SuperSampling setSize(double size) {
+    public SuperSampling setSize(int size) {
         this.size = size;
         return this;
     }
@@ -38,7 +38,7 @@ public class SuperSampling {
      * @return List of the rays constructed through the target area
      */
     public Ray[][] constructRaysThroughGrid(double height, double width, Point source, Point gridCenter, Vector vUp, Vector vRight) {
-        Ray[][] rays = new ;
+        Ray[][] rays = new Ray[this.size][this.size];
         double xJ;
         double yI = height / (2 * this.size) - (height / 2);
         Point destination;
@@ -48,7 +48,7 @@ public class SuperSampling {
                 destination = gridCenter;
                 if (xJ != 0) destination = destination.add(vRight.scale(xJ));
                 if (yI != 0) destination = destination.add(vUp.scale(yI));
-                rays.add(new Ray(source, destination.subtract(source)));
+                rays[i][j]=(new Ray(source, destination.subtract(source)));
                 xJ = alignZero(xJ + width / this.size);
                 if (xJ > (width / 2))
                     xJ = -width / (2 * this.size);

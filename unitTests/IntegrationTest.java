@@ -29,11 +29,11 @@ public class IntegrationTest {
         List<Point> temp;
         for (int i = 0; i < VPheight; i++) {
             for (int j = 0; j < VPwidth; j++) {
-                List <Ray> rayList= camera.constructRay(this.nx, this.ny, j, i);
+                /*List <Ray> rayList= camera.constructRay(this.nx, this.ny, j, i);
                 for (Ray ray: rayList) {
                     temp = geometry.findIntersections(ray);
                     if (temp != null) countIntersections += temp.size();
-                }
+                }*/
 
 
 

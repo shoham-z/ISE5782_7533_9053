@@ -262,12 +262,19 @@ public class Camera {
      */
 
     public Color averageColor(int xPixels, int yPixels, int j, int i) {
-        List<Ray> rayList = this.constructRay(xPixels, yPixels, j, i);
+        Ray[][] rayList = this.constructRay(xPixels, yPixels, j, i);
+        return recursiveAverageColor(rayList,1);
+
+    }
+    private Color recursiveAverageColor(Ray[][] rayList, int depth)
+    {
         Color myColor = Color.BLACK;
-        for (Ray ray : rayList) {
-            myColor = myColor.add(this.rayTracer.traceRay(ray));
+        for (int k = 0; k <this.antiAliasing.size; k++) {
+            for (int l = 0; l <this.antiAliasing.size ; l++) {
+                myColor = myColor.add(this.rayTracer.traceRay(rayList[k][l]));
+            }
         }
-        return myColor.reduce(rayList.size());
+        return myColor.reduce(this.antiAliasing.size*this.antiAliasing.size);
     }
 
 }

@@ -1,10 +1,13 @@
 import ComplexObjects.House;
 import ComplexObjects.StreetLamp;
 import geometries.*;
-import lighting.*;
+import lighting.DirectionalLight;
+import lighting.SpotLight;
 import org.junit.jupiter.api.Test;
 import primitives.*;
-import renderer.*;
+import renderer.Camera;
+import renderer.ImageWriter;
+import renderer.RayTracerBasic;
 import scene.Scene;
 
 import java.util.LinkedList;
@@ -13,27 +16,71 @@ import java.util.List;
 import static java.awt.Color.*;
 
 public class OURImages {
-    private Camera camera1 = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
-            .setVPSize(150, 150) //
-            .setVPDistance(1000);
-    private Scene scene1 = new Scene("Test scene");
-
-    private Point spPL = new Point(-50, 0, 25); // Sphere test Position of Light
-
-    private Geometry tube = new Tube(new Ray(new Point(0, 0, -40), new Vector(0, 1, 0)), 30)
-            .setEmission(new Color(GREEN).reduce(2)) //
-            .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300).setKt(0.5));
-
     private final Color purple = new Color(BLUE).add(new Color(RED));
 
-    private Geometry cylinder = new Cylinder(new Ray(new Point(-30, -20, -10), new Vector(1, 1, 1)), 13, 100)
-            .setEmission(purple.reduce(2)) //
-            .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(300));
+    /**
+     * Creates an image of few houses
+     */
+    @Test
+    void street() {
+        Camera camera = new Camera(new Point(2000, 100, 450), new Vector(-2, -0.1, -0.5), new Vector(-0.1, 2, 0))
+                .setVPSize(200, 200)
+                .setVPDistance(1000);
 
-    private Geometry plane = new Plane(new Point(0, 0, -80), new Vector(1, 0, -1))
-            .setEmission(new Color(GRAY))
-            .setMaterial(new Material().setKr(1));
+        int howManyHouses = 300;
+        double houseSize = 30;
 
+        Scene scene = new Scene("GroveStreet").setBackground(new Color(2, 25, 60));
+
+        // ****geometries start
+
+        // *group House
+        Vector up = new Vector(0, 1, 0);
+        Vector to = new Vector(-1, 0, -0.05);
+        Vector right = new Vector(0, 0, -1);
+
+        List<House> houses = new LinkedList<>();
+        Point housesCenter = new Point(-30, -50, -140).add(camera.getVRight().scale(115)).add(to.scale(-500));
+
+
+
+        double step = 2;
+        for (int i = 1; i < howManyHouses * step; i += step) {
+            houses.add(new House(housesCenter.add(to.scale(houseSize * i)), houseSize, up, to.scale(-1)));
+        }
+
+
+        //Geometries car = new Geometries(new Polygon());
+
+
+        Geometry ground = new Plane(new Point(0, -50, 0), new Vector(0, 1, 0)).setEmission(new Color(27, 55, 39).scale(0.85)).setMaterial(new Material().setKd(0.5));
+
+        for (House house : houses) scene.geometries.add(house.getHouse());
+        scene.geometries.add(ground);
+        // ****geometries end
+
+        // ****lights start
+        List<StreetLamp> streetLamps = new LinkedList<>();
+
+        for (int i = 1; i < howManyHouses * step; i += 4 * step) {
+            streetLamps.add(new StreetLamp(housesCenter.add(right.scale(-100)).add(to.scale(houseSize / 2)).add(to.scale(houseSize * i)), 50,
+                    new Color(YELLOW).scale(0.5), up, 1.25));
+        }
+
+        for (StreetLamp streetLamp : streetLamps) scene.addStreetLamp(streetLamp);
+
+        //scene.lights.add(new DirectionalLight(new Color(GREEN), new Vector(0,-0.5,-1)));
+        // ****lights end
+
+        ImageWriter imageWriter = new ImageWriter("GroveStreet2", 500, 500);
+        camera.setImageWriter(imageWriter)
+                .setAntiAliasing(17)//
+                .setThreadsCount(3)
+                .setPrintInterval(1)
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage() //
+                .writeToImage(); //
+    }
 
     @Test
     void shohamImages() {
@@ -218,8 +265,6 @@ public class OURImages {
                 .renderImage() //
                 .writeToImage(); //
     }
-
-
 
 
     Intersectable constructCar(Point location, double length, double width, double height, Vector vTo, Vector vRight, Color color) {

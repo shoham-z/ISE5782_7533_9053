@@ -182,7 +182,7 @@ public class Camera {
      * @param i  row number of pixel (vertical)
      * @return the ray
      */
-    public List<Ray> constructRay(int nX, int nY, int j, int i) {
+    public Ray[][] constructRay(int nX, int nY, int j, int i) {
         Point pIJ = this.position.add(this.vTo.scale(this.distanceFromVp));
         double sizeOfX = (double) this.vpWidth / nX;
         double sizeOfY = (double) this.vpHeight / nY;
@@ -227,8 +227,9 @@ public class Camera {
      *
      * @param interval size of the space between 2 parallel grid lines
      * @param color    the color
+     * @return This camera object
      */
-    public void printGrid(int interval, Color color) {
+    public Camera printGrid(int interval, Color color) {
         if (this.imageWriter == null) throw new MissingResourceException("missing imageWriter", "Camera", "");
         int yPixels = this.imageWriter.getNy();
         int xPixels = this.imageWriter.getNx();
@@ -237,6 +238,7 @@ public class Camera {
                 if (i % interval == 0 || j % interval == 0) this.imageWriter.writePixel(i, j, color);
             }
         }
+        return this;
     }
 
     /**

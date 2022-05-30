@@ -37,8 +37,8 @@ public class SuperSampling {
      * @param vRight Right direction of the area
      * @return List of the rays constructed through the target area
      */
-    public List<Ray> constructRaysThroughGrid(double height, double width, Point source, Point gridCenter, Vector vUp, Vector vRight) {
-        List<Ray> rays = new LinkedList<>();
+    public Ray[][] constructRaysThroughGrid(double height, double width, Point source, Point gridCenter, Vector vUp, Vector vRight) {
+        Ray[][] rays = new ;
         double xJ;
         double yI = height / (2 * this.size) - (height / 2);
         Point destination;

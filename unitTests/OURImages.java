@@ -1,7 +1,11 @@
+import ComplexObjects.Box;
+import ComplexObjects.Cube;
 import ComplexObjects.House;
 import ComplexObjects.StreetLamp;
 import geometries.*;
 import lighting.DirectionalLight;
+import lighting.LightSource;
+import lighting.PointLight;
 import lighting.SpotLight;
 import org.junit.jupiter.api.Test;
 import primitives.*;
@@ -267,23 +271,91 @@ public class OURImages {
     }
 
 
-    Intersectable constructCar(Point location, double length, double width, double height, Vector vTo, Vector vRight, Color color) {
-        if (vTo.dotProduct(vRight) != 0) throw new IllegalArgumentException();
+    @Test
+    void carImage(){
+        Scene scene = new Scene("car")
+                .setBackground(new Color(0,128,0));
+        Camera camera = new Camera(new Point(0,0,2000),new Vector(0,0,-1),new Vector(0,1,0))
+                .setVPSize(300,300)
+                .setVPDistance(2000);
+        scene = constructCar(scene, new Point(0,0,0),40,20,15,new Vector(1,0.5,-1).normalize(),new Vector(0,1,0.5).normalize(),new Color(YELLOW),new Material().setKd(0.3).setKs(0.4).setKr(0.2));
+
+        //scene.geometries.add(new Plane(new Point(0,0,-50),new Vector(0,0,1))
+        //        .setEmission(new Color(GRAY)).setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(30)));
+
+        camera.setImageWriter(new ImageWriter("Car", 500, 500)) //
+                .setRayTracer(new RayTracerBasic(scene)) //
+                //.setAntiAliasing(4)
+                //.setThreadsCount(2)
+                .renderImage() //
+                .writeToImage(); //
+    }
+    Scene constructCar(Scene scene,Point location, double length, double width, double height, Vector vTo, Vector vUp, Color color,Material material) {
+        if (vTo.dotProduct(vUp) != 0) throw new IllegalArgumentException();
         Geometries car = new Geometries();
 
-        Vector vUp = vRight.crossProduct(vTo);
-        Point frontCenter = location.add(vTo.scale(length / 2));
-        Point frontTopCenter = frontCenter.add(vUp.scale(height / 2));
-        Point frontBottomCenter = frontCenter.add(vUp.scale(-height / 2));
-        Point frontTopRight = frontTopCenter.add(vRight.scale(width / 2));
-        Point frontTopLeft = frontTopCenter.add(vRight.scale(-width / 2));
-        Point frontBottomRight = frontBottomCenter.add(vRight.scale(width / 2));
-        Point frontBottomLeft = frontBottomCenter.add(vRight.scale(-width / 2));
-        Geometry front = new Polygon(frontTopRight, frontTopLeft, frontBottomLeft, frontBottomRight).setEmission(color);
-        car.add(front);
+        Vector vRight = vTo.crossProduct(vUp).normalize();
+
+
+        // Body of the car
+        Box body = new Box(location,length,width,height,vUp,vRight,color,material);
+        car.add(body.getBox());
+        scene.geometries.add(car);
+
+        // Headlights
+        Point frontCenter = location.add(vTo.scale(length/2+length*0.01));
+        Geometry rightHeadLightSphere = new Sphere(frontCenter.add(vRight.scale(width/2-width*0.1)),width/2*1/3)
+                .setMaterial(new Material().setKt(0.6)).setEmission(new Color(YELLOW).add(new Color(WHITE)));
+        LightSource rightHeadLight= new SpotLight(new Color(YELLOW).add(new Color(WHITE)),frontCenter.add(vRight.scale(width/2-width*0.1)),vTo)
+                .setKl(0.000001).setKq(0.0000001);
+        car.add(rightHeadLightSphere);
+        scene.lights.add(rightHeadLight);
+
+        Geometry leftHeadLightSphere = new Sphere(frontCenter.add(vRight.scale(-width/2+width*0.1)),width/2*1/3)
+                .setMaterial(new Material().setKt(0.6)).setEmission(new Color(YELLOW).add(new Color(WHITE)));
+        LightSource leftHeadLight= new SpotLight(new Color(YELLOW).add(new Color(WHITE)),frontCenter.add(vRight.scale(-width/2+width*0.1)),vTo)
+                .setKl(0.000001).setKq(0.0000001);
+        car.add(leftHeadLightSphere);
+        scene.lights.add(leftHeadLight);
+
+
+        // Taillights
+        Point backCenter = location.add(vTo.scale(-length/2-length*0.01));
+        Geometry rightTailLightSphere = new Sphere(backCenter.add(vRight.scale(width/2-width*0.1)),width/2*1/3)
+                .setMaterial(new Material().setKt(0.6)).setEmission(new Color(RED));
+        LightSource rightTailLight= new SpotLight(new Color(RED),backCenter.add(vRight.scale(width/2-width*0.1)),vTo.scale(-1))
+                .setKl(0.000001).setKq(0.0000001);
+        car.add(rightTailLightSphere);
+        scene.lights.add(rightTailLight);
+
+        Geometry leftTailLightSphere = new Sphere(backCenter.add(vRight.scale(-width/2+width*0.1)),width/2*1/3)
+                .setMaterial(new Material().setKt(0.6)).setEmission(new Color(RED));
+        LightSource leftTailLight= new SpotLight(new Color(RED),backCenter.add(vRight.scale(-width/2+width*0.1)),vTo.scale(-1))
+                .setKl(0.000001).setKq(0.0000001);
+        car.add(leftTailLightSphere);
+        scene.lights.add(leftTailLight);
+
+
+        // Wheels
+        Point frontCenterWheel = location.add(vTo.scale(length/2*4/5)).add(vUp.scale(-height/2-height/6));
+        Geometry rightFrontWheel = new Sphere(frontCenterWheel.add(vRight.scale(width/4*1.5)), width/5)
+                .setEmission(new Color(BLACK)).setMaterial(new Material().setKd(0.4).setKs(0.4));
+        scene.geometries.add(rightFrontWheel);
+        Geometry leftFrontWheel = new Sphere(frontCenterWheel.add(vRight.scale(-width/4*1.5)), width/5)
+                .setEmission(new Color(BLACK)).setMaterial(new Material().setKd(0.4).setKs(0.4));
+        scene.geometries.add(leftFrontWheel);
+
+        Point backCenterWheel = location.add(vTo.scale(-length/2*4/5)).add(vUp.scale(-height/2-height/6));
+        Geometry rightBackWheel = new Sphere(backCenterWheel.add(vRight.scale(width/4*1.5)), width/5)
+                .setEmission(new Color(BLACK)).setMaterial(new Material().setKd(0.4).setKs(0.4));
+        scene.geometries.add(rightBackWheel);
+        Geometry leftBackWheel = new Sphere(backCenterWheel.add(vRight.scale(-width/4*1.5)), width/5)
+                .setEmission(new Color(BLACK)).setMaterial(new Material().setKd(0.4).setKs(0.4));
+        scene.geometries.add(leftBackWheel);
 
         ///NEED TO FINISH
-        return car;
+        return scene;
+
     }
 
 }

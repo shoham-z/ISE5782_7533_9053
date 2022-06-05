@@ -59,7 +59,7 @@ public class MiniProject1Test {
                 .setVPSize(200, 200)
                 .setVPDistance(1000);
 
-        int howManyHouses = 10;
+        int howManyHouses = 400;
         double houseSize = 30;
 
         Scene scene = new Scene("GroveStreet").setBackground(new Color(2, 25, 60));
@@ -111,17 +111,17 @@ public class MiniProject1Test {
         //scene.lights.add(new DirectionalLight(new Color(GREEN), new Vector(0,-0.5,-1)));
         // ****lights end
 
-        ImageWriter imageWriter = new ImageWriter("Miniproject1", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("Mini-project1", 500, 500);
         camera.setImageWriter(imageWriter)
-                .setAntiAliasing(33)//
-                .setThreadsCount(3)
+                .setAntiAliasing(17)//
+                .setThreadsCount(2)
                 .setPrintInterval(1)
                 .setRayTracer(new RayTracerBasic(scene)) //
                 .renderImage() //
                 .writeToImage(); //
     }
     /**
-     * Produce a picture of a sphere lighted by a spot light using anti aliasing
+     * Produce a picture of a sphere lighted by a spotlight using anti aliasing
      */
 @Test
     public void twoSpheresAA() {
@@ -148,7 +148,7 @@ public class MiniProject1Test {
     }
 
     /**
-     * Produce a picture of a two triangles lighted by a spot light with a partially
+     * Produce a picture of two triangles lighted by a spotlight with a partially
      * transparent Sphere producing partial shadow and anti aliasing
      */
     @Test

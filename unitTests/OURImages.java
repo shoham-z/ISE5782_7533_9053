@@ -278,8 +278,10 @@ public class OURImages {
         Camera camera = new Camera(new Point(0,0,2000),new Vector(0,0,-1),new Vector(0,1,0))
                 .setVPSize(300,300)
                 .setVPDistance(2000);
-        scene = constructCar(scene, new Point(0,0,0),40,20,15,new Vector(1,0.5,-1).normalize(),new Vector(0,1,0.5).normalize(),new Color(YELLOW),new Material().setKd(0.3).setKs(0.4).setKr(0.2));
+        scene = constructCar(scene, new Point(0,0,0),100,40,20,new Vector(1,0.5,-1).normalize(),new Vector(0,1,0.5).normalize(),new Color(BLACK).add(new Color(10,10,10)),new Material().setKd(1).setKs(0).setKr(0));
 
+
+        scene.lights.add(new SpotLight(new Color(WHITE).add(new Color(YELLOW)).scale(0.5),camera.getPosition().add(camera.getVTo().scale(2000).add(camera.getVUp().scale(500))),camera.getVTo().add(camera.getVUp().scale(-0.5))));
         //scene.geometries.add(new Plane(new Point(0,0,-50),new Vector(0,0,1))
         //        .setEmission(new Color(GRAY)).setMaterial(new Material().setKd(0.4).setKs(0.3).setShininess(30)));
 
@@ -352,6 +354,55 @@ public class OURImages {
         Geometry leftBackWheel = new Sphere(backCenterWheel.add(vRight.scale(-width/4*1.5)), width/5)
                 .setEmission(new Color(BLACK)).setMaterial(new Material().setKd(0.4).setKs(0.4));
         scene.geometries.add(leftBackWheel);
+
+        // windows
+        Point topCenter = location.add(vUp.scale(height/2));
+
+        Point rightFrontBottomWindow = topCenter.add(vRight.scale(width/2)).add(vTo.scale(length/3.5));
+        Point leftFrontBottomWindow = topCenter.add(vRight.scale(-width/2)).add(vTo.scale(length/3.5));
+        Point rightBackBottomWindow = topCenter.add(vRight.scale(width/2)).add(vTo.scale(-length/3.5));
+        Point leftBackBottomWindow = topCenter.add(vRight.scale(-width/2)).add(vTo.scale(-length/3.5));
+
+        Geometry rightFront = new Cylinder(new Ray(rightFrontBottomWindow,vUp), width/100, height)
+                .setEmission(new Color(GRAY));
+        scene.geometries.add(rightFront);
+
+        Geometry leftFront = new Cylinder(new Ray(leftFrontBottomWindow,vUp), width/100, height)
+                .setEmission(new Color(GRAY));
+        scene.geometries.add(leftFront);
+
+        Geometry rightBack = new Cylinder(new Ray(rightBackBottomWindow,vUp), width/100, height)
+                .setEmission(new Color(GRAY));
+        scene.geometries.add(rightBack);
+
+        Geometry leftBack = new Cylinder(new Ray(leftBackBottomWindow,vUp), width/100, height)
+                .setEmission(new Color(GRAY));
+        scene.geometries.add(leftBack);
+
+        Point rightFrontTopWindow = rightFrontBottomWindow.add(vUp.scale(height));
+        Point leftFrontTopWindow = leftFrontBottomWindow.add(vUp.scale(height));
+        Point rightBackTopWindow = rightBackBottomWindow.add(vUp.scale(height));
+        Point leftBackTopWindow = leftBackBottomWindow.add(vUp.scale(height));
+
+        Geometry rightWindow = new Polygon(rightFrontTopWindow,rightBackTopWindow, rightBackBottomWindow,rightFrontBottomWindow)
+                .setMaterial(new Material().setKt(0.8));
+        scene.geometries.add(rightWindow);
+
+        Geometry leftWindow = new Polygon(leftFrontTopWindow,leftBackTopWindow, leftBackBottomWindow,leftFrontBottomWindow)
+                .setMaterial(new Material().setKt(0.8));
+        scene.geometries.add(leftWindow);
+
+        Geometry frontWindow = new Polygon(rightFrontBottomWindow, rightFrontTopWindow, leftFrontTopWindow,leftFrontBottomWindow)
+                .setMaterial(new Material().setKt(0.8));
+        scene.geometries.add(frontWindow);
+
+        Geometry backWindow = new Polygon(rightBackBottomWindow, rightBackTopWindow, leftBackTopWindow,leftBackBottomWindow)
+                .setMaterial(new Material().setKt(0.8));
+        scene.geometries.add(backWindow);
+
+        Geometry roof = new Polygon(leftBackTopWindow,rightBackTopWindow,rightFrontTopWindow,leftFrontTopWindow)
+                .setEmission(color).setMaterial(material);
+        scene.geometries.add(roof);
 
         ///NEED TO FINISH
         return scene;

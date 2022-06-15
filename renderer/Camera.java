@@ -1,10 +1,12 @@
 package renderer;
 
-import java.util.List;
-import java.util.MissingResourceException;
-import java.util.stream.*;
+import primitives.Color;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
-import primitives.*;
+import java.util.MissingResourceException;
+import java.util.stream.IntStream;
 
 /**
  * Camera class represents a 3D camera Which will be the "eye" to render the photo.
@@ -217,9 +219,12 @@ public class Camera {
                 this.imageWriter.writePixel(j, i, averageColor(xPixels, yPixels, j, i));
                 Pixel.pixelDone();
                 Pixel.printPixel();
-            });
-        });
+                if (j%50==0)this.writeToImage();
 
+            });
+            System.out.printf("%d/%d%n", Pixel.last ,xPixels*yPixels);
+        });
+        Pixel.waitToFinish();
 
         return this;
     }
@@ -263,18 +268,18 @@ public class Camera {
 
     public Color averageColor(int xPixels, int yPixels, int j, int i) {
         Ray[][] rayList = this.constructRay(xPixels, yPixels, j, i);
-        return recursiveAverageColor(rayList,1);
+        return recursiveAverageColor(rayList, 1);
 
     }
-    private Color recursiveAverageColor(Ray[][] rayList, int depth)
-    {
+
+    private Color recursiveAverageColor(Ray[][] rayList, int depth) {
         Color myColor = Color.BLACK;
-        for (int k = 0; k <this.antiAliasing.size; k++) {
-            for (int l = 0; l <this.antiAliasing.size ; l++) {
+        for (int k = 0; k < this.antiAliasing.size; k++) {
+            for (int l = 0; l < this.antiAliasing.size; l++) {
                 myColor = myColor.add(this.rayTracer.traceRay(rayList[k][l]));
             }
         }
-        return myColor.reduce(this.antiAliasing.size*this.antiAliasing.size);
+        return myColor.reduce(this.antiAliasing.size * this.antiAliasing.size);
     }
 
 }

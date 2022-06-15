@@ -20,6 +20,34 @@ import static java.awt.Color.*;
 public class OURImages {
     private final Color purple = new Color(BLUE).add(new Color(RED));
 
+    @Test
+    void testCylinder(){
+        Camera camera = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0))
+                .setVPSize(160, 160) // 16x9 scaled by 20
+                .setVPDistance(1000);
+
+        Scene scene = new Scene("Cylinder..?");//.setBackground(new Color(135, 206, 235));
+        //.setAmbientLight(new AmbientLight(new Color(249,215,28),new Double3(0.5)))
+
+        scene.geometries.add(new Cylinder(new Ray(new Point(0, 0, 50), camera.getVTo().subtract(camera.getVUp())), 50d, 100d)
+                .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(20).setKt(0))
+                .setEmission(new Color(RED).reduce(2)));
+
+
+
+        scene.lights.add(new SpotLight(new Color(magenta), new Point(100, 100, 0), new Vector(-1, -1, 1))
+                .setNarrowBeam(10).setKl(0.00001).setKq(0.00001));
+        scene.lights.add(new SpotLight(purple, new Point(-100, -100, 0), new Vector(1, 1, 1))
+                .setNarrowBeam(10).setKl(0.00001).setKq(0.00001));
+
+        ImageWriter imageWriter = new ImageWriter("Cylinder", 500, 500);
+        camera.setImageWriter(imageWriter) //
+                .setRayTracer(new RayTracerBasic(scene)) //
+                .renderImage() //
+                .writeToImage(); //
+    }
+
+
     /**
      * Creates an image of few houses
      */
@@ -29,7 +57,7 @@ public class OURImages {
                 .setVPSize(200, 200)
                 .setVPDistance(1000);
 
-        int howManyHouses = 200;
+        int howManyHouses = 85;
         double houseSize = 30;
 
         Scene scene = new Scene("GroveStreet").setBackground(new Color(2, 25, 60));
@@ -45,10 +73,10 @@ public class OURImages {
         Point housesCenter = new Point(-30, -50, -140).add(camera.getVRight().scale(115)).add(to.scale(-500));
 
 
-
         double step = 2;
         for (int i = 1; i < howManyHouses * step; i += step) {
-            houses.add(new House(housesCenter.add(to.scale(houseSize * i)), houseSize, up, to.scale(-1)));
+            double rand = Math.random()*houseSize+houseSize;
+            houses.add(new House(housesCenter.add(to.scale(houseSize * i + rand)), houseSize, up, to.scale(-1)));
         }
 
         Geometry ground = new Plane(new Point(0, -50, 0), new Vector(0, 1, 0)).setEmission(new Color(27, 55, 39).scale(0.85)).setMaterial(new Material().setKd(0.5));
@@ -61,7 +89,7 @@ public class OURImages {
         List<StreetLamp> streetLamps = new LinkedList<>();
 
         for (int i = 1; i < howManyHouses * step; i += 4 * step) {
-            streetLamps.add(new StreetLamp(housesCenter.add(right.scale(-250)).add(to.scale(houseSize / 2)).add(to.scale(houseSize * i)), 50,
+            streetLamps.add(new StreetLamp(housesCenter.add(right.scale(-275)).add(to.scale(houseSize / 2)).add(to.scale(houseSize * i)), 50,
                     new Color(YELLOW).scale(0.5), up, 1.25));
         }
 
@@ -71,26 +99,27 @@ public class OURImages {
 
         // ****Cars start
 
-        Point carsBase = housesCenter.add(right.scale(-200)).add(up.scale(houseSize/3)).add(to.scale(-200));
-        Color carColor = new Color(33,79,198);
+        Point carsBase = housesCenter.add(right.scale(-200)).add(up.scale(houseSize / 3)).add(to.scale(-200));
+        Color carColor;
         Material carMaterial = new Material().setKd(0.1);
 
         for (int i = 1; i < howManyHouses * step; i += 2 * step) {
-            scene = constructCar(scene,carsBase.add(to.scale(houseSize * i)),houseSize,houseSize/3,houseSize/6,to, up,carColor,carMaterial);
+            carColor = new Color(Math.random()*255, Math.random()*255, Math.random()*255).add(new Color(50,50,50));
+            scene = constructCar(scene, carsBase.add(to.scale(houseSize * i + (Math.random() * houseSize))), houseSize, houseSize / 3, houseSize / 6, to, up, carColor, carMaterial);
         }
         // ****Cars end
 
 
         // ****Road start
-        Geometry road = new Polygon(carsBase.add(up.scale(-houseSize/3)).add(right.scale(houseSize)).add(to.scale(1000000)),
-                carsBase.add(up.scale(-houseSize/3)).add(right.scale(houseSize)).add(to.scale(-1000000)),
-                carsBase.add(up.scale(-houseSize/3)).add(right.scale(-houseSize)).add(to.scale(-1000000)),
-                carsBase.add(up.scale(-houseSize/3)).add(right.scale(-houseSize)).add(to.scale(1000000)));
+        Geometry road = new Polygon(carsBase.add(up.scale(-houseSize / 3)).add(right.scale(houseSize)).add(to.scale(1000000)),
+                carsBase.add(up.scale(-houseSize / 3)).add(right.scale(houseSize)).add(to.scale(-1000000)),
+                carsBase.add(up.scale(-houseSize / 3)).add(right.scale(-houseSize)).add(to.scale(-1000000)),
+                carsBase.add(up.scale(-houseSize / 3)).add(right.scale(-houseSize)).add(to.scale(1000000)));
         scene.geometries.add(road);
 
         // ****Road end
 
-        ImageWriter imageWriter = new ImageWriter("GroveStreet2", 500, 500);
+        ImageWriter imageWriter = new ImageWriter("GroveStreet", 500, 500);
         camera.setImageWriter(imageWriter)
                 .setAntiAliasing(1)//
                 .setThreadsCount(2)
@@ -285,27 +314,27 @@ public class OURImages {
     }
 
     @Test
-    void carImage(){
+    void carImage() {
         Scene scene = new Scene("car")
-                .setBackground(new Color(0,128,0));
-        Camera camera = new Camera(new Point(0,0,2000),new Vector(0,0,-1),new Vector(0,1,0))
-                .setVPSize(300,300)
+                .setBackground(new Color(0, 128, 0));
+        Camera camera = new Camera(new Point(0, 0, 2000), new Vector(0, 0, -1), new Vector(0, 1, 0))
+                .setVPSize(300, 300)
                 .setVPDistance(2000);
-        scene = constructCar(scene, new Point(0,0,0),100,40,20,new Vector(1,0.5,-1).normalize(),new Vector(0,1,0.5).normalize(),new Color(BLACK).add(new Color(10,10,10)),new Material().setKd(0.8).setKs(0).setKr(0));
+        scene = constructCar(scene, new Point(0, 0, 0), 100, 40, 20, new Vector(1, 0.5, -1).normalize(), new Vector(0, 1, 0.5).normalize(), new Color(BLACK).add(new Color(10, 10, 10)), new Material().setKd(0.8).setKs(0).setKr(0));
 
 
-        scene.lights.add(new SpotLight(new Color(WHITE).add(new Color(YELLOW)).scale(0.5),camera.getPosition().add(camera.getVTo().scale(2000).add(camera.getVUp().scale(500))),camera.getVTo().add(camera.getVUp().scale(-1))));
+        scene.lights.add(new SpotLight(new Color(WHITE).add(new Color(YELLOW)).scale(0.5), camera.getPosition().add(camera.getVTo().scale(2000).add(camera.getVUp().scale(500))), camera.getVTo().add(camera.getVUp().scale(-1))));
 
 
         camera.setImageWriter(new ImageWriter("Car", 500, 500)) //
                 .setRayTracer(new RayTracerBasic(scene)) //
                 //.setAntiAliasing(4)
-                //.setThreadsCount(2)
+                .setThreadsCount(2)
                 .renderImage() //
                 .writeToImage(); //
     }
 
-    Scene constructCar(Scene scene,Point location, double length, double width, double height, Vector vTo, Vector vUp, Color color,Material material) {
+    Scene constructCar(Scene scene, Point location, double length, double width, double height, Vector vTo, Vector vUp, Color color, Material material) {
         if (vTo.dotProduct(vUp) != 0) throw new IllegalArgumentException();
         Geometries car = new Geometries();
 
@@ -313,82 +342,82 @@ public class OURImages {
 
 
         // Body of the car
-        Box body = new Box(location,length,width,height,vUp,vRight,color,material);
+        Box body = new Box(location, length, width, height, vUp, vRight, color, material);
         car.add(body.getBox());
         scene.geometries.add(car);
 
         // Headlights
-        Point frontCenter = location.add(vTo.scale(length/2+length*0.01));
-        Geometry rightHeadLightSphere = new Sphere(frontCenter.add(vRight.scale(width/2-width*0.1)),width/2*1/3)
+        Point frontCenter = location.add(vTo.scale(length / 2 + length * 0.01));
+        Geometry rightHeadLightSphere = new Sphere(frontCenter.add(vRight.scale(width / 2 - width * 0.1)), width / 2 * 1 / 3)
                 .setMaterial(new Material().setKt(0.6)).setEmission(new Color(YELLOW).add(new Color(WHITE)).scale(0.3));
-        LightSource rightHeadLight= new SpotLight(new Color(YELLOW).add(new Color(WHITE)).scale(0.3),frontCenter.add(vRight.scale(width/2-width*0.1)),vTo)
+        LightSource rightHeadLight = new SpotLight(new Color(YELLOW).add(new Color(WHITE)).scale(0.3), frontCenter.add(vRight.scale(width / 2 - width * 0.1)), vTo)
                 .setKl(0.000001).setKq(0.0000001);
         car.add(rightHeadLightSphere);
         scene.lights.add(rightHeadLight);
 
-        Geometry leftHeadLightSphere = new Sphere(frontCenter.add(vRight.scale(-width/2+width*0.1)),width/2*1/3)
+        Geometry leftHeadLightSphere = new Sphere(frontCenter.add(vRight.scale(-width / 2 + width * 0.1)), width / 2 * 1 / 3)
                 .setMaterial(new Material().setKt(0.6)).setEmission(new Color(YELLOW).add(new Color(WHITE)).scale(0.3));
-        LightSource leftHeadLight= new SpotLight(new Color(YELLOW).add(new Color(WHITE)).scale(0.3),frontCenter.add(vRight.scale(-width/2+width*0.1)),vTo)
+        LightSource leftHeadLight = new SpotLight(new Color(YELLOW).add(new Color(WHITE)).scale(0.3), frontCenter.add(vRight.scale(-width / 2 + width * 0.1)), vTo)
                 .setKl(0.000001).setKq(0.0000001);
         car.add(leftHeadLightSphere);
         scene.lights.add(leftHeadLight);
 
 
         // Taillights
-        Point backCenter = location.add(vTo.scale(-length/2-length*0.01));
-        Geometry rightTailLightSphere = new Sphere(backCenter.add(vRight.scale(width/2-width*0.1)),width/2*1/3)
+        Point backCenter = location.add(vTo.scale(-length / 2 - length * 0.01));
+        Geometry rightTailLightSphere = new Sphere(backCenter.add(vRight.scale(width / 2 - width * 0.1)), width / 2 * 1 / 3)
                 .setMaterial(new Material().setKt(0.6)).setEmission(new Color(RED).scale(0.3));
-        LightSource rightTailLight= new SpotLight(new Color(RED).scale(0.3),backCenter.add(vRight.scale(width/2-width*0.1)),vTo.scale(-1))
+        LightSource rightTailLight = new SpotLight(new Color(RED).scale(0.3), backCenter.add(vRight.scale(width / 2 - width * 0.1)), vTo.scale(-1))
                 .setKl(0.000001).setKq(0.0000001);
         car.add(rightTailLightSphere);
         scene.lights.add(rightTailLight);
 
-        Geometry leftTailLightSphere = new Sphere(backCenter.add(vRight.scale(-width/2+width*0.1)),width/2*1/3)
+        Geometry leftTailLightSphere = new Sphere(backCenter.add(vRight.scale(-width / 2 + width * 0.1)), width / 2 * 1 / 3)
                 .setMaterial(new Material().setKt(0.6)).setEmission(new Color(RED).scale(0.3));
-        LightSource leftTailLight= new SpotLight(new Color(RED).scale(0.3),backCenter.add(vRight.scale(-width/2+width*0.1)),vTo.scale(-1))
+        LightSource leftTailLight = new SpotLight(new Color(RED).scale(0.3), backCenter.add(vRight.scale(-width / 2 + width * 0.1)), vTo.scale(-1))
                 .setKl(0.000001).setKq(0.0000001);
         car.add(leftTailLightSphere);
         scene.lights.add(leftTailLight);
 
 
         // Wheels
-        Point frontCenterWheel = location.add(vTo.scale(length/2*4/5)).add(vUp.scale(-height/2-height/6));
-        Geometry rightFrontWheel = new Sphere(frontCenterWheel.add(vRight.scale(width/4*1.5)), width/5)
+        Point frontCenterWheel = location.add(vTo.scale(length / 2 * 4 / 5)).add(vUp.scale(-height / 2 - height / 6));
+        Geometry rightFrontWheel = new Sphere(frontCenterWheel.add(vRight.scale(width / 4 * 1.5)), width / 5)
                 .setEmission(new Color(BLACK)).setMaterial(new Material().setKd(0.4).setKs(0));
         scene.geometries.add(rightFrontWheel);
-        Geometry leftFrontWheel = new Sphere(frontCenterWheel.add(vRight.scale(-width/4*1.5)), width/5)
+        Geometry leftFrontWheel = new Sphere(frontCenterWheel.add(vRight.scale(-width / 4 * 1.5)), width / 5)
                 .setEmission(new Color(BLACK)).setMaterial(new Material().setKd(0.4).setKs(0));
         scene.geometries.add(leftFrontWheel);
 
-        Point backCenterWheel = location.add(vTo.scale(-length/2*4/5)).add(vUp.scale(-height/2-height/6));
-        Geometry rightBackWheel = new Sphere(backCenterWheel.add(vRight.scale(width/4*1.5)), width/5)
+        Point backCenterWheel = location.add(vTo.scale(-length / 2 * 4 / 5)).add(vUp.scale(-height / 2 - height / 6));
+        Geometry rightBackWheel = new Sphere(backCenterWheel.add(vRight.scale(width / 4 * 1.5)), width / 5)
                 .setEmission(new Color(BLACK)).setMaterial(new Material().setKd(0.4).setKs(0));
         scene.geometries.add(rightBackWheel);
-        Geometry leftBackWheel = new Sphere(backCenterWheel.add(vRight.scale(-width/4*1.5)), width/5)
+        Geometry leftBackWheel = new Sphere(backCenterWheel.add(vRight.scale(-width / 4 * 1.5)), width / 5)
                 .setEmission(new Color(BLACK)).setMaterial(new Material().setKd(0.4).setKs(0));
         scene.geometries.add(leftBackWheel);
 
         // windows
-        Point topCenter = location.add(vUp.scale(height/2));
+        Point topCenter = location.add(vUp.scale(height / 2));
 
-        Point rightFrontBottomWindow = topCenter.add(vRight.scale(width/2)).add(vTo.scale(length/3.5));
-        Point leftFrontBottomWindow = topCenter.add(vRight.scale(-width/2)).add(vTo.scale(length/3.5));
-        Point rightBackBottomWindow = topCenter.add(vRight.scale(width/2)).add(vTo.scale(-length/3.5));
-        Point leftBackBottomWindow = topCenter.add(vRight.scale(-width/2)).add(vTo.scale(-length/3.5));
+        Point rightFrontBottomWindow = topCenter.add(vRight.scale(width / 2)).add(vTo.scale(length / 3.5));
+        Point leftFrontBottomWindow = topCenter.add(vRight.scale(-width / 2)).add(vTo.scale(length / 3.5));
+        Point rightBackBottomWindow = topCenter.add(vRight.scale(width / 2)).add(vTo.scale(-length / 3.5));
+        Point leftBackBottomWindow = topCenter.add(vRight.scale(-width / 2)).add(vTo.scale(-length / 3.5));
 
-        Geometry rightFront = new Cylinder(new Ray(rightFrontBottomWindow,vUp), width/100, height)
+        Geometry rightFront = new Cylinder(new Ray(rightFrontBottomWindow, vUp), width / 100, height)
                 .setEmission(new Color(GRAY));
         scene.geometries.add(rightFront);
 
-        Geometry leftFront = new Cylinder(new Ray(leftFrontBottomWindow,vUp), width/100, height)
+        Geometry leftFront = new Cylinder(new Ray(leftFrontBottomWindow, vUp), width / 100, height)
                 .setEmission(new Color(GRAY));
         scene.geometries.add(leftFront);
 
-        Geometry rightBack = new Cylinder(new Ray(rightBackBottomWindow,vUp), width/100, height)
+        Geometry rightBack = new Cylinder(new Ray(rightBackBottomWindow, vUp), width / 100, height)
                 .setEmission(new Color(GRAY));
         scene.geometries.add(rightBack);
 
-        Geometry leftBack = new Cylinder(new Ray(leftBackBottomWindow,vUp), width/100, height)
+        Geometry leftBack = new Cylinder(new Ray(leftBackBottomWindow, vUp), width / 100, height)
                 .setEmission(new Color(GRAY));
         scene.geometries.add(leftBack);
 
@@ -397,23 +426,23 @@ public class OURImages {
         Point rightBackTopWindow = rightBackBottomWindow.add(vUp.scale(height));
         Point leftBackTopWindow = leftBackBottomWindow.add(vUp.scale(height));
 
-        Geometry rightWindow = new Polygon(rightFrontTopWindow,rightBackTopWindow, rightBackBottomWindow,rightFrontBottomWindow)
-                .setMaterial(new Material().setKt(0.8));
+        Geometry rightWindow = new Polygon(rightFrontTopWindow, rightBackTopWindow, rightBackBottomWindow, rightFrontBottomWindow)
+                .setMaterial(new Material().setKt(0.8).setKr(0.8));
         scene.geometries.add(rightWindow);
 
-        Geometry leftWindow = new Polygon(leftFrontTopWindow,leftBackTopWindow, leftBackBottomWindow,leftFrontBottomWindow)
-                .setMaterial(new Material().setKt(0.8));
+        Geometry leftWindow = new Polygon(leftFrontTopWindow, leftBackTopWindow, leftBackBottomWindow, leftFrontBottomWindow)
+                .setMaterial(new Material().setKt(0.8).setKr(0.8));
         scene.geometries.add(leftWindow);
 
-        Geometry frontWindow = new Polygon(rightFrontBottomWindow, rightFrontTopWindow, leftFrontTopWindow,leftFrontBottomWindow)
-                .setMaterial(new Material().setKt(0.8));
+        Geometry frontWindow = new Polygon(rightFrontBottomWindow, rightFrontTopWindow, leftFrontTopWindow, leftFrontBottomWindow)
+                .setMaterial(new Material().setKt(0.8).setKr(0.8));
         scene.geometries.add(frontWindow);
 
-        Geometry backWindow = new Polygon(rightBackBottomWindow, rightBackTopWindow, leftBackTopWindow,leftBackBottomWindow)
-                .setMaterial(new Material().setKt(0.8));
+        Geometry backWindow = new Polygon(rightBackBottomWindow, rightBackTopWindow, leftBackTopWindow, leftBackBottomWindow)
+                .setMaterial(new Material().setKt(0.8).setKr(0.8));
         scene.geometries.add(backWindow);
 
-        Geometry roof = new Polygon(leftBackTopWindow,rightBackTopWindow,rightFrontTopWindow,leftFrontTopWindow)
+        Geometry roof = new Polygon(leftBackTopWindow, rightBackTopWindow, rightFrontTopWindow, leftFrontTopWindow)
                 .setEmission(color).setMaterial(material);
         scene.geometries.add(roof);
 

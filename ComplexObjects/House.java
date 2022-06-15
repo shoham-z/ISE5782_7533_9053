@@ -14,7 +14,7 @@ public class House {
 
     public House(Point baseBottom, double height, Vector up, Vector right) {
         if (up.dotProduct(right) != 0) throw new IllegalArgumentException();
-        Material material = new Material().setKd(0.125).setKs(0);
+        Material material = new Material().setKd(0.05).setKs(0);
         Vector to = right.crossProduct(up).normalize();
         Geometries house = new Geometries();
         right = right.normalize();
@@ -44,6 +44,7 @@ public class House {
 
     /**
      * Getter for House
+     *
      * @return The house
      */
     public Geometries getHouse() {

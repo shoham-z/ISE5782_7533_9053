@@ -17,7 +17,7 @@ class Pixel {
     private static volatile int cRow = 0;
     private static volatile int cCol = -1;
     private static volatile long pixels = 0l;
-    private static volatile long last = -1l;
+    static volatile long last = -1l;
     private static volatile int lastPrinted = -1;
 
     private static boolean print = false;

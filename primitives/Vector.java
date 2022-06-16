@@ -11,7 +11,7 @@ public class Vector extends Point {
      *
      * @param x first number value for x coordinate
      * @param y second number value for y coordinate
-     * @param z first number value for z coordinate
+     * @param z third number value for z coordinate
      */
     public Vector(double x, double y, double z) {
         this(new Double3(x, y, z));

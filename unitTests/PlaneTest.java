@@ -1,10 +1,9 @@
-
-import geometries.*;
 import geometries.Intersectable.GeoPoint;
-
 import geometries.Plane;
 import org.junit.jupiter.api.Test;
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.List;
 
@@ -43,7 +42,8 @@ class PlaneTest {
         // EP01: There is a simple single test here
         Point p = new Point(1, 1, 1);
         Plane plane = new Plane(p, new Point(1, 2, 1), new Point(1, 1, 2));
-        assertTrue(plane.getNormal(p).equals(new Vector(1, 0, 0)) || plane.getNormal(p).equals(new Vector(-1, 0, 0)),
+        assertTrue(plane.getNormal(p).equals(new Vector(1, 0, 0))
+                        || plane.getNormal(p).equals(new Vector(-1, 0, 0)),
                 "ERROR: getnormal method in Plane does not work properly");
     }
 
@@ -107,35 +107,34 @@ class PlaneTest {
     }
 
     /**
-     * Test method for {@link geometries.Plane#findGeoIntersections(Ray, double)} 
+     * Test method for {@link geometries.Plane#findGeoIntersections(Ray, double)}
      */
     @Test
     void testFindGeoPoint() {
-        Plane plane = new Plane(new Point(1, 0, 0), new Vector(1,0,0));
-        Ray ray1 = new Ray(new Point(-1,0,0), new Vector(1,0,0));
+        Plane plane = new Plane(new Point(1, 0, 0), new Vector(1, 0, 0));
+        Ray ray1 = new Ray(new Point(-1, 0, 0), new Vector(1, 0, 0));
         // ============ Equivalence Partitions Tests ==============
         // **** group 1: there is intersection
         // EP01: Point's distance from the start of the ray is less the distance given
-        assertEquals(List.of(new GeoPoint(plane, new Point(1,0,0))) , plane.findGeoIntersections(ray1, 3),
+        assertEquals(List.of(new GeoPoint(plane, new Point(1, 0, 0))), plane.findGeoIntersections(ray1, 3),
                 "EP01");
 
         // EP02: Point's distance from the start of the ray is more the distance given
-        assertNull(plane.findGeoIntersections(ray1, 1),"EP02");
+        assertNull(plane.findGeoIntersections(ray1, 1), "EP02");
 
         // **** group 2: there is no intersection
-        Ray ray2 = new Ray(new Point(-1,0,0), new Vector(-1,0,0));
+        Ray ray2 = new Ray(new Point(-1, 0, 0), new Vector(-1, 0, 0));
         // EP03: Point's distance from the start of the ray is less the distance given
         assertNull(plane.findGeoIntersections(ray2, 2), "EP03");
 
         // EP04: Point's distance from the start of the ray is more the distance given
-        assertNull(plane.findGeoIntersections(ray2, 0.5),"EP04");
-
+        assertNull(plane.findGeoIntersections(ray2, 0.5), "EP04");
 
 
         // ============ Boundary Value Tests ====================
         // **** group 1: there is intersection
         // BV01: The point is at the distance exactly
-        assertEquals(List.of(new GeoPoint(plane, new Point(1,0,0))) , plane.findGeoIntersections(ray1, 2),
+        assertEquals(List.of(new GeoPoint(plane, new Point(1, 0, 0))), plane.findGeoIntersections(ray1, 2),
                 "BV01");
 
         // **** group 2: there is no intersection

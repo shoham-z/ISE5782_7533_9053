@@ -219,7 +219,7 @@ public class Camera {
                 this.imageWriter.writePixel(j, i, averageColor(xPixels, yPixels, j, i));
                 Pixel.pixelDone();
                 Pixel.printPixel();
-                if (j%50==0)this.writeToImage();
+                if (j%100==0) this.writeToImage();
 
             });
             System.out.printf("%d/%d%n", Pixel.last ,xPixels*yPixels);

@@ -2,9 +2,7 @@ import ComplexObjects.Box;
 import ComplexObjects.House;
 import ComplexObjects.StreetLamp;
 import geometries.*;
-import lighting.DirectionalLight;
-import lighting.LightSource;
-import lighting.SpotLight;
+import lighting.*;
 import org.junit.jupiter.api.Test;
 import primitives.*;
 import renderer.Camera;
@@ -21,7 +19,7 @@ public class OURImages {
     private final Color purple = new Color(BLUE).add(new Color(RED));
 
     @Test
-    void testCylinder(){
+    void testCylinder() {
         Camera camera = new Camera(new Point(0, 0, -1000), new Vector(0, 0, 1), new Vector(0, 1, 0))
                 .setVPSize(160, 160) // 16x9 scaled by 20
                 .setVPDistance(1000);
@@ -32,7 +30,6 @@ public class OURImages {
         scene.geometries.add(new Cylinder(new Ray(new Point(0, 0, 50), camera.getVTo().subtract(camera.getVUp())), 50d, 100d)
                 .setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(20).setKt(0))
                 .setEmission(new Color(RED).reduce(2)));
-
 
 
         scene.lights.add(new SpotLight(new Color(magenta), new Point(100, 100, 0), new Vector(-1, -1, 1))
@@ -47,6 +44,85 @@ public class OURImages {
                 .writeToImage(); //
     }
 
+
+    /**
+     * Testing creation of lighted images
+     */
+    @Test
+    public void bigimageTest() {
+        // Copied and updated from Rafael Knoll's project
+        Scene scene = new Scene("The great image");
+        Camera camera = new Camera(new Point(-5000, 0, 0), new Vector(1, 0, 0), new Vector(0, 1, 0)) //NOTE: in this test, vTo is NOT the usual 0,0,-1. It is 1,0,0!!
+                .setVPDistance(5300).setVPSize(300,300);
+        scene.lights.add(new PointLight(new Color(200, 200, 200), new Point((-30), (50), (60))).setKc(1).setKl(0.00005).setKq(0.00003));
+        scene.lights.add(new PointLight(new Color(0, 0, 200), new Point((80), (80), (120))).setKc(1).setKl(0.00005).setKq(0.00003));
+        scene.lights.add(new SpotLight(new Color(200, 0, 0), new Point((30), (0), (-60)),new Vector(new Double3((1), (0), (2)))).setKc(1).setKl(0.00005).setKq(0.00003));
+
+        scene.lights.add(new DirectionalLight(new Color(10, 100, 10), new Vector(new Double3((0), (0), (-0.5)))));
+
+        Geometry s;
+
+
+        // Remove this loop and all it's contents if you wish the rendering to take less than 30 minutes!!
+        for (double x = -50; x <= 50; x += 5)
+            for (double y = -(50 - Math.abs(x)); y <= 50 - Math.abs(x); y += 5) {
+                double z = Math.sqrt(2500 - x * x - y * y);
+                s = new Sphere(new Point((x + 60), (y), (z)), 5)
+                        .setEmission(new Color((int) Math.abs(x + y + z) % 25, (int) Math.abs(x + y + z + 10) % 25, (int) Math.abs(x + y + z + 20) % 25))
+                        .setMaterial(new Material().setKd(1).setKs(0.1).setKt(0).setKr(0.6).setShininess(99));
+                scene.geometries.add(s);
+                if (z != 0) {
+                    s = new Sphere(new Point((x + 60), (y), (-z)), 5).setEmission(new Color((int) Math.abs(x + y + z) % 25, (int) Math.abs(x + y + z + 10) % 25, (int) Math.abs(x + y + z + 20) % 25))
+                            .setMaterial(new Material().setKd(1).setKs(0.1).setKt(0).setKr(0.6).setShininess(99));
+                    scene.geometries.add(s);
+                }
+
+            }
+
+
+        s = new Sphere(new Point((80), (0), (120)), 70d)
+                .setEmission(new Color(0, 0, 0))
+                .setMaterial(new Material().setKd(0.05).setKs(1).setKt(1).setKr(0).setShininess(15));
+        scene.geometries.add(s);
+
+        s = new Sphere(new Point((60), (0), (0)), 30d)
+                .setEmission(new Color(75, 0, 25))
+                .setMaterial(new Material().setKd(0.2).setKs(1).setKt(1).setKr(0).setShininess(15));
+        scene.geometries.add(s);
+
+        s = new Sphere(new Point((60), (-900), (0)), 800)
+                .setEmission(new Color(0, 0, 0))
+                .setMaterial(new Material().setKd(0.1).setKs(1).setKt(1).setKr(0).setShininess(15));
+        scene.geometries.add(s);
+
+        s = new Sphere(new Point((60), (900), (0)), 800)
+                .setEmission(new Color(0, 0, 0))
+                .setMaterial(new Material().setKd(0.1).setKs(1).setKt(1).setKr(0).setShininess(15));
+        scene.geometries.add(s);
+
+
+        scene.geometries.add(
+                new Plane(new Point(250, -200, -150), new Point(250, 200, -150), new Point(250, -200, 200))
+                        .setEmission(new Color(15, 15, 15))
+                        .setMaterial(new Material().setKd(0.7).setKs(1).setKt(0.3).setKr(0).setShininess(99)));
+
+        scene.geometries.add(
+                new Triangle(new Point((-5000), (-200), (-70)), new Point((150), (200), (-70)), new Point((150), (-200), (-70)))
+                        .setEmission(new Color(7, 7, 7))
+                        .setMaterial(new Material().setKd(0.1).setKs(0.1).setKt(0.5).setKr(0).setShininess(99)));
+
+        scene.geometries.add(
+                new Triangle(new Point((-5000), (200), (-70)), new Point((150), (200), (-70)), new Point((-5000), (-200), (-70)))
+                        .setEmission(new Color(7, 7, 7))
+                        .setMaterial(new Material().setKd(0.1).setKs(1).setKt(0.5).setKr(0).setShininess(99)));
+
+        scene.setAmbientLight(new AmbientLight(new Color(0, 0, 0), Double3.ZERO));
+        camera.setRayTracer(new RayTracerBasic(scene))
+                .setImageWriter(new ImageWriter("Cool", 1000,1000))
+                .setThreadsCount(2)
+                .renderImage()
+                .writeToImage();
+    }
 
     /**
      * Creates an image of few houses
@@ -75,7 +151,7 @@ public class OURImages {
 
         double step = 2;
         for (int i = 1; i < howManyHouses * step; i += step) {
-            double rand = Math.random()*houseSize+houseSize;
+            double rand = Math.random() * houseSize + houseSize;
             houses.add(new House(housesCenter.add(to.scale(houseSize * i + rand)), houseSize, up, to.scale(-1)));
         }
 
@@ -101,11 +177,11 @@ public class OURImages {
 
         Point carsBase = housesCenter.add(right.scale(-200)).add(up.scale(houseSize / 3)).add(to.scale(-200));
         Color carColor;
-        Material carMaterial = new Material().setKd(0.1);
+
 
         for (int i = 1; i < howManyHouses * step; i += 2 * step) {
-            carColor = new Color(Math.random()*255, Math.random()*255, Math.random()*255).add(new Color(50,50,50));
-            scene = constructCar(scene, carsBase.add(to.scale(houseSize * i + (Math.random() * houseSize))), houseSize, houseSize / 3, houseSize / 6, to, up, carColor, carMaterial);
+            carColor = new Color(Math.random() * 255, Math.random() * 255, Math.random() * 255).add(new Color(50, 50, 50));
+            scene = constructCar(scene, carsBase.add(to.scale(houseSize * i + (Math.random() * houseSize))), houseSize, houseSize / 3, houseSize / 6, to, up, carColor);
         }
         // ****Cars end
 
@@ -320,7 +396,7 @@ public class OURImages {
         Camera camera = new Camera(new Point(0, 0, 2000), new Vector(0, 0, -1), new Vector(0, 1, 0))
                 .setVPSize(300, 300)
                 .setVPDistance(2000);
-        scene = constructCar(scene, new Point(0, 0, 0), 100, 40, 20, new Vector(1, 0.5, -1).normalize(), new Vector(0, 1, 0.5).normalize(), new Color(BLACK).add(new Color(10, 10, 10)), new Material().setKd(0.8).setKs(0).setKr(0));
+        scene = constructCar(scene, new Point(0, 0, 0), 100, 40, 20, new Vector(1, 0.5, -1).normalize(), new Vector(0, 1, 0.5).normalize(), new Color(BLACK).add(new Color(10, 10, 10)));
 
 
         scene.lights.add(new SpotLight(new Color(WHITE).add(new Color(YELLOW)).scale(0.5), camera.getPosition().add(camera.getVTo().scale(2000).add(camera.getVUp().scale(500))), camera.getVTo().add(camera.getVUp().scale(-1))));
@@ -334,10 +410,10 @@ public class OURImages {
                 .writeToImage(); //
     }
 
-    Scene constructCar(Scene scene, Point location, double length, double width, double height, Vector vTo, Vector vUp, Color color, Material material) {
+    Scene constructCar(Scene scene, Point location, double length, double width, double height, Vector vTo, Vector vUp, Color color) {
         if (vTo.dotProduct(vUp) != 0) throw new IllegalArgumentException();
         Geometries car = new Geometries();
-
+        Material material = new Material().setKd(0.1);
         Vector vRight = vTo.crossProduct(vUp).normalize();
 
 

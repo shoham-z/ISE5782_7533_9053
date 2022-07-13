@@ -23,7 +23,7 @@ class SphereTest {
     void testGetNormal() {
         // ============ Equivalence Partitions Tests ==============
         // EP01: There is a simple single test here - the point is in the sphere
-        Sphere sphere = new Sphere(new Point(1, 0, 0), 5);
+        Sphere sphere = new Sphere(new Point(1, 0, 0), 5); //(x-x1)^2 + (y-y1)^2 + (z-z1)^2 = r^2
         assertEquals(sphere.getNormal(new Point(6, 0, 0)), new Vector(1, 0, 0),
                 "ERROR: normal for sphere is not working");
     }

@@ -95,7 +95,7 @@ class VectorTest {
                 "EP02: scaling with scalar greater than 0 and less than 1 is not working");
 
         // EP03: scalar is greater than -1 and less than 0
-        assertEquals(new Vector(1d / 3, 1d / 3, 1d / 3), v.scale(1d / 3),
+        assertEquals(new Vector(-1d / 3, -1d / 3, -1d / 3), v.scale(-1d / 3),
                 "EP03: scaling with scalar greater than -1 and less than 0 is not working");
 
         // EP04: scalar is less than -1
@@ -135,8 +135,8 @@ class VectorTest {
         // EP02: dot product between 1 and 0
         assertEquals(0.03741, v1.scale(-0.01).dotProduct(v2.normalize()), 0.0001,
                 "EP02: dotProduct wrong value");
-        // EP03: dot product between -1 and 0
 
+        // EP03: dot product between -1 and 0
         assertEquals(-0.03741, v1.scale(0.01).dotProduct(v2.normalize()), 0.00001,
                 "EP03: dotProduct wrong value");
 
@@ -180,7 +180,7 @@ class VectorTest {
                 "EP01: v2 not orthogonal");
 
         // EP02: reverse direction
-        Vector vr2 = v2.crossProduct(v1);
+        Vector vr2 = v2.crossProduct(v1); // = vr.scale(-1)
         // Check the length of vr and vr2 equal
         assertEquals(vr2.length(), vr.length(), 0.000001,
                 "EP02: length of vr2 not equal to length of vr");

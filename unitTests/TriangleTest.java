@@ -1,7 +1,8 @@
-import geometries.*;
+import geometries.Triangle;
 import org.junit.jupiter.api.Test;
-import primitives.*;
-
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
 import java.util.List;
 
@@ -23,7 +24,8 @@ class TriangleTest {
         // EP01: There is a simple single test here
         Point p = new Point(1, 1, 1);
         Triangle triangle = new Triangle(p, new Point(1, 2, 1), new Point(1, 1, 2));
-        assertTrue(triangle.getNormal(p).equals(new Vector(1, 0, 0)) || triangle.getNormal(p).equals(new Vector(-1, 0, 0)),
+        assertTrue(triangle.getNormal(p).equals(new Vector(1, 0, 0))
+                        || triangle.getNormal(p).equals(new Vector(-1, 0, 0)),
                 "ERROR: getnormal method in Triangle does not work properly");
     }
 

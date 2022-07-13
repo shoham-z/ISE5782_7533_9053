@@ -1,11 +1,13 @@
 package geometries;
 
-import primitives.*;
+import primitives.Point;
+import primitives.Ray;
+import primitives.Vector;
 
-import java.util.LinkedList;
 import java.util.List;
 
-import static primitives.Util.*;
+import static primitives.Util.alignZero;
+import static primitives.Util.isZero;
 
 /**
  * Plane class represents A two-dimensional and infinite Plane in 3D Cartesian coordinate
@@ -35,11 +37,9 @@ public class Plane extends Geometry {
      * @param p3 Point on the Plane
      * @throws IllegalArgumentException when the points are on the same line
      */
-    public Plane(Point p1, Point p2, Point p3) {
+    public Plane(Point p1, Point p2, Point p3) {//ax+by+cz +d = 0
         this.point = p1;
-        Vector v1 = p1.subtract(p2).normalize();
-        Vector v2 = p1.subtract(p3).normalize();
-        this.normal = v1.crossProduct(v2).normalize();
+        this.normal = p1.subtract(p2).crossProduct(p1.subtract(p3)).normalize();
     }
 
     /**
@@ -56,7 +56,7 @@ public class Plane extends Geometry {
         return normal;
     }
 
-
+    @Override
     public Vector getNormal(Point point) {
         return this.normal;
     }

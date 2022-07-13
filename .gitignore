@@ -2,7 +2,5 @@
 /out/
 /.idea/
 /lib/
-/images/
 *.class
-*.png
 /Obj/

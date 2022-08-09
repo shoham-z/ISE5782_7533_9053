@@ -219,16 +219,20 @@ public class Camera {
                 this.imageWriter.writePixel(j, i, averageColor(xPixels, yPixels, j, i));
                 Pixel.pixelDone();
                 Pixel.printPixel();
-                if (j%100==0) this.writeToImage();
+                //if (j%100==0) this.writeToImage();
 
             });
-            System.out.printf("%d/%d%n", Pixel.last ,xPixels*yPixels);
+            //System.out.printf("%d/%d%n", Pixel.last ,xPixels*yPixels);
         });
         Pixel.waitToFinish();
 
         return this;
     }
 
+    public Camera moveCam(Vector movement){
+        this.position = this.position.add(movement);
+        return this;
+    }
     /**
      * prints the grid into the image with the color provided
      *

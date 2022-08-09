@@ -7,9 +7,6 @@ import primitives.*;
 import renderer.*;
 import scene.Scene;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import static java.awt.Color.*;
 
 
@@ -71,44 +68,29 @@ public class MiniProject1Test {
         Vector to = new Vector(-1, 0, 0);
         Vector right = new Vector(0,0,-1);
 
-        List<House> houses = new LinkedList<>();
         Point housesCenter = new Point(-30, -50, -140);
-
 
         double step = 2;
         for (int i = 1; i < howManyHouses * step; i += step) {
-            houses.add(new House(housesCenter.add(to.scale(houseSize * i)), houseSize, up, to.scale(-1)));
+            scene.geometries.add(new House(housesCenter.add(to.scale(houseSize * i)), houseSize, up, to.scale(-1)).getHouse());
         }
         scene.geometries.add(new Polygon(housesCenter.add(right.scale(-100)),housesCenter.add(right.scale(-300))
                 ,housesCenter.add(right.scale(-300)).add(to.scale(600)),housesCenter.add(right.scale(-100)).add(to.scale(600)))
                 .setEmission(new Color(BLUE))
-                .setMaterial(new Material().setKr(0.5).setKs(0.5))
-                );
+                .setMaterial(new Material().setKr(0.5).setKs(0.5)));
         scene.geometries.add(new Sphere(camera.getPosition().add(camera.getVTo().scale(2000)),80)
                 .setEmission(new Color(BLUE))
                 .setMaterial(new Material().setKt(1).setKd(0.4).setKs(0.3).setShininess(100)));
 
 
-        //Geometries car = new Geometries(new Polygon());
-
-
-        Geometry ground = new Plane(new Point(0, -50, 0), new Vector(0, 1, 0)).setEmission(new Color(27, 55, 39).scale(0.85)).setMaterial(new Material().setKd(0.5));
-
-        for (House house : houses) scene.geometries.add(house.getHouse());
-        scene.geometries.add(ground);
+        scene.geometries.add(new Plane(new Point(0, -50, 0), new Vector(0, 1, 0)).setEmission(new Color(27, 55, 39).scale(0.85)).setMaterial(new Material().setKd(0.5)));
         // ****geometries end
 
         // ****lights start
-        List<StreetLamp> streetLamps = new LinkedList<>();
-
         for (int i = 1; i < howManyHouses * step/2; i += step) {
-            streetLamps.add(new StreetLamp(new Point(100, -50, -70).add(to.scale(houseSize/2)).add(to.scale(4 * houseSize * i)), 50,
+            scene.addStreetLamp(new StreetLamp(new Point(100, -50, -70).add(to.scale(houseSize/2)).add(to.scale(4 * houseSize * i)), 50,
                     new Color(YELLOW).scale(0.5), up, 1.25));
         }
-
-        for (StreetLamp streetLamp : streetLamps) scene.addStreetLamp(streetLamp);
-
-        //scene.lights.add(new DirectionalLight(new Color(GREEN), new Vector(0,-0.5,-1)));
         // ****lights end
 
         ImageWriter imageWriter = new ImageWriter("Mini-project1", 500, 500);

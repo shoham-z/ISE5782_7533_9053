@@ -6,19 +6,17 @@ import geometries.Geometry;
 import geometries.Sphere;
 import lighting.LightSource;
 import lighting.PointLight;
-import lighting.SpotLight;
 import primitives.*;
 
 import static java.awt.Color.GRAY;
-import static java.awt.Color.white;
 
 /**
  * Internal class to represent street lamps
  */
 public class StreetLamp{
-    private Geometry pole;
-    private Geometry sphere;
-    private LightSource light;
+    public Geometry pole;
+    public Geometry sphere;
+    public LightSource light;
 
     /**
      * Constructor for street lamp

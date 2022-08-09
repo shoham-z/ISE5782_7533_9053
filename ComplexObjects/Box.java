@@ -8,7 +8,7 @@ import primitives.Point;
 import primitives.Vector;
 
 public class Box {
-    private Geometries box;
+    public Geometries box;
 
     /**
      * Constructor for Cube
@@ -24,33 +24,30 @@ public class Box {
     public Box(Point center, double length,double width, double height, Vector vUp, Vector vRight, Color color, Material material) {
         if (vUp.dotProduct(vRight) != 0) throw new IllegalArgumentException();
         Vector vTo = vRight.crossProduct(vUp);
-        Geometries box = new Geometries();
 
         Point frontCenter = center.add(vTo.scale(length / 2));
-        box.add(constructRectangle(frontCenter, vRight, vUp, height, width)
+        this.box.add(constructRectangle(frontCenter, vRight, vUp, height, width)
                 .setEmission(color).setMaterial(material));
 
         Point backCenter = center.add(vTo.scale(-length / 2));
-        box.add(constructRectangle(backCenter, vRight, vUp, height, width)
+        this.box.add(constructRectangle(backCenter, vRight, vUp, height, width)
                 .setEmission(color).setMaterial(material));
 
         Point rightCenter = center.add(vRight.scale(width/2));
-        box.add(constructRectangle(rightCenter, vTo, vUp, height, length)
+        this.box.add(constructRectangle(rightCenter, vTo, vUp, height, length)
                 .setEmission(color).setMaterial(material));
 
         Point leftCenter = center.add(vRight.scale(-width/2));
-        box.add(constructRectangle(leftCenter, vTo, vUp, height, length)
+        this.box.add(constructRectangle(leftCenter, vTo, vUp, height, length)
                 .setEmission(color).setMaterial(material));
 
         Point topCenter = center.add(vUp.scale(height/2));
-        box.add(constructRectangle(topCenter, vTo, vRight, width, length)
+        this.box.add(constructRectangle(topCenter, vTo, vRight, width, length)
                 .setEmission(color).setMaterial(material));
 
         Point bottomCenter = center.add(vUp.scale(-height/2));
-        box.add(constructRectangle(bottomCenter, vTo, vRight, width, length)
+        this.box.add(constructRectangle(bottomCenter, vTo, vRight, width, length)
                 .setEmission(color).setMaterial(material));
-
-        this.box = box;
     }
 
     /**
